@@ -1,0 +1,160 @@
+#!/bin/sh
+# $Id: postflight 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# Post installation script.
+#
+
+#
+# Copyright (C) 2007-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+CPDIR="/bin/cp -f -R"
+INSTALL=/usr/bin/install
+
+
+#
+# Install the Python bindings
+#
+## @todo r=andy Merge this code with linux/routines.sh!
+#
+VBOX_INSTALL_PATH=/Applications/VirtualBox.app/Contents/MacOS
+PYTHON_INSTALLER_PATH="$VBOX_INSTALL_PATH/sdk/installer/python"
+PYTHON_BINARIES="\
+    python2.7  \
+    python2    \
+    python3.3  \
+    python3.4  \
+    python3.5  \
+    python3.6  \
+    python3.7  \
+    python3.8  \
+    python3.9  \
+    python3.10 \
+    python3.11 \
+    python3.12 \
+    python3    \
+    python"
+
+if [ -e "$PYTHON_INSTALLER_PATH/vboxapisetup.py" ]; then
+    for PYTHON_BIN in $PYTHON_BINARIES; do
+        # Install the python bindings if python is in the path
+        if [ "`\${PYTHON_BIN} -c 'print("test")' 2> /dev/null`" = "test" ]; then
+            echo  1>&2 "Python found: ${PYTHON_BIN}, installing bindings..."
+            # Pass install path via environment
+            export VBOX_INSTALL_PATH
+            # Check if python has working distutils
+            "$PYTHON_BIN" -c "from distutils.core import setup" > /dev/null 2>&1
+            if test "$?" -ne 0; then
+                echo 1>&2 "$PYTHON_BIN does not have package 'distutils', checking for 'setuptools'..."
+                # Since Python 3.12 there are no distutils anymore. See PEP632.
+                "$PYTHON_BIN" -c "from setuptools import setup" > /dev/null 2>&1
+                if test "$?" -ne 0; then
+                    echo 1>&2 "$PYTHON_BIN also does not have package 'setuptools'. Skipping installation."
+                    return 0
+                fi
+                # When we reach here, we have to use 'pip' in order to install our bindings (Python >= 3.12).
+                if test -x "`which pip 2>/dev/null`"; then
+                    PYTHON_PIP_BIN=$(which pip)
+                else
+                    echo 1>&2 "Python package manager 'pip' not found. Skipping installation."
+                fi
+            fi
+
+            if [ -n "$PYTHON_PIP_BIN" ]; then
+                # Note: We use '-v' to show verbose output of our setup.py script on error.
+                $SHELL -c "cd ${PYTHON_INSTALLER_PATH} && ${PYTHON_PIP_BIN} -v install ./vboxapi"
+            else
+                $SHELL -c "cd ${PYTHON_INSTALLER_PATH} && ${PYTHON_BIN} vboxapisetup.py install"
+                $SHELL -c "cd ${PYTHON_INSTALLER_PATH} && ${PYTHON_BIN} vboxapisetup.py clean --all"
+            fi
+        fi
+    done
+else
+    echo 1>&2 "vboxapisetup.py not found, skipping Python bindings installation."
+fi
+
+#
+# Install the vboxweb service file for launchd
+#
+VBOXWEBSRV="${VBOX_INSTALL_PATH}/org.virtualbox.vboxwebsrv.plist"
+VBOXWEBSRV_TRG="${HOME}/Library/LaunchAgents"
+if [ -e "${VBOXWEBSRV}" -a -e "${VBOXWEBSRV_TRG}" ]; then
+    echo "Installing vboxwebsrv launchd file to ${VBOXWEBSRV_TRG}"
+    if [ "x" != "x${USER}" ]; then
+        ${INSTALL} -S -o "${USER}" -m 0644 "${VBOXWEBSRV}" "${VBOXWEBSRV_TRG}/"
+    else
+        ${INSTALL} -S -m 0644 "${VBOXWEBSRV}" "${VBOXWEBSRV_TRG}/"
+    fi
+fi
+
+#
+# Install any custom files
+#
+DATAPATH="`/usr/bin/dirname "${0}"`/../../../../../.."
+if [ -d "${DATAPATH}/.custom" ]; then
+    echo  1>&2 "Copy ${DATAPATH}/.custom to ${VBOX_INSTALL_PATH}...";
+    ${CPDIR} "${DATAPATH}/.custom/"   "${VBOX_INSTALL_PATH}/custom"
+fi
+
+#
+# Register our file extensions
+#
+LSREGISTER=/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister
+if [ -e "${LSREGISTER}" -a "x" != "x${USER}" ]; then
+    echo "Register file extensions for \"${USER}\""
+    /usr/bin/sudo -u "${USER}" ${LSREGISTER} -f /Applications/VirtualBox.app
+    /usr/bin/sudo -u "${USER}" ${LSREGISTER} -f /Applications/VirtualBox.app/Contents/Resources/vmstarter.app
+fi
+
+# Check environment.
+if [ "${INSTALLER_TEMP}x" == "x" ]; then
+    echo "Required environment variable INSTALLER_TEMP is missing. Aborting installation."
+    exit 1;
+fi
+
+# Restore previously installed Extension Packs (if any)
+if [ -d "${INSTALLER_TEMP}/ExtensionPacks" ]; then
+    cp -r "${INSTALLER_TEMP}/ExtensionPacks" "${VBOX_INSTALL_PATH}"
+    rm -rf "${INSTALLER_TEMP}/ExtensionPacks"
+fi
+
+#
+# Correct the ownership of the directories in case there
+# was an existing installation.
+#
+chown -R root:admin /Applications/VirtualBox.app
+
+#
+# Workaround for 10.11 beta 6 in which the above chown strips the set-uid-to-root bit.
+#
+SET_UID_BINARIES="MacOS/VBoxNetAdpCtl"
+SET_UID_BINARIES="${SET_UID_BINARIES} MacOS/VBoxHeadless MacOS/VBoxNetDHCP MacOS/VBoxNetNAT Resources/VirtualBoxVM.app/Contents/MacOS/VirtualBoxVM" # WITH_HARDENING
+for bin in ${SET_UID_BINARIES}; do
+    chmod u+s "/Applications/VirtualBox.app/Contents/${bin}"
+done
+
+# Install provisioning profile if present, needed by VBoxHeadless.
+if [ -f /Applications/VirtualBox.app/Contents/embedded.provisionprofile ]; then
+    profiles -i -F /Applications/VirtualBox.app/Contents/embedded.provisionprofile
+fi
+
+exit 0;
+

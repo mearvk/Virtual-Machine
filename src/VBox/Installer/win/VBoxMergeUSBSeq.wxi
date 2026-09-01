@@ -1,0 +1,56 @@
+﻿<!--
+    VirtualBox Windows Installation Script (WiX)
+-->
+<!--
+    Copyright (C) 2014-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <!-- VBoxUSB.sys uninstallation.
+         Must also happen on upgrades *before* VBoxSUP gets uninstalled. -->
+    <Custom Action="ca_VBoxUSBDevDrvUninstParms" Before="ca_VBoxUSBDevDrvUninst" />
+    <Custom Action="ca_VBoxUSBDevDrvUninst" Before="InstallFiles" />
+
+    <!-- VBoxUSB.sys installation. -->
+    <Custom Action="ca_VBoxUSBDevDrvInstParms" Before="ca_VBoxUSBDevDrvInst"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+    <Custom Action="ca_VBoxUSBDevDrvInst" After="InstallFiles"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+
+    <!-- VBoxUSBMon.sys uninstallation.
+         Must also happen on upgrades *before* VBoxSUP gets uninstalled. -->
+    <Custom Action="ca_VBoxUSBMonDrvUninstParms" Before="ca_VBoxUSBMonDrvUninst" />
+    <Custom Action="ca_VBoxUSBMonDrvUninst" After="ca_VBoxUSBDevDrvUninst" />
+
+    <!-- VBoxUSBMon.sys installation. -->
+    <Custom Action="ca_VBoxUSBMonDrvInstParms" Before="ca_VBoxUSBMonDrvInst"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+    <Custom Action="ca_VBoxUSBMonDrvInst" After="InstallFiles"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+
+    <!-- Start VBoxUSBMon.sys after installation. -->
+    <Custom Action="ca_VBoxUSBMonDrvStartParms" Before="ca_VBoxUSBMonDrvStart"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+    <Custom Action="ca_VBoxUSBMonDrvStart" After="ca_VBoxUSBMonDrvInst"
+            Condition="(NOT REMOVE) AND (&amp;VBoxUSB=3)" />
+
+</Include>

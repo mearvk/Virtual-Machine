@@ -1,0 +1,203 @@
+# $Id: Makefile.kmk 112500 2026-01-13 14:19:55Z alexander.rudnev@oracle.com $
+## @file
+# Sub-Makefile for the libcurl library.
+#
+
+#
+# Copyright (C) 2009-2026 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../..
+include $(KBUILD_PATH)/subheader.kmk
+VBOX_PATH_LIBCURL = $(PATH_ROOT)/src/libs/curl-8.18.0
+
+LIBRARIES += VBox-libcurl
+VBox-libcurl_TEMPLATE       = VBoxR3RuntimeDllNonPedantic
+VBox-libcurl_SDKS           = VBoxZlib VBoxOpenSslStatic
+VBox-libcurl_DEFS           = \
+	CURL_STATICLIB \
+	OPENSSL_NO_ENGINE \
+	BUILDING_LIBCURL \
+	HAVE_CONFIG_H \
+	CURL_DISABLE_ALTSVC \
+	CURL_DISABLE_GOPHER \
+	CURL_DISABLE_FILE \
+	CURL_DISABLE_DICT \
+	CURL_DISABLE_HSTS \
+	CURL_DISABLE_IMAP \
+	CURL_DISABLE_MQTT \
+	CURL_DISABLE_NTLM \
+	CURL_DISABLE_POP3 \
+	CURL_DISABLE_RTSP \
+	CURL_DISABLE_SMTP \
+	CURL_DISABLE_TELNET
+VBox-libcurl_CFLAGS.win    += -wd4826 # formdata.c(390) : warning C4826: Conversion from 'char *' to 'curl_off_t' is sign-extended. This may cause unexpected runtime behavior.
+VBox-libcurl_CFLAGS.win    += -wd4310 # warnless.c(189) : warning C4310: cast truncates constant value
+VBox-libcurl_CFLAGS.win    += -wd4311 # formdata.c(388): warning C4311: 'type cast': pointer truncation from 'void *' to 'long'
+VBox-libcurl_CFLAGS.win    += -wd4090 # openssl/lhash.h(198) : warning C4090: 'function' : different 'const' qualifiers
+VBox-libcurl_CFLAGS.win    += -wd4060 # curl-7.87.0/lib/connect.c(1588): warning C4060: switch statement contains no 'case' or 'default' labels
+VBox-libcurl_CFLAGS.win    += -wd4005 # curl_config.h(444): warning C4005: '_CRT_NONSTDC_NO_DEPRECATE': macro redefinition
+if "$(VBOX_VCC_TOOL_STEM)" >= "VCC140"
+ VBox-libcurl_CFLAGS.win   += -wd4774 # mprintf.c(949): warning C4774: 'sprintf' : format string expected in argument 2 is not a string literal
+endif
+VBox-libcurl_INCS           = \
+	include \
+	$(VBox-libcurl_0_OUTDIR)/lib \
+	$(VBOX_PATH_LIBCURL)/lib
+VBox-libcurl_SOURCES        = \
+	lib/asyn-base.c \
+	lib/curlx/base64.c \
+	lib/bufq.c \
+	lib/bufref.c \
+	lib/conncache.c \
+	lib/connect.c \
+	lib/content_encoding.c \
+	lib/cookie.c \
+	lib/cshutdn.c \
+	lib/cf-haproxy.c \
+	lib/cf-h1-proxy.c \
+	lib/cf-https-connect.c \
+	lib/cf-ip-happy.c \
+	lib/cf-socket.c \
+	lib/cfilters.c \
+	lib/curl_addrinfo.c \
+	lib/curl_get_line.c \
+	lib/curl_fnmatch.c \
+	lib/curl_fopen.c \
+	lib/curl_memrchr.c \
+	lib/curl_range.c \
+	lib/curl_sasl.c \
+	lib/curl_sha512_256.c \
+	lib/curl_share.c \
+	lib/curl_trc.c \
+	lib/cw-out.c \
+	lib/cw-pause.c \
+	lib/doh.c \
+	lib/curlx/dynbuf.c \
+	lib/dynhds.c \
+	lib/easy.c \
+	lib/escape.c \
+	lib/fileinfo.c \
+	lib/curlx/fopen.c \
+	lib/formdata.c \
+	lib/ftp.c \
+	lib/ftplistparser.c \
+	lib/getenv.c \
+	lib/getinfo.c \
+	lib/hash.c \
+	lib/headers.c \
+	lib/hmac.c \
+	lib/hostip.c \
+	lib/hostip4.c \
+	lib/hostip6.c \
+	lib/http.c \
+	lib/http1.c \
+	lib/http_aws_sigv4.c \
+	lib/http_chunks.c \
+	lib/http_digest.c \
+	lib/http_proxy.c \
+	lib/if2ip.c \
+	lib/idn.c \
+	lib/curlx/inet_ntop.c \
+	lib/curlx/inet_pton.c \
+	lib/llist.c \
+	lib/md5.c \
+	lib/mime.c \
+	lib/mprintf.c \
+	lib/multi.c \
+	lib/multi_ev.c \
+	lib/multi_ntfy.c \
+	lib/curlx/multibyte.c \
+	lib/netrc.c \
+	lib/curlx/nonblock.c \
+	lib/noproxy.c \
+	lib/parsedate.c \
+	lib/pingpong.c \
+	lib/progress.c \
+	lib/rand.c \
+	lib/ratelimit.c \
+	lib/request.c \
+	lib/select.c \
+	lib/sendf.c \
+	lib/setopt.c \
+	lib/sha256.c \
+	lib/slist.c \
+	lib/socketpair.c \
+	lib/socks.c \
+	lib/splay.c \
+	lib/strcase.c \
+	lib/strequal.c \
+	lib/curlx/strcopy.c \
+	lib/strdup.c \
+	lib/curlx/strerr.c \
+	lib/strerror.c \
+	lib/curlx/strparse.c \
+	lib/tftp.c \
+	lib/curlx/timediff.c \
+	lib/curlx/timeval.c \
+	lib/transfer.c \
+	lib/uint-bset.c \
+	lib/uint-spbset.c \
+	lib/uint-table.c \
+	lib/url.c \
+	lib/urlapi.c \
+	lib/vtls/openssl.c \
+	lib/vtls/vtls.c \
+	lib/vtls/vtls_scache.c \
+	lib/curlx/wait.c \
+	lib/curlx/warnless.c \
+	lib/ws.c \
+	lib/version.c \
+	lib/vauth/digest.c \
+	lib/vauth/vauth.c \
+	lib/vquic/vquic.c \
+	lib/vtls/hostcheck.c \
+	lib/vtls/keylog.c
+VBox-libcurl_SOURCES.win = \
+	lib/system_win32.c \
+	lib/curlx/version_win32.c \
+	lib/curlx/winapi.c
+VBox-libcurl_SOURCES.darwin = \
+	lib/macos.c
+
+# Use checked in config.h instead of running ./configure for it.
+VBox-libcurl_DEPS  = $(VBox-libcurl_0_OUTDIR)/lib/curl_config.h
+VBox-libcurl_CLEAN = $(VBox-libcurl_DEPS)
+$$(VBox-libcurl_0_OUTDIR)/lib/curl_config.h: $(VBOX_PATH_LIBCURL)/config.h.$(KBUILD_TARGET).$(KBUILD_TARGET_ARCH) | $$(dir $$@)
+	$(INSTALL_STAGING) -- "$^" "$@"
+
+ifdef VBOX_WITH_32_ON_64_MAIN_API # 32-bit edition.
+ LIBRARIES += VBox-libcurl-x86
+ VBox-libcurl-x86_TEMPLATE = VBoxR3DllNonPedantic-x86
+ VBox-libcurl-x86_EXTENDS  = VBox-libcurl
+ VBox-libcurl-x86_INCS     = \
+ 	include \
+ 	$(VBox-libcurl-x86_0_OUTDIR)/lib \
+ 	$(VBOX_PATH_LIBCURL)/lib
+ VBox-libcurl-x86_DEPS     = $(VBox-libcurl-x86_0_OUTDIR)/lib/curl_config.h
+ VBox-libcurl-x86_CLEAN    = $(VBox-libcurl-x86_DEPS)
+ $$(VBox-libcurl-x86_0_OUTDIR)/lib/curl_config.h: $(VBOX_PATH_LIBCURL)/config.h.$(KBUILD_TARGET).x86 | $$(dir $$@)
+	$(INSTALL_STAGING) -- "$^" "$@"
+
+endif
+
+include $(FILE_KBUILD_SUB_FOOTER)
+

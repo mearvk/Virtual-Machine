@@ -1,0 +1,380 @@
+; $Id: bs3-cpu-weird-1-template.mac 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+;; @file
+; BS3Kit - bs3-cpu-weird-1 assembly template.
+;
+
+;
+; Copyright (C) 2007-2025 Oracle and/or its affiliates.
+;
+; This file is part of VirtualBox base platform packages, as
+; available from https://www.virtualbox.org.
+;
+; This program is free software; you can redistribute it and/or
+; modify it under the terms of the GNU General Public License
+; as published by the Free Software Foundation, in version 3 of the
+; License.
+;
+; This program is distributed in the hope that it will be useful, but
+; WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+; General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, see <https://www.gnu.org/licenses>.
+;
+; The contents of this file may alternatively be used under the terms
+; of the Common Development and Distribution License Version 1.0
+; (CDDL), a copy of it is provided in the "COPYING.CDDL" file included
+; in the VirtualBox distribution, in which case the provisions of the
+; CDDL are applicable instead of those of the GPL.
+;
+; You may elect to license modified versions of this file under the
+; terms and conditions of either the GPL or the CDDL or both.
+;
+; SPDX-License-Identifier: GPL-3.0-only OR CDDL-1.0
+;
+
+
+;*********************************************************************************************************************************
+;*  Header Files                                                                                                                 *
+;*********************************************************************************************************************************
+%include "bs3kit-template-header.mac"   ; setup environment
+
+
+;*********************************************************************************************************************************
+;*  External Symbols                                                                                                             *
+;*********************************************************************************************************************************
+TMPL_BEGIN_TEXT
+
+
+;
+; Test code snippets containing code which differs between 16-bit, 32-bit
+; and 64-bit CPUs modes.
+;
+%ifdef BS3_INSTANTIATING_CMN
+
+
+%if TMPL_BITS != 64
+
+;
+; Inhibited int 80h.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedPopSsInt80, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        pop     ss
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedPopSsInt80_int80), , 0
+        int     80h
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedPopSsInt80
+
+;
+; Inhibited int 3.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedPopSsInt3, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        pop     ss
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedPopSsInt3_int3), , 0
+        int     3
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_InhibitedPopSsInt3_int3) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedPopSsInt3
+
+
+;
+; Inhibited int3.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedPopSsBp, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        pop     ss
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedPopSsBp_int3), , 0
+        int3
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_InhibitedPopSsBp_int3) == 1)
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedPopSsBp
+
+%endif ; TMPL_BITS != 64
+
+
+;
+; Inhibited int 80h.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedMovSsInt80, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        mov     ss, [xBP]
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsInt80_int80), , 0
+        int     80h
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedMovSsInt80
+
+;
+; Inhibited int 3.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedMovSsInt3, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        mov     ss, [xBP]
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsInt3_int3), , 0
+        int     3
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsInt3_int3) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedMovSsInt3
+
+
+;
+; Inhibited int3.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedMovSsBp, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+        mov     ss, [xBP]
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsBp_int3), , 0
+        int3
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsBp_int3) == 1)
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedMovSsBp
+
+
+;
+; Inhibited syscall.
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_InhibitedMovSsSyscall, BS3_PBC_NEAR
+        ; Load SS from stack.  This instruction causes fusing.
+%if 1
+        mov     ss, [xBP]
+%else
+        pushf
+        or    word [xBP - xCB], X86_EFL_TF
+        popf
+%endif
+        ; The ring transition instruction.
+BS3_GLOBAL_NAME_EX BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsSyscall_syscall), , 0
+        syscall
+        ; We shouldn't get here!
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_InhibitedMovSsSyscall_syscall) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_InhibitedMovSsSyscall
+
+
+;
+; PC (IP/EIP) wrapper templates.
+; These will potentially trigger VM exits, except for the benign one.
+;
+; Note! Single instructions as the testcase will shift multibyte variations
+;       across the wrap-around boundary and that would cause unpredictable
+;       results for the 16-bit if there is more than one instruction.
+;
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapBenign1, BS3_PBC_NEAR
+        nop
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapBenign1
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapBenign2, BS3_PBC_NEAR
+        xor     xDX, xAX
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapBenign2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapCpuId, BS3_PBC_NEAR
+        cpuid
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapCpuId
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapIn80, BS3_PBC_NEAR
+        in      al, 80h
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapIn80
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapOut80, BS3_PBC_NEAR
+        out     80h, al
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapOut80
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapSmsw, BS3_PBC_NEAR
+        smsw       si
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapSmsw
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapRdCr0, BS3_PBC_NEAR
+        mov     sAX, cr0
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapRdCr0
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapRdDr0, BS3_PBC_NEAR
+        mov     sAX, dr0
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapRdDr0
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_PcWrapWrDr0, BS3_PBC_NEAR
+        mov     dr0, sAX
+BS3_PROC_END_CMN   bs3CpuWeird1_PcWrapWrDr0
+
+
+;
+; PUSH / POP.
+;
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Push_xSP_Ud2, BS3_PBC_NEAR
+        push    xSP
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Push_xSP_Ud2) == 1)
+BS3_PROC_END_CMN   bs3CpuWeird1_Push_xSP_Ud2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Pop_xSP_Ud2, BS3_PBC_NEAR
+        pop     xSP
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Pop_xSP_Ud2) == 1)
+BS3_PROC_END_CMN   bs3CpuWeird1_Pop_xSP_Ud2
+
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Push_opsize_xSP_Ud2, BS3_PBC_NEAR
+        db      066h
+        push    xSP
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Push_opsize_xSP_Ud2) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Push_opsize_xSP_Ud2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Pop_opsize_xSP_Ud2, BS3_PBC_NEAR
+        db      066h
+        pop     xSP
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Pop_opsize_xSP_Ud2) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Pop_opsize_xSP_Ud2
+
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Push_opsize_xBX_Ud2, BS3_PBC_NEAR
+        db      066h
+        push    xBX
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Push_opsize_xBX_Ud2) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Push_opsize_xBX_Ud2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Pop_opsize_xBX_Ud2, BS3_PBC_NEAR
+        db      066h
+        pop     xBX
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Pop_opsize_xBX_Ud2) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Pop_opsize_xBX_Ud2
+
+
+;
+; PUSH / POP SREG.
+;
+
+ %ifndef DEFINED_DO_PUSH_POP_MACROS
+  %define DEFINED_DO_PUSH_POP_MACROS
+  %macro DoPushSeg 2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Push_ %+ %1 %+ _Ud2, BS3_PBC_NEAR
+        push    %1
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Push_ %+ %1 %+ _Ud2) == %2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Push_ %+ %1 %+ _Ud2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Push_opsize_ %+ %1 %+ _Ud2, BS3_PBC_NEAR
+        db      066h
+        push    %1
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Push_opsize_ %+ %1 %+ _Ud2) == (%2 + 1))
+BS3_PROC_END_CMN   bs3CpuWeird1_Push_opsize_ %+ %1 %+ _Ud2
+
+  %endmacro ; DoPushSeg
+
+  %macro DoPopSeg 2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Pop_ %+ %1 %+ _Ud2, BS3_PBC_NEAR
+        pop      %1
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Pop_ %+ %1 %+ _Ud2) == %2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Pop_ %+ %1 %+ _Ud2
+
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Pop_opsize_ %+ %1 %+ _Ud2, BS3_PBC_NEAR
+        db      066h
+        pop     %1
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Pop_opsize_ %+ %1 %+ _Ud2) == (%2 + 1))
+BS3_PROC_END_CMN   bs3CpuWeird1_Pop_opsize_ %+ %1 %+ _Ud2
+
+  %endmacro ; DoPopSeg
+ %endif ; !DEFINED_DO_PUSH_POP_MACROS
+
+DoPushSeg fs, 2
+DoPopSeg  fs, 2
+DoPushSeg gs, 2
+DoPopSeg  gs, 2
+ %if TMPL_BITS == 32 || TMPL_BITS == 16
+DoPushSeg es, 1
+DoPopSeg  es, 1
+DoPushSeg ds, 1
+DoPopSeg  ds, 1
+DoPushSeg ss, 1
+DoPopSeg  ss, 1
+DoPushSeg cs, 1
+ %endif
+
+
+;
+; popf
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Popf_Nop_Ud2, BS3_PBC_NEAR
+        popf
+        nop
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Popf_Nop_Ud2) == 2)
+BS3_PROC_END_CMN   bs3CpuWeird1_Popf_Nop_Ud2
+
+;
+; popf
+;
+BS3_PROC_BEGIN_CMN bs3CpuWeird1_Popf_opsize_Nop_Ud2, BS3_PBC_NEAR
+        db      066h
+        popf
+        nop
+.ud2_again:
+        ud2
+        jmp     .ud2_again
+AssertCompile(.ud2_again - BS3_CMN_NM(bs3CpuWeird1_Popf_opsize_Nop_Ud2) == 3)
+BS3_PROC_END_CMN   bs3CpuWeird1_Popf_opsize_Nop_Ud2
+
+
+%endif ; BS3_INSTANTIATING_CMN
+
+%include "bs3kit-template-footer.mac"   ; reset environment
+

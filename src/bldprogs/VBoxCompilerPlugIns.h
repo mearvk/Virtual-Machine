@@ -1,4 +1,4 @@
-/* $Id: VBoxCompilerPlugIns.h $ */
+/* $Id: VBoxCompilerPlugIns.h 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * VBoxCompilerPlugIns - Types, Prototypes and Macros common to the VBox compiler plug-ins.
  */

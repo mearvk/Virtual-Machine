@@ -1,4 +1,4 @@
-/* $Id: svn2git.cpp $ */
+/* $Id: svn2git.cpp 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * svn2git - Convert a svn repository to git.
  */
@@ -434,7 +434,7 @@ static RTEXITCODE s2gParseArguments(PS2GCTX pThis, int argc, char **argv)
             case 'V':
             {
                 /* The following is assuming that svn does it's job here. */
-                static const char s_szRev[] = "$Revision: 171320 $";
+                static const char s_szRev[] = "$Revision: 111747 $";
                 const char *psz = RTStrStripL(strchr(s_szRev, ' '));
                 RTMsgInfo("r%.*s\n", strchr(psz, ' ') - psz, psz);
                 return RTEXITCODE_SUCCESS;

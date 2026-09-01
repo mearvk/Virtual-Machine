@@ -1,0 +1,110 @@
+# $Id: Makefile.kmk 114897 2026-08-07 17:20:52Z klaus.espenlaub@oracle.com $
+## @file
+# Sub-Makefile for the VBox RDP server.
+#
+
+#
+# Copyright (C) 2006-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+#
+# VBoxVRDP - The VBox RDP server DLL.
+#
+ifndef VBOX_ONLY_SDK
+ DLLS += VBoxVRDP
+endif
+
+VBoxVRDP_TEMPLATE = VBoxR3Dll
+VBoxVRDP_LIBS = $(LIB_RUNTIME)
+VBoxVRDP_SDKS = VBoxOpenSsl
+VBoxVRDP_DEFS = IN_VRDP
+VBoxVRDP_DEFS += NOVOL
+VBoxVRDP_INCS += $(SDK_VBoxLibJpeg_INCS) $(VBOX_GRAPHICS_INCS)
+VBoxVRDP_LIBS += $(SDK_VBoxLibJpeg_LIBS)
+
+ifdef VBOX_WITH_VRDP_ENABLE_LOGREL
+ VBoxVRDP_DEFS += VRDP_ENABLE_LOGREL
+endif
+
+ifdef VBOX_WITH_VRDP_MEMLEAK_DETECTOR
+ VBoxVRDP_DEFS += MEMLEAK
+endif
+
+VBoxVRDP_LDFLAGS.darwin += -install_name $(VBOX_DYLD_EXECUTABLE_PATH)/VBoxVRDP.dylib
+# Make the linker complain if we missed something
+VBoxVRDP_LDFLAGS.linux = $(VBOX_GCC_NO_UNDEFINED)
+VBoxVRDP_SOURCES = \
+	vrdpapi.cpp \
+	server.cpp \
+	clipboard.cpp \
+	audioin.cpp \
+	audio.cpp \
+	iso.cpp \
+	mcs.cpp \
+	secure.cpp \
+	vrdpstream.cpp \
+	vrdpdata.cpp \
+	vrdp.cpp \
+	vrdpdmap.cpp \
+	utils.cpp \
+	bmpcomp.cpp \
+	shadowbuffer.cpp \
+	regions.cpp \
+	orders.cpp \
+	output.cpp \
+	transport.cpp \
+	channel.cpp \
+	usb.cpp \
+	mixeng/mixeng.c \
+	bmpcache.cpp \
+	textcache.cpp \
+	tcp_vrdp.cpp \
+	input.cpp \
+	vrdpctx.cpp \
+	pointer.cpp \
+	vrdpimage.cpp \
+	vrdpscard.cpp \
+	rdpdr.cpp \
+	vrdpinput.cpp \
+	vrdpvideoin.cpp \
+	utcinfo.cpp \
+	vrdpclient.cpp \
+	videohandler.cpp \
+	vhstat.cpp \
+	videodetector.cpp \
+	videotsmf.cpp \
+	videoencoder.cpp \
+	bmpscale.cpp \
+	bmpscale2.cpp \
+	sunflsh.cpp \
+	drdynvc.cpp \
+	tsmf.cpp
+VBoxVRDP_SOURCES.win = \
+	VBoxVRDP.rc
+ifneq ($(KBUILD_TARGET),win)
+ # TLSv1_server_method()
+ tcp_vrdp.cpp_CXXFLAGS = -Wno-deprecated-declarations
+endif
+
+include $(FILE_KBUILD_SUB_FOOTER)

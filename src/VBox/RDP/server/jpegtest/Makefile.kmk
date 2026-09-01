@@ -1,0 +1,61 @@
+# $Id: Makefile.kmk 114897 2026-08-07 17:20:52Z klaus.espenlaub@oracle.com $
+## @file
+# Makefile for jpegtest - not for general consumption, see OTHERS.
+#
+
+#
+# Copyright (C) 2006-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+DEPTH = ../../../../..
+include $(KBUILD_PATH)/header.kmk
+#TJ=1
+
+PROGRAMS += jpegtest
+jpegtest_TEMPLATE = VBoxR3Exe
+jpegtest_INCS     = ..
+jpegtest_LIBS     = $(LIB_RUNTIME)
+ifdef TJ
+ jpegtest_INCS     += $(PATH_ROOT)/src/libs/libjpeg-turbo-1.0.0
+ jpegtest_INCS     += $(PATH_ROOT)/src/libs/libjpeg-turbo-1.0.0/win
+ jpegtest_LIBS     += $(PATH_STAGE_LIB)/VBox-libjpeg-t$(VBOX_SUFF_LIB)
+else
+ jpegtest_INCS     += $(SDK_VBoxLibJpeg_INCS) $(VBOX_GRAPHICS_INCS)
+ jpegtest_LIBS     += $(SDK_VBoxLibJpeg_LIBS)
+endif
+ifneq ($(KBUILD_TARGET),win)
+ jpegtest_CXXFLAGS += -Wno-unused-function -Wno-multichar
+endif
+jpegtest_SOURCES  = \
+	jpegtest.cpp \
+	jpegbmp.cpp \
+	jpegraw.cpp \
+	$(PATH_ROOT)/src/VBox/RDP/server/videoencoder.cpp \
+	$(PATH_ROOT)/src/VBox/RDP/server/bmpscale2.cpp \
+	$(PATH_ROOT)/src/VBox/RDP/server/bmpscale.cpp \
+	DisplayResampleImage.cpp
+#jpegtest_DEFS = RTMEM_WRAP_TO_EF_APIS
+
+#OTHERS += jpegtest.exe
+jpegtest.exe: $(PATH_STAGE_BIN)/jpegtest.exe
+	$(CP) $(PATH_STAGE_BIN)/jpegtest.exe .
+
+include $(FILE_KBUILD_FOOTER)

@@ -1,0 +1,639 @@
+﻿<!--
+    Language Definition Include for VirtualBox WiX script.
+-->
+<!--
+    Copyright (C) 2011-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="it_IT" Codepage="1252">
+    <String Id="LANG" Value="1040" />
+    <String Id="CODEPAGE" Value="1252" />
+    <String Id="LangName" Value="Italiano" />
+
+    <String Id="ButtonText_No" Value="&amp;No" />
+    <String Id="ButtonText_Yes" Value="&amp;Sì" />
+    <String Id="ButtonText_Cancel" Value="A&amp;nnulla" />
+    <String Id="ButtonText_Next" Value="&amp;Avanti &gt;" />
+    <String Id="ButtonText_Back" Value="&lt; &amp;Indietro" />
+    <String Id="ButtonText_Browse" Value="S&amp;foglia" />
+    <String Id="ButtonText_OK" Value="O&amp;K" />
+    <String Id="ButtonText_Check" Value="&amp;Controlla" />
+    <String Id="ButtonText_Install" Value="&amp;Installa" />
+    <String Id="ButtonText_Remove" Value="&amp;Rimuovi" />
+    <String Id="ButtonText_Finish" Value="&amp;Fine" />
+    <String Id="ButtonText_Repair" Value="&amp;Ripara" />
+    <String Id="ButtonText_Return" Value="&amp;Ritorna" />
+    <String Id="ButtonText_Retry" Value="Ri&amp;prova" />
+    <String Id="ButtonText_Ignore" Value="I&amp;gnora" />
+    <String Id="ButtonText_Exit" Value="E&amp;sci" />
+
+    <String Id="InstallModeCustom" Value="Personalizzato" />
+    <String Id="Setup" Value="Installazione" />
+
+    <!---->
+
+    <String Id="StartMenu_License" Value="Licenza" />
+    <String Id="StartMenu_UserManual" Value="Manuale utente" />
+
+    <!---->
+
+    <String Id="VB_App" Value="Applicazione [ProductName]." />
+    <String Id="VB_USBDriver" Value="Driver di [ProductName] per il supporto di dispositivi USB." />
+    <String Id="VB_Network" Value="Driver di [ProductName] per il supporto di rete." />
+    <String Id="VB_NetLwfDriver" Value="Driver di [ProductName] per la rete con bridge NDIS6." />
+    <String Id="VB_NetAdp6Driver" Value="Driver di [ProductName] per la scheda di rete virtuale per la rete solo host NDIS6." />
+    <String Id="VB_Python" Value="Supporto Python per VirtualBox." />
+
+    <!---->
+
+    <String Id="UsedByOtherApp" Value="È stata rilevata un'applicazione che ha utilizzato la versione di VirtualBox attualmente installata. È necessario rimuovere questa applicazione prima di continuare l'installazione. Per i dettagli, consultare il file dependency.dep nella directory di installazione di VirtualBox." />
+    <String Id="NeedAdmin" Value="Devi avere diritti di amministrazione per (dis)installare [ProductName]! L'installazione sarà interrotta immediatamente." />
+    <String Id="NeedMSCRT" Value="[ProductName] needs the Microsoft Visual C++ 2019 Redistributable Package being installed first. Please install and restart the installation of [ProductName]." />
+    <String Id="WrongOS" Value="Questa applicazione può essere eseguita solo su Windows 10 o superiori." />
+    <String Id="Only64Bit" Value="Questa applicazione può essere eseguita solo su sistemi Windows a 64 bit. Installa la versione a 32 bit di [ProductName]!" />
+    <String Id="WrongPlatformArch" Value="This version of [ProductName] was developed for a different platform architecture and therefore cannot be installed. Please install a matching version of [ProductName]!" />
+    <String Id="NewerVersionDetected" Value="A newer version of VirtualBox is already installed. Please uninstall it first before installing older versions of VirtualBox." />    
+    <String Id="InvalidTargetDir" Value="Invalid installation directory specified! Please use another installation directory to install [ProductName]. Refer to the [ProductName] manual for more information." />
+
+    <!---->
+
+    <String Id="CancelDlg_Question" Value="Sei sicuro di voler annullare l'installazione di [ProductName]?" />
+
+    <!---->
+
+    <String Id="WelcomeDlg_Header" Value="Benvenuti nella procedura guidata di installazione di [ProductName]" />
+    <String Id="WelcomeDlg_Body" Value="La procedura guidata installerà [ProductName] sul tuo computer. Fai clic su Avanti per continuare o su Annulla per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="LicenseAgreementDlg_Header" Value="Accordo di licenza con l'utente finale" />
+    <String Id="LicenseAgreementDlg_Body" Value="Leggi attentamente il seguente accordo di licenza." />
+    <String Id="LicenseAgreementDlg_Accept" Value="&amp;Accetto i termini dell'accordo di licenza" />
+    <String Id="LicenseAgreementDlg_Decline" Value="&amp;Non accetto i termini dell'accordo di licenza" />
+
+    <!---->
+
+    <String Id="InvalidTargetDirDlg_Header" Value="Invalid installation directory" />
+    <String Id="InvalidTargetDirDlg_Desc1" Value="The chosen installation directory is invalid, as it does not meet the security requirements. Refer to the [ProductName] manual for more information." />
+    <String Id="InvalidTargetDirDlg_Desc2" Value="Please choose another directory for installing [ProductName]." />
+
+    <!---->
+
+    <String Id="CheckSerialDlg_Header" Value="Numero di serie" />
+    <String Id="CheckSerialDlg_Body" Value="Digita il numero di serie nel campo seguente. Troverai il numero sull'adesivo all'interno della custodia del CD di VirtualBox." />
+    <String Id="CheckSerialDlg_Footer" Value="Una volta digitato il numero di serie, premi il pulsante &quot;Controlla&quot; in basso." />
+
+    <!---->
+
+    <String Id="WrongSerialDlg_Header" Value="Il numero di serie digitato non era valido!" />
+    <String Id="WrongSerialDlg_Desc1" Value="Torna indietro per digitare nuovamente il numero di serie." />
+    <String Id="WrongSerialDlg_Desc2" Value="Ricorda che il numero seriale deve essere scritto esattamente come è stampato sull'adesivo." />
+
+    <!---->
+
+    <String Id="WarnSaveStatesDlg_Header" Value="Avviso:" />
+    <String Id="WarnSaveStatesDlg_Header2" Value="Stati salvati non compatibili!" />
+    <String Id="WarnSaveStatesDlg_Desc" Value="Quando aggiorni [ProductName], tutti gli stati salvati dalle macchine già esistenti non funzioneranno più! Dopo l'installazione, dovrai scartarli manualmente." />
+    <String Id="WarnSaveStatesDlg_Proceed" Value="Procedere subito con l'installazione?" />
+
+    <!---->
+
+    <String Id="WarnTAPDevicesDlg_Header" Value="Interfacce host" />
+    <String Id="WarnTAPDevicesDlg_Desc" Value="Se hai utilizzato interfacce host per le tue macchine nella versione precedente, devi ricrearle manualmente dopo questa installazione." />
+
+    <!---->
+
+    <String Id="NetCfgLocked" Value="La seguente applicazione dovrebbe essere chiusa prima di procedere con l'installazione: &quot;[2]&quot;" />
+
+    <!---->
+
+    <String Id="CustomizeDlg_Location" Value="Posizione:" />
+    <String Id="CustomizeDlg_DiskUsage" Value="&amp;Utilizzo del disco" />
+    <String Id="CustomizeDlg_SelFeatures" Value="Seleziona la modalità di installazione delle funzionalità." />
+    <String Id="CustomizeDlg_IconTree" Value="Fai clic sulle icone dell'albero seguente per cambiare la modalità di installazione delle funzionalità." />
+    <String Id="CustomizeDlg_CustomSetup" Value="Installazione personalizzata" />
+    <String Id="CustomizeDlg_SelItemDesc" Value="CustomizeDlgItemDescription-CustomizeDlgItemDescription" />
+    <String Id="CustomizeDlg_SelItemSize" Value="CustomizeDlgItemSize-CustomizeDlgItemSize" />
+    <String Id="CustomizeDlg_SelItemPath" Value="CustomizeDlgLocation-CustomizeDlgLocation" />
+
+    <!---->
+
+    <String Id="Customize2Dlg_Header" Value="Personalizza" />
+    <String Id="Customize2Dlg_Desc" Value="Scegli dalle opzioni seguenti:" />
+    <String Id="Customize2Dlg_CreateStartMenuEntries" Value="Crea voci del menu di avvio" />
+    <String Id="Customize2Dlg_CreateDesktopShortcut" Value="Crea una scorciatoia sul desktop" />
+    <String Id="Customize2Dlg_RegisterFileExtensions" Value="Registrati associazioni di file" />
+
+    <!---->
+
+    <String Id="SelectionNetworkTypeDlg_CommonDescription" Value="Scegli quale tipo di driver di rete utilizzerai:" />
+    <String Id="SelectionNetworkTypeDlg_DescriptionNDIS6" Value="Driver di rete NDIS6.&#xA;Questo è il tipo predefinito per le nuove versioni di Windows (Vista e successivi)." />
+    <String Id="SelectionNetworkTypeDlg_RadioButtonNDIS6" Value="Usa driver di rete NDIS6." />
+
+    <!---->
+
+    <String Id="WarnDisconNetIfacesDlg_Title" Value="Avviso:" />
+    <String Id="WarnDisconNetIfacesDlg_Title2" Value="Interfacce di rete" />
+    <String Id="WarnDisconNetIfacesDlg_Desc" Value="L'installazione delle funzionalità di rete di [ProductName] ripristinerà la connessione di rete causando una disconnessione temporanea dalla rete." />
+
+    <!---->
+
+    <String Id="WarnPythonDlg_Title" Value="Missing Dependencies" />
+    <String Id="WarnPythonDlg_Title2" Value="Python Core / win32api" />
+    <String Id="WarnPythonDlg_Desc" Value="Installing the [ProductName] Python bindings requires the Python Core package and the win32api bindings to be installed first." />
+    <String Id="WarnPythonDlg_Desc2" Value="When continuing the installation of the [ProductName] Python bindings now, those need to be set up manually later. Refer to the [ProductName] SDK manual for more information." />
+
+    <!---->
+
+    <String Id="DiskCostDlg_SpaceRequired" Value="Lo spazio su disco richiesto per l'installazione delle funzionalità selezionate." />
+    <String Id="DiskCostDlg_NotEnoughSpace" Value="I volumi evidenziati non hanno spazio disponibile sufficiente per le funzionalità attualmente selezionate. Puoi rimuovere alcuni file dai volumi evidenziati, scegliere di installare meno funzionalità sul disco locale o selezionare un disco di destinazione diverso." />
+    <String Id="DiskCostDlg_SpaceRequirements" Value="Requisiti di spazio disco" />
+    <String Id="DiskCostDlg_VolumeList" Value="{120}{70}{70}{70}{70}" />
+
+    <!---->
+
+    <String Id="BrowseDlg_BrowseDestFolder" Value="Spostati nella cartella di destinazione" />
+    <String Id="BrowseDlg_ChangeCurFolder" Value="Cambia la cartella di destinazione attuale" />
+    <String Id="BrowseDlg_UpOneLevelTooltip" Value="Livello superiore" />
+    <String Id="BrowseDlg_CreateNewFolderTooltip" Value="Crea una nuova cartella" />
+    <String Id="BrowseDlg_LookIn" Value="&amp;Cerca in:" />
+    <String Id="BrowseDlg_FolderName" Value="&amp;Nome della cartella:" />
+
+    <!---->
+
+    <String Id="VerifyReadyDlg_ReadyToBegin" Value="La procedura guidata è pronta per iniziare l'installazione di [InstallMode]." />
+    <String Id="VerifyReadyDlg_ReadyToInstall" Value="Pronto per l'installazione" />
+
+    <!---->
+
+    <String Id="ExitDlg_ClickFinish" Value="Fai clic sul pulsante Fine per uscire dalla procedura guidata." />
+    <String Id="ExitDlg_InstComplete" Value="L'installazione di [ProductName] è completa." />
+    <String Id="ExitDlg_StartVBox" Value="Avvia [ProductName] dopo l'installazione" />
+
+    <!---->
+
+    <String Id="FatalErrorDlg_Title" Value="[ProductName] L'installazione guidata si è conclusa prematuramente." />
+    <String Id="FatalErrorDlg_Description1" Value="Riavviare e riprovare eseguendo nuovamente la (dis)installazione." />
+    <String Id="FatalErrorDlg_Description2" Value="In alternativa, consultare i forum o la documentazione di [ProductName]." />
+    <String Id="FatalErrorDlg_DescLogOpen" Value="Aprire il file di registro" />
+    <String Id="FatalErrorDlg_DescLogPath" Value="Il file di registro è stato scritto in:" />
+
+    <!---->
+
+    <String Id="FilesInUse_Text" Value="Le seguenti applicazioni stanno utilizzando file che devono essere aggiornati da questa installazione. Chiudi queste applicazioni e poi fai clic su &amp;Riprova per continuare l'installazione o Esci per abbandonarla." />
+    <String Id="FilesInUse_Description" Value="Alcuni file che devono essere aggiornati sono attualmente utilizzati." />
+    <String Id="FilesInUse_Title" Value="File in uso" />
+
+    <!---->
+
+    <String Id="UserExitDlg_Header" Value="La procedura guidata di [ProductName] è stata interrotta" />
+    <String Id="UserExitDlg_Desc" Value="L'installazione di [ProductName] è stata interrotta. Il sistema non è stato modificato. Per installare questo programma successivamente, esegui nuovamente questa installazione." />
+    <String Id="UserExitDlg_Footer" Value="Fai clic sul pulsante Fine per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="ProgressDlg_PleaseWait" Value="Attendi che la procedura guidata installi [ProductName]. Potrebbe richiedere qualche minuto." />
+
+    <!---->
+
+    <String Id="ResumeDlg_Header" Value="Ripristino della procedura guidata di installazione di [ProductName]" />
+    <String Id="ResumeDlg_Desc" Value="La procedura guidata completerà l'installazione di [ProductName] sul tuo computer. Fai clic su Installa per continuare o Annulla per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="MaintenanceTypeDlg_Header" Value="Modifica, ripara o rimuovi l'installazione" />
+    <String Id="MaintenanceTypeDlg_SelOption" Value="Seleziona l'operazione che desideri eseguire." />
+    <String Id="MaintenanceTypeDlg_Repair" Value="Ri&amp;para" />
+    <String Id="MaintenanceTypeDlg_RepairText" Value="Ripara gli errori nello stato di installazione più recente - corregge i file, le scorciatoie e le voci di registro mancanti o danneggiate." />
+    <String Id="MaintenanceTypeDlg_RepairTooltip" Value="Ripara l'installazione" />
+    <String Id="MaintenanceTypeDlg_RepairProgress1" Value="Riparazione" />
+    <String Id="MaintenanceTypeDlg_RepairProgress2" Value="ripara" />
+    <String Id="MaintenanceTypeDlg_Remove" Value="&amp;Rimuovi" />
+    <String Id="MaintenanceTypeDlg_RemoveText" Value="Rimuove [ProductName] dal tuo computer." />
+    <String Id="MaintenanceTypeDlg_RemoveTooltip" Value="Rimuovi l'installazione" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress1" Value="Rimozione" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress2" Value="rimuove" />
+
+    <!---->
+
+    <String Id="MaintenanceWelcomeDlg_Header" Value="Benvenuti nella procedura guidata di installazione di [ProductName]" />
+    <String Id="MaintenanceWelcomeDlg_Desc" Value="La procedura guidata di installazione ti consentirà di riparare la tua installazione attuale o rimuovere [ProductName] dal tuo computer. Fai clic su Avanti per continuare o Annulla per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="OutOfDiskDlg_InstallationExceeds" Value="Lo spazio su disco richiesto per l'installazione supera lo spazio disponibile." />
+    <String Id="OutOfDiskDlg_NotEnoughDiskSpace" Value="I volumi evidenziati non hanno spazio disco sufficiente per le funzionalità attualmente selezionate. Puoi rimuovere alcuni file dai volumi evidenziati, scegliere di installare meno funzionalità sul disco locale o seleziona un disco di destinazione diverso." />
+    <String Id="OutOfDiskDlg_OutOfDiskSpace" Value="Spazio su disco insufficiente" />
+
+    <!---->
+
+    <String Id="OutOfRbDiskDlg_InstallationExceeds" Value="Lo spazio su disco richiesto per l'installazione supera lo spazio disponibile." />
+    <String Id="OutOfRbDiskDlg_NotEnoughDiskSpace" Value="I volumi evidenziati non hanno spazio disco sufficiente per le funzionalità attualmente selezionate. Puoi rimuovere alcuni file dai volumi evidenziati, scegliere di installare meno funzionalità sul disco locale o seleziona un disco di destinazione diverso." />
+    <String Id="OutOfRbDiskDlg_OutOfDiskSpace" Value="Spazio su disco insufficiente" />
+    <String Id="OutOfRbDiskDlg_Desc" Value="In alternativa, puoi scegliere di disabilitare la funzionalità di rollback dell'installatore. Questo consente all'installatore di ripristinare lo stato originale del tuo computer qualore l'installazione venisse interrotta in qualsiasi modo. Fai clic su Sì se desideri rischiare di disabilitare il rollback." />
+
+    <!---->
+
+    <String Id="VerifyRemoveDlg_Header" Value="Rimuovi [ProductName]" />
+    <String Id="VerifyRemoveDlg_Desc" Value="Hai scelto di rimuovere il programma dal tuo computer." />
+    <String Id="VerifyRemoveDlg_ClickRemove" Value="Fai clic su Rimuovi per rimuovere [ProductName] dal tuo computer. Se vuoi rivedere o cambiare una qualsiasi impostazione di installazione, fai clic su Indietro. Fai clic su Annulla per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="VerifyRepairDlg_Header" Value="Ripara [ProductName]" />
+    <String Id="VerifyRepairDlg_ReadyToBegin" Value="La procedura guidata di installazione è pronta per iniziare la riparazione di [ProductName]." />
+    <String Id="VerifyRepairDlg_ClickRepair" Value="Fai clic su Ripara per riparare l'installazione di [ProductName]. Se vuoi rivedere o cambiare le impostazioni di installazione, fai clic su Indietro. Fai clic su Annulla per uscire dalla procedura guidata." />
+
+    <!---->
+
+    <String Id="WaitForCostingDlg_PleaseWait" Value="Attendi che l'installatore termini il calcolo dei requisiti di spazio sul disco." />
+
+    <!---->
+
+    <String Id="MsiRMFilesInUse_Text" Value="Le seguenti applicazioni stanno utilizzando file che devono essere aggiornati da questa installazione. Puoi permette alla procedura guidata di chiuderle e tentare di riavviarle o riavviare successivamente la macchina." />
+    <String Id="MsiRMFilesInUse_Description" Value="Alcuni file che devono essere aggiornati sono attualmente utilizzati." />
+    <String Id="MsiRMFilesInUse_Title" Value="File in uso" />
+    <String Id="MsiRMFilesInUse_UseRM" Value="&amp;Chiudi le applicazioni e prova a riavviarle." />
+    <String Id="MsiRMFilesInUse_DontUseRM" Value="&amp;Non chiudere le applicazioni. Sarà necessario un riavvio." />
+
+    <!-- The following strings are internally used by WiX and MSI -->
+    <String Id="Error0" Value="{{Errore grave: }}" />
+    <String Id="Error1" Value="{{Errore [1]. }}" />
+    <String Id="Error2" Value="Avviso [1]." />
+    <String Id="Error3" />
+    <String Id="Error4" Value="Info [1]." />
+    <String Id="Error5" Value="L'installatore ha riscontrato un errore inatteso durante l'installazione di questo pacchetto. Questo potrebbe indicare un problema con questo pacchetto. Il codice di errore è [1]. {{Gli argomenti sono: [2], [3], [4]}}" />
+    <String Id="Error6" />
+    <String Id="Error7" Value="{{Disco pieno: }}" />
+    <String Id="Error8" Value="Azione [Time]: [1]. [2]" />
+    <String Id="Error9" Value="[ProductName]" />
+    <String Id="Error10" Value="{[2]}{, [3]}{, [4]}" />
+    <String Id="Error11" Value="Tipo di messaggio: [1], Argomento: [2]" />
+    <String Id="Error12" Value="=== Registrazione iniziata: [Date]  [Time] ===" />
+    <String Id="Error13" Value="=== Registrazione fermata: [Date]  [Time] ===" />
+    <String Id="Error14" Value="Avvio azione [Time]: [1]." />
+    <String Id="Error15" Value="Azione terminata [Time]: [1]. Valore restituito [2]." />
+    <String Id="Error16" Value="Tempo rimanente: {[1] minuti }{[2] secondi}" />
+    <String Id="Error17" Value="Memoria insufficiente. Chiudi le altre applicazione prima di riprovare." />
+    <String Id="Error18" Value="L'installazione non risponde più." />
+    <String Id="Error19" Value="L'installatore si è fermato prematuramente." />
+    <String Id="Error20" Value="Attendi mentre Windows configura [ProductName]" />
+    <String Id="Error21" Value="Raccolta delle informazioni necessarie in corso..." />
+    <String Id="Error22" Value="Rimozione delle vecchie versioni di questa applicazione..." />
+    <String Id="Error23" Value="Preparazione della rimozione delle vecchie versioni di questa applicazione..." />
+    <String Id="Error32" Value="{[ProductName] }Installazione completata correttamente." />
+    <String Id="Error33" Value="{[ProductName] }Installazione non riuscita." />
+    <String Id="Error1101" Value="Errore durante la lettura dal file: [2]. {{ Errore di sistema [3].}}  Verifica che il file esista e che sia accessibile." />
+    <String Id="Error1301" Value="Impossibile creare il file '[2]'. Una cartella con questo nome esiste già. Annulla l'installazione o prova ad installare in una posizione diversa." />
+    <String Id="Error1302" Value="Inserisci il disco: [2]" />
+    <String Id="Error1303" Value="L'installatore ha privilegi insufficienti per accedere a questa cartella: [2]. L'installazione non può continuare. Accedi come amministratore o contatta il tuo amministratore di sistema." />
+    <String Id="Error1304" Value="Errore durante la scrittura del file: [2]. Verifica di avere l'accesso a tale cartella." />
+    <String Id="Error1305" Value="Errore durante la lettura del file [2]. {{ Errore di sistema [3].}} Verifica che il file esista e sia accessibile." />
+    <String Id="Error1306" Value="Un'altra applicazione ha accesso esclusivo al file '[2]'. Termina le altre applicazioni e fai clic su Riprova." />
+    <String Id="Error1307" Value="Non c'è spazio su disco sufficiente per installare questo file: [2]. Libera spazio su disco e fai clic su Riprova, o fai clic su Annulla per uscire." />
+    <String Id="Error1308" Value="File di origine non trovato: [2]. Verifica che il file esista e che sia accessibile." />
+    <String Id="Error1309" Value="Errore durante la lettura del file: [3]. {{ Errore di sistema [2].}}  Verifica che il file esista e sia accessibile." />
+    <String Id="Error1310" Value="Errore durante la scrittura del file: [3]. {{ Errore di sistema [2].}}  Verifica di avere l'accesso a tale cartella." />
+    <String Id="Error1311" Value="File di origine non trovato{{(cabinet)}}: [2]. Verifica che il file esista e sia accessibile." />
+    <String Id="Error1312" Value="Impossibile creare la cartella '[2]'. Un file con questo nome esiste già. Rinomina o rimuovi il file e fai clic su Riprova, o fai clic su Annulla per uscire." />
+    <String Id="Error1313" Value="Il volume [2] è attualmente indisponibile. Selezionane un altro." />
+    <String Id="Error1314" Value="Il percorso specificato '[2]' non è disponibile." />
+    <String Id="Error1315" Value="Impossibile scrivere nella cartella specificata: [2]." />
+    <String Id="Error1316" Value="Si è verificato un errore di rete durante il tentativo di leggere dal file: [2]" />
+    <String Id="Error1317" Value="Si è verificato un errore durante il tentativo di creare la cartella: [2]" />
+    <String Id="Error1318" Value="Si è verificato un errore di rete durante il tentativo di creare la cartella: [2]" />
+    <String Id="Error1319" Value="Si è verificato un errore di rete durante il tentativo di aprire il cabinet del file sorgente: [2]" />
+    <String Id="Error1320" Value="Il percorso specificato è troppo lungo: [2]" />
+    <String Id="Error1321" Value="L'installatore ha privilegi insufficienti per modificare questo file: [2]." />
+    <String Id="Error1322" Value="Una parte del percorso della cartella '[2]' non è valida. È vuota o eccede la lunghezza consentita dal sistema." />
+    <String Id="Error1323" Value="Il percorso '[2]' contiene parole non valide nei percorsi delle cartelle." />
+    <String Id="Error1324" Value="Il percorso della cartella '[2]' contiene un carattere non valido." />
+    <String Id="Error1325" Value="'[2]' non è un nome breve valido." />
+    <String Id="Error1326" Value="Errore durante il recupero della protezione del file: [3] GetLastString: [2]" />
+    <String Id="Error1327" Value="Disco non valido: [2]" />
+    <String Id="Error1328" Value="Errore durante l'applicazione della patch al file [2]. È stato probabilmente aggiornato in altro modo, e non può essere più modificato da questa patch. Per ulteriori informazioni contatta il fornitore della patch. {{Errore di sistema: [3]}}" />
+    <String Id="Error1329" Value="Un file richiesto non può essere installato poiché il file cabinet [2] non è firmato digitalmente. Questo potrebbe indicare che il file cabinet è danneggiato." />
+    <String Id="Error1330" Value="Un file richiesto non può essere installato poiché il file cabinet [2] non è firmato digitalmente. Questo potrebbe indicare che il file cabinet è danneggiato.{{  L'errore [3] è stato restituito da WinVerifyTrust.}}" />
+    <String Id="Error1331" Value="Impossibile copiare correttamente il file [2]: errore CRC." />
+    <String Id="Error1332" Value="Impossibile spostare correttamente il file [2]: errore CRC." />
+    <String Id="Error1333" Value="Impossibile applicare correttamente il file di patch [2]: errore CRC." />
+    <String Id="Error1334" Value="Il file '[2]' non può essere installato poiché il file non può essere trovato nel file cabinet '[3]'. Questo potrebbe indicare un errore di rete, un errore di lettura dal CD-ROM o un problema con questo pacchetto." />
+    <String Id="Error1335" Value="Il file cabinet '[2]' richiesto da questa installazione è danneggiato e non può essere utilizzato. Questo potrebbe indicare un errore di rete, un errore di lettura dal CD-ROM o un problema con questo pacchetto." />
+    <String Id="Error1336" Value="Si è verificato un errore durante la creazione di un file temporaneo che è necessario per completare questa installazione.{{  Cartella: [3]. Codice dell'errore di sistema: [2]}}" />
+    <String Id="Error1401" Value="Impossibile creare la chiave: [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1402" Value="Impossibile aprire la chiave: [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1403" Value="Impossibile eliminare il valore [2] dalla chiave [3]. {{ Errore di sistema [4].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1404" Value="Impossibile eliminare la chiave [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1405" Value="Impossibile leggere il valore [2] dalla chiave [3]. {{ Errore di sistema [4].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1406" Value="Impossibile scrivere il valore [2] nella chiave [3]. {{ Errore di sistema [4].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1407" Value="Impossibile ottenere i nomi dei valori per la chiave [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1408" Value="Impossibile ottenere i nomi delle sotto-chiavi per la chiave [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1409" Value="Impossibile leggere le informazioni di sicurezza per la chiave [2]. {{ Errore di sistema [3].}}  Verifica di avere accesso alla chiave, o contatta il tuo personale di supporto." />
+    <String Id="Error1410" Value="Impossibile incrementare lo spazio disponibile per il registro. [2] KB di spazio libero per il registro sono richiesti per l'installazione di questa applicazione." />
+    <String Id="Error1500" Value="Un'altra installazione è in corso. Devi completare quella installazione prima di continuare con questa." />
+    <String Id="Error1501" Value="Errore durante l'accesso ai dati protetti. Assicurati che Windows Installer sia installato correttamente e prova nuovamente l'installazione." />
+    <String Id="Error1502" Value="L'utente '[2]' ha iniziato precedentemente un'installazione del prodotto '[3]'. Quell'utente dovrà eseguire nuovamente l'installazione prima che possa utilizzare il prodotto. La tua installazione attuale continuerà subito." />
+    <String Id="Error1503" Value="L'utente '[2]' ha iniziato precedentemente un'installazione del prodotto '[3]'. Quell'utente dovrà eseguire nuovamente l'installazione prima che possa utilizzare il prodotto." />
+    <String Id="Error1601" Value="Spazio su disco insufficiente -- Volume: '[2]'; spazio richiesto: [3] KB; spazio disponibile: [4] KB. Libera spazio sul disco e riprova." />
+    <String Id="Error1602" Value="Sei sicuro di voler annullare?" />
+    <String Id="Error1603" Value="Il file [2][3] è in uso { dal processo seguente: Nome: [4], Id: [5], Titolo finestra: '[6]'}. Chiudi l'applicazione e riprova." />
+    <String Id="Error1604" Value="Il prodotto '[2]' è già installato, e impedisce l'installazione di questo prodotto. I due prodotti sono incompatibili." />
+    <String Id="Error1605" Value="Non c'è spazio su disco sufficiente sul volume '[2]' per continuare l'installazione con il ripristino abilitato. [3] KB sono richiesti, ma solo [4] KB sono disponibili. Fai clic su Ignora per continuare l'installazione senza salvare le informazioni di ripristino, fai clic su Riprova per controllare nuovamente lo spazio disponibile o fai clic su Annulla per uscire dall'installazione." />
+    <String Id="Error1606" Value="Impossibile accedere al percorso di rete [2]." />
+    <String Id="Error1607" Value="Le seguenti applicazioni dovrebbero essere chiuse prima di continuare l'installazione:" />
+    <String Id="Error1608" Value="Impossibile trovare alcun prodotto compatibile precedentemente installato sulla macchina per l'installazione di questo prodotto." />
+    <String Id="Error1609" Value="Si è verificato un errore durante l'applicazione delle impostazioni di sicurezza. [2] non è un utente o gruppo valido. Questo potrebbe essere un problema del pacchetto o un problema di connessione a un controller di dominio sulla rete. Controlla la tua connessione di rete e fai clic su Riprova o su Annulla per terminare l'installazione. {{Impossibile trovare il SID dell'utente, errore di sistema [3]}}" />
+    <String Id="Error1701" Value="La chiave [2] non è valida. Verifica di aver digitato la chiave corretta." />
+    <String Id="Error1702" Value="L'installatore deve riavviare il tuo sistema prima che la Configurazione di [2] possa continuare. Fai clic su Sì per riavviare subito o No se preferisci riavviare manualmente più tardi." />
+    <String Id="Error1703" Value="Devi riavviare il tuo sistema affinché le modifiche di Configurazione apportare da [2] abbiano effetto. Fai clic su Sì per riavviare subito o No se preferisci riavviare manualmente più tardi." />
+    <String Id="Error1704" Value="Un'installazione di [2] è attualmente sospesa. Devi annullare le modifiche fatte da quell'installazione per continuare. Vuoi annullare tali modifiche?" />
+    <String Id="Error1705" Value="Una precedente installazione di questo prodotto è in corso. Devi annullare le modifiche fatte da quell'installazione per continuare. Vuoi annullare tali modifiche?" />
+    <String Id="Error1706" Value="Un pacchetto di installazione per il prodotto [2] non è disponibile. Prova nuovamente l'installazione utilizzando una copia valida del pacchetto di installazione '[3]'." />
+    <String Id="Error1707" Value="Installazione completata correttamente." />
+    <String Id="Error1708" Value="Installazione non riuscita." />
+    <String Id="Error1709" Value="Prodotto: [2] -- [3]" />
+    <String Id="Error1710" Value="Puoi sia ripristinare il tuo computer al suo stato precedente, sia continuare l'installazione successivamente. Vuoi ripristinare?" />
+    <String Id="Error1711" Value="Si è verificato un errore durante la scrittura delle informazioni di installazione su disco. Controlla per assicurarti che sia disponibile lo spazio su disco necessario, e fai clic su Riprova, o Annulla per terminare l'installazione." />
+    <String Id="Error1712" Value="Uno o più file richiesti per ripristinare il tuo computer al suo stato precedente non possono essere trovati. Il ripristino non sarà possibile." />
+    <String Id="Error1713" Value="[2] non è in grado di installare uno dei prodotti richiesti. Contatta il tuo supporto tecnico. {{Stringa di sistema: [3].}}" />
+    <String Id="Error1714" Value="La vecchia versione di [2] non può essere rimossa. Contatta il tuo supporto tecnico. {{Stringa di sistema [3].}}" />
+    <String Id="Error1715" Value="Installato [2]" />
+    <String Id="Error1716" Value="Configurato [2]" />
+    <String Id="Error1717" Value="Rimosso [2]" />
+    <String Id="Error1718" Value="Il file [2] è stato rifiutata dal criterio di firma digitale." />
+    <String Id="Error1719" Value="Il servizio Windows Installer non è accessibile. Ciò può accadere se Windows viene eseguito in modalità provvisoria o se Windows Installer non è installato correttamente. Contatta il tuo supporto tecnico per richiedere assistenza." />
+    <String Id="Error1720" Value="C'è un problema con questa versione del pacchetto Windows Installer. Uno script richiesto per completare questa installazione non può essere eseguito. Contatta il tuo supporto tecnico o il fornitore del pacchetto. {{Azione personalizzata [2] errore script [3], [4]: [5] Riga [6], Colonna [7], [8] }}" />
+    <String Id="Error1721" Value="C'è un problema con questa versione del pacchetto Windows Installer. Un programma richiesto per completare questa installazione non può essere eseguito. Contatta il tuo supporto tecnico o il fornitore del pacchetto. {{Azione: [2], posizione: [3], comando: [4] }}" />
+    <String Id="Error1722" Value="C'è un problema con questa versione del pacchetto Windows Installer. L'esecuzione di un programma parte dell'installazione non è terminata come previsto. Contatta il tuo supporto tecnico o il fornitore del pacchetto. {{Azione [2], posizione: [3], comando: [4] }}" />
+    <String Id="Error1723" Value="C'è un problema con questa versione del pacchetto Windows Installer. Una DLL richiesta per completare questa installazione non può essere eseguita. Contatta il tuo supporto tecnico o il fornitore del pacchetto. {{Azione [2], voce: [3], libreria: [4] }}" />
+    <String Id="Error1724" Value="Rimozione completata correttamente." />
+    <String Id="Error1725" Value="Rimozione non riuscita." />
+    <String Id="Error1726" Value="Pubblicazione completata correttamente." />
+    <String Id="Error1727" Value="Pubblicazione non riuscita." />
+    <String Id="Error1728" Value="Configurazione completata correttamente." />
+    <String Id="Error1729" Value="Configurazione non riuscita." />
+    <String Id="Error1730" Value="Devi essere un amministratore per rimuovere questa applicazione. Per rimuovere questa applicazione, puoi accedere come amministratore o contattare il tuo supporto tecnico per ricevere assistenza." />
+    <String Id="Error1801" Value="Il percorso [2] non è valido. Specifica un percorso valido." />
+    <String Id="Error1802" Value="Memoria insufficiente. Chiudi le altre applicazioni prima di riprovare." />
+    <String Id="Error1803" Value="Non c'è alcun disco nel lettore [2]. Inseriscine uno e fai clic su Riprova, o fai clic su Annulla per tornare al volume selezionato in precedenza." />
+    <String Id="Error1804" Value="Non c'è alcun disco nel lettore [2]. Inseriscine uno e fai clic su Riprova, o fai clic su Annulla per tornare alla finestra di navigazione e selezionare un volume differente." />
+    <String Id="Error1805" Value="La cartella [2] non esiste. Digita un percorso a una cartella esistente." />
+    <String Id="Error1806" Value="Non hai i permessi di lettura su questa cartella." />
+    <String Id="Error1807" Value="Non è possibile determinare una cartella di destinazione valida per l'installazione." />
+    <String Id="Error1901" Value="Errore durante il tentativo di leggere dal database di installazione di origine: [2]." />
+    <String Id="Error1902" Value="Pianificazione dell'operazione di riavvio: rinomina del file [2] in [3]. Necessario il riavvio per completare l'operazione." />
+    <String Id="Error1903" Value="Pianificazione dell'operazione di riavvio: eliminazione del file [2]. È necessario il riavvio per completare l'operazione." />
+    <String Id="Error1904" Value="La registrazione del modulo [2] non è riuscita. HRESULT [3]. Contatta il tuo personale di supporto." />
+    <String Id="Error1905" Value="La de-registrazione del modulo [2] non è riuscita. HRESULT [3]. Contatta il tuo personale di supporto." />
+    <String Id="Error1906" Value="Memorizzazione in cache del pacchetto [2] non riuscita. Errore: [3]. Contatta il tuo personale di supporto." />
+    <String Id="Error1907" Value="Impossibile registrare il carattere [2]. Verifica di avere permessi sufficienti per installare i caratteri, e che il sistema supporti questo carattere." />
+    <String Id="Error1908" Value="Impossibile de-registrare il carattere [2]. Verifica di avere permessi sufficienti per rimuovere i caratteri." />
+    <String Id="Error1909" Value="Impossibile creare la scorciatoia [2]. Verifica che la cartella di destinazione esista e che sia accessibile." />
+    <String Id="Error1910" Value="Impossibile rimuovere la scorciatoia [2]. Verifica che il file della scorciatoia esista e che sia accessibile." />
+    <String Id="Error1911" Value="Impossibile registrare la libreria dei tipi per il file [2]. Contatta il tuo personale di supporto." />
+    <String Id="Error1912" Value="Impossibile de-registrare la libreria dei tipi per il file [2]. Contatta il tuo personale di supporto." />
+    <String Id="Error1913" Value="Impossibile aggiornare il file ini [2][3]. Verifica che il file esista e che sia accessibile." />
+    <String Id="Error1914" Value="Impossibile pianificare la sostituzione del file [3] con il file [2] all riavvio. Verifica di avere i permessi di scrittura sul file [3]." />
+    <String Id="Error1915" Value="Errore durante la rimozione del gestore dei driver ODBC, errore ODBC [2]: [3]. Contatta il tuo personale di supporto." />
+    <String Id="Error1916" Value="Errore durante l'installazione del gestore dei driver ODBC, errore ODBC [2]: [3]. Contatta il tuo personale di supporto." />
+    <String Id="Error1917" Value="Errore durante la rimozione del driver ODBC: [4], errore ODBC [2]: [3]. Verifica di aver privilegi sufficienti per rimuovere i driver ODBC." />
+    <String Id="Error1918" Value="Errore durante l'installazione del driver ODBC: [4], errore ODBC [2]: [3]. Verifica che il file [4] esista e che sia accessibile." />
+    <String Id="Error1919" Value="Errore durante la Configurazione dell'origine dati ODBC: [4], errore ODBC [2]: [3]. Verifica che il file [4] esista e che sia accessibile." />
+    <String Id="Error1920" Value="Il servizio '[2]' ([3]) non può essere avviato. Verifica di aver privilegi sufficienti per avviare i servizi di sistema." />
+    <String Id="Error1921" Value="Il servizio '[2]' ([3]) non può essere fermato. Verifica di aver privilegi sufficienti per fermare i servizi di sistema." />
+    <String Id="Error1922" Value="Il servizio '[2]' ([3]) non può essere eliminato. Verifica di aver privilegi sufficienti per rimuovere i servizi di sistema." />
+    <String Id="Error1923" Value="Il servizio '[2]' ([3]) non può essere installato. Verifica di aver privilegi sufficienti per installare i servizi di sistema." />
+    <String Id="Error1924" Value="Impossibile aggiornare la variabile d'ambiente '[2]'. Verifica di avere privilegi sufficienti per modificare le variabili d'ambiente." />
+    <String Id="Error1925" Value="Non hai privilegi sufficienti per completare questa installazione per tutti gli utenti sulla macchina. Accedi come amministratore e riprova questa installazione." />
+    <String Id="Error1926" Value="Impossibile impostare la sicurezza del file '[3]'. Errore: [2]. Verifica di avere privilegi sufficienti per modificare i permessi di protezione per questo file." />
+    <String Id="Error1927" Value="I Component Services (COM+ 1.0) non sono installati su questo computer. Questa installazione richiede i Component Services per essere completata correttamente. Component Services sono disponibili su Windows 2000." />
+    <String Id="Error1928" Value="Errore durante la registrazione dell'applicazione COM+. Contatta il tuo personale di supporto per ulteriori informazioni." />
+    <String Id="Error1929" Value="Errore durante la de-registrazione dell'applicazione COM+. Contatta il tuo personale di supporto per ulteriori informazioni." />
+    <String Id="Error1930" Value="La descrizione del servizio '[2]' ([3]) non può essere cambiata." />
+    <String Id="Error1931" Value="Il servizio Windows Installer non può aggiornare il file di sistema [2] poiché il file è protetto da Windows. Potresti dover aggiornare il tuo sistema operativo affinché questo programma funzioni correttamente. {{Versione pacchetto: [3], Versione protetta OS: [4]}}" />
+    <String Id="Error1932" Value="Il servizio Windows Installer non può aggiornare il file protetto di Windows [2]. {{Versione pacchetto: [3], Versione protetta OS: [4], Errore SFP: [5]}}" />
+    <String Id="Error1933" Value="Il servizio Windows Installer non può aggiornare uno o più file protetti di Windows. {{Stringa SFP: [2]. Elenco dei file protetti:\r\n[3]}}" />
+    <String Id="Error1934" Value="Le installazioni utente sono disabilitate tramite policy sulla macchina." />
+    <String Id="Error1935" Value="Si è verificato un errore durante l'installazione del componente assembly [2]. HRESULT: [3]. {{interfaccia assembly: [4], funzione: [5], nome assembly: [6]}}" />
+
+    <!-- Own / special errors -->
+    <String Id="Error25001" Value="L'applicazione &quot;[2]&quot; deve essere chiusa affinché l'installazione possa continuare." />
+
+    <String Id="ProgressTextInstallValidate" Value="Convalida dell'installazione" />
+    <String Id="ProgressTextInstallFiles" Value="Copia dei nuovi file" />
+    <String Id="ProgressTextInstallFilesTemplate" Value="File: [1],  Cartella: [9],  Dimensione: [6]" />
+    <String Id="ProgressTextInstallAdminPackage" Value="Copia dei file di installazione da rete" />
+    <String Id="ProgressTextInstallAdminPackageTemplate" Value="File: [1], Cartella: [9], Dimensione: [6]" />
+    <String Id="ProgressTextFileCost" Value="Calcolo dei requisiti di spazio" />
+    <String Id="ProgressTextCostInitialize" Value="Calcolo dei requisiti di spazio" />
+    <String Id="ProgressTextCostFinalize" Value="Calcolo dei requisiti di spazio" />
+    <String Id="ProgressTextCreateShortcuts" Value="Creazione delle scorciatoie" />
+    <String Id="ProgressTextCreateShortcutsTemplate" Value="Scorciatoia: [1]" />
+    <String Id="ProgressTextPublishComponents" Value="Pubblicazione componenti qualificate" />
+    <String Id="ProgressTextPublishComponentsTemplate" Value="ID componente: [1], Qualificatore: [2]" />
+    <String Id="ProgressTextPublishFeatures" Value="Pubblicazione funzionalità del prodotto" />
+    <String Id="ProgressTextPublishFeaturesTemplate" Value="Funzionalità: [1]" />
+    <String Id="ProgressTextPublishProduct" Value="Pubblicazione delle informazioni sul prodotto" />
+    <String Id="ProgressTextRegisterClassInfo" Value="Registrazione dei server delle classi" />
+    <String Id="ProgressTextRegisterClassInfoTemplate" Value="ID classe: [1]" />
+    <String Id="ProgressTextRegisterExtensionInfo" Value="Registrazione dei server delle estensioni" />
+    <String Id="ProgressTextRegisterExtensionInfoTemplate" Value="Estensione: [1]" />
+    <String Id="ProgressTextRegisterMIMEInfo" Value="Registrazione informazioni MIME" />
+    <String Id="ProgressTextRegisterMIMEInfoTemplate" Value="Tipo di contenuto MIME: [1], Estensione: [2]" />
+    <String Id="ProgressTextRegisterProgIdInfo" Value="Registrazione degli identificatori di programma" />
+    <String Id="ProgressTextRegisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextAllocateRegistrySpace" Value="Allocazione spazio di registro" />
+    <String Id="ProgressTextAllocateRegistrySpaceTemplate" Value="Spazio disponibile: [1]" />
+    <String Id="ProgressTextAppSearch" Value="Ricerca delle applicazioni installate" />
+    <String Id="ProgressTextAppSearchTemplate" Value="Proprietà: [1], Firma: [2]" />
+    <String Id="ProgressTextBindImage" Value="Associazione eseguibili" />
+    <String Id="ProgressTextBindImageTemplate" Value="File: [1]" />
+    <String Id="ProgressTextCCPSearch" Value="Ricerca dei prodotti qualificanti" />
+    <String Id="ProgressTextCreateFolders" Value="Creazione delle cartelle" />
+    <String Id="ProgressTextCreateFoldersTemplate" Value="Cartella: [1]" />
+    <String Id="ProgressTextDeleteServices" Value="Eliminazione dei servizi" />
+    <String Id="ProgressTextDeleteServicesTemplate" Value="Servizio: [1]" />
+    <String Id="ProgressTextDuplicateFiles" Value="Creazione dei file duplicati" />
+    <String Id="ProgressTextDuplicateFilesTemplate" Value="File: [1],  Cartella: [9],  Dimensione: [6]" />
+    <String Id="ProgressTextFindRelatedProducts" Value="Ricerca della applicazioni correlate" />
+    <String Id="ProgressTextFindRelatedProductsTemplate" Value="Trovata applicazione: [1]" />
+    <String Id="ProgressTextInstallODBC" Value="Installazione dei componenti ODBC" />
+    <String Id="ProgressTextInstallServices" Value="Installazione dei nuovi servizi" />
+    <String Id="ProgressTextInstallServicesTemplate" Value="Servizio: [2]" />
+    <String Id="ProgressTextLaunchConditions" Value="Valutazione delle condizioni di avvio" />
+    <String Id="ProgressTextMigrateFeatureStates" Value="Migrazione degli stati delle funzionalità dalle applicazioni correlate" />
+    <String Id="ProgressTextMigrateFeatureStatesTemplate" Value="Applicazione: [1]" />
+    <String Id="ProgressTextMoveFiles" Value="Spostamento dei file" />
+    <String Id="ProgressTextMoveFilesTemplate" Value="File: [1],  Cartella: [9],  Dimensione: [6]" />
+    <String Id="ProgressTextPatchFiles" Value="Applicazione patch ai file" />
+    <String Id="ProgressTextPatchFilesTemplate" Value="File: [1],  Cartella: [2],  Dimensione: [3]" />
+    <String Id="ProgressTextProcessComponents" Value="Aggiornamento registrazione dei componenti" />
+    <String Id="ProgressTextRegisterComPlus" Value="Registrazione applicazioni COM+ e componenti" />
+    <String Id="ProgressTextRegisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2], Utenti: [3], RSN: [4]}}" />
+    <String Id="ProgressTextRegisterFonts" Value="Registrazione dei caratteri" />
+    <String Id="ProgressTextRegisterFontsTemplate" Value="Carattere: [1]" />
+    <String Id="ProgressTextRegisterProduct" Value="Registrazione del prodotto" />
+    <String Id="ProgressTextRegisterProductTemplate" Value="[1]" />
+    <String Id="ProgressTextRegisterTypeLibraries" Value="Registrazione delle librerie dei tipi" />
+    <String Id="ProgressTextRegisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextRegisterUser" Value="Registrazione utente" />
+    <String Id="ProgressTextRegisterUserTemplate" Value="[1]" />
+    <String Id="ProgressTextRemoveDuplicateFiles" Value="Rimozione dei file duplicati" />
+    <String Id="ProgressTextRemoveDuplicateFilesTemplate" Value="File: [1], Cartella: [9]" />
+    <String Id="ProgressTextRemoveEnvironmentStrings" Value="Aggiornamento stringhe d'ambiente" />
+    <String Id="ProgressTextRemoveEnvironmentStringsTemplate" Value="Nome: [1], Valore: [2], Azione [3]" />
+    <String Id="ProgressTextRemoveExistingProducts" Value="Rimozione delle applicazioni" />
+    <String Id="ProgressTextRemoveExistingProductsTemplate" Value="Applicazione: [1], Riga di comando: [2]" />
+    <String Id="ProgressTextRemoveFiles" Value="Rimozione dei file" />
+    <String Id="ProgressTextRemoveFilesTemplate" Value="File: [1], Cartella: [9]" />
+    <String Id="ProgressTextRemoveFolders" Value="Rimozione delle cartelle" />
+    <String Id="ProgressTextRemoveFoldersTemplate" Value="Cartella: [1]" />
+    <String Id="ProgressTextRemoveIniValues" Value="Rimozione voci dei file INI" />
+    <String Id="ProgressTextRemoveIniValuesTemplate" Value="File: [1],  Sezione: [2],  Chiave: [3], Valore: [4]" />
+    <String Id="ProgressTextRemoveODBC" Value="Rimozione componenti ODBC" />
+    <String Id="ProgressTextRemoveRegistryValues" Value="Rimozione dei valori del registro di sistema" />
+    <String Id="ProgressTextRemoveRegistryValuesTemplate" Value="Chiave: [1], Nome: [2]" />
+    <String Id="ProgressTextRemoveShortcuts" Value="Rimozione delle scorciatoie" />
+    <String Id="ProgressTextRemoveShortcutsTemplate" Value="Scorciatoia: [1]" />
+    <String Id="ProgressTextRMCCPSearch" Value="Ricerca dei prodotti qualificanti" />
+    <String Id="ProgressTextSelfRegModules" Value="Registrazione dei moduli" />
+    <String Id="ProgressTextSelfRegModulesTemplate" Value="File: [1], Cartella: [2]" />
+    <String Id="ProgressTextSelfUnregModules" Value="De-registrazione dei moduli" />
+    <String Id="ProgressTextSelfUnregModulesTemplate" Value="File: [1], Cartella: [2]" />
+    <String Id="ProgressTextSetODBCFolders" Value="Inizializzazione delle cartelle ODBC" />
+    <String Id="ProgressTextStartServices" Value="Avvio dei servizi" />
+    <String Id="ProgressTextStartServicesTemplate" Value="Servizio: [1]" />
+    <String Id="ProgressTextStopServices" Value="Interruzione dei servizi" />
+    <String Id="ProgressTextStopServicesTemplate" Value="Servizio: [1]" />
+    <String Id="ProgressTextUnpublishComponents" Value="Rimozione pubblicazione dei componenti qualificati" />
+    <String Id="ProgressTextUnpublishComponentsTemplate" Value="ID componente: [1], Qualificatore: [2]" />
+    <String Id="ProgressTextUnpublishFeatures" Value="Rimozione della pubblicazione delle funzionalità di prodotto" />
+    <String Id="ProgressTextUnpublishFeaturesTemplate" Value="Funzionalità: [1]" />
+    <String Id="ProgressTextUnregisterClassInfo" Value="De-registrazione server delle classi" />
+    <String Id="ProgressTextUnregisterClassInfoTemplate" Value="ID classe: [1]" />
+    <String Id="ProgressTextUnregisterComPlus" Value="De-registrazione applicazioni COM+ e componenti" />
+    <String Id="ProgressTextUnregisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2]}}" />
+    <String Id="ProgressTextUnregisterExtensionInfo" Value="De-registrazione server delle estensioni" />
+    <String Id="ProgressTextUnregisterExtensionInfoTemplate" Value="Estensione: [1]" />
+    <String Id="ProgressTextUnregisterFonts" Value="De-registrazione dei caratteri" />
+    <String Id="ProgressTextUnregisterFontsTemplate" Value="Carattere: [1]" />
+    <String Id="ProgressTextUnregisterMIMEInfo" Value="De-registrazione informazioni MIME" />
+    <String Id="ProgressTextUnregisterMIMEInfoTemplate" Value="Tipi di contenuto MIME: [1], Estensione: [2]" />
+    <String Id="ProgressTextUnregisterProgIdInfo" Value="De-registrazione degli identificatori di programma" />
+    <String Id="ProgressTextUnregisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextUnregisterTypeLibraries" Value="De-registrazione delle librerie dei tipi" />
+    <String Id="ProgressTextUnregisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextWriteEnvironmentStrings" Value="Aggiornamento stringhe d'ambiente" />
+    <String Id="ProgressTextWriteEnvironmentStringsTemplate" Value="Nome: [1], Valore: [2], Azione [3]" />
+    <String Id="ProgressTextWriteIniValues" Value="Scrittura valori dei file INI" />
+    <String Id="ProgressTextWriteIniValuesTemplate" Value="File: [1],  Sezione: [2],  Chiave: [3], Valore: [4]" />
+    <String Id="ProgressTextWriteRegistryValues" Value="Scrittura valori registro di sistema" />
+    <String Id="ProgressTextWriteRegistryValuesTemplate" Value="Chiave: [1], Nome: [2], Valore: [3]" />
+    <String Id="ProgressTextAdvertise" Value="Pubblicazione dell'applicazione" />
+    <String Id="ProgressTextGenerateScript" Value="Generazione di operazioni di script per l'azione:" />
+    <String Id="ProgressTextGenerateScriptTemplate" Value="[1]" />
+    <String Id="ProgressTextInstallSFPCatalogFile" Value="Installazione del catalogo di sistema" />
+    <String Id="ProgressTextInstallSFPCatalogFileTemplate" Value="File: [1],  Dipendenze: [2]" />
+    <String Id="ProgressTextMsiPublishAssemblies" Value="Pubblicazione informazioni assembly" />
+    <String Id="ProgressTextMsiPublishAssembliesTemplate" Value="Contesto dell'applicazione:[1], Nome assembly:[2]" />
+    <String Id="ProgressTextMsiUnpublishAssemblies" Value="Rimozione pubblicazione informazioni assembly" />
+    <String Id="ProgressTextMsiUnpublishAssembliesTemplate" Value="Contesto dell'applicazione:[1], Nome assembly:[2]" />
+    <String Id="ProgressTextRollback" Value="Azione di rollback:" />
+    <String Id="ProgressTextRollbackTemplate" Value="[1]" />
+    <String Id="ProgressTextRollbackCleanup" Value="Rimozione dei file di backup" />
+    <String Id="ProgressTextRollbackCleanupTemplate" Value="File: [1]" />
+    <String Id="ProgressTextUnmoveFiles" Value="Rimozione dei file spostati" />
+    <String Id="ProgressTextUnmoveFilesTemplate" Value="File: [1], Cartella: [9]" />
+    <String Id="ProgressTextUnpublishProduct" Value="Rimozione della pubblicazione delle informazioni sul prodotto" />
+
+    <String Id="ProgressTextCheckTargetDir" Value="Checking target directory ..." />
+
+    <String Id="ProgressTextSupDrvInt" Value="Installing support driver ..." />
+    <String Id="ProgressTextSupDrvStart" Value="Starting support driver ..." />
+    <String Id="ProgressTextSupDrvUninst" Value="Uninstalling support driver ..." />
+
+    <String Id="ProgressTextUSBDevDrvInst" Value="Installing USB device driver ..." />
+    <String Id="ProgressTextUSBDevDrvUninst" Value="Uninstalling USB device driver ..." />
+    <String Id="ProgressTextUSBMonDrvInst" Value="Installing USB monitor driver ..." />
+    <String Id="ProgressTextUSBMonDrvStart" Value="Starting USB monitor driver ..." />
+    <String Id="ProgressTextUSBMonDrvUninst" Value="Uninstalling USB monitor driver ..." />
+
+    <String Id="ProgressTextNetAdp6Create" Value="Creating network adapter ..." />
+    <String Id="ProgressTextNetAdp6Remove" Value="Removing network adapter ..." />
+    <String Id="ProgressTextNetAdp6Update" Value="Updating network adapter ..." />
+    <String Id="ProgressTextNetAdp6Uninst" Value="Uninstalling network adapter ..." />
+
+    <String Id="ProgressTextNetLwfInst" Value="Installing network filter ..." />
+    <String Id="ProgressTextNetLwfRollbackInst" Value="Rolling back installation of network filter ..." />
+    <String Id="ProgressTextNetLwfUninst" Value="Uninstalling network filter ..." />
+    <String Id="ProgressTextNetLwfRollbackUninst" Value="Rolling back uninstallation of network filter ..." />
+
+    <String Id="UITextbytes" Value="byte" />
+    <String Id="UITextGB" Value="GB" />
+    <String Id="UITextKB" Value="KB" />
+    <String Id="UITextMB" Value="MB" />
+    <String Id="UITextMenuAbsent" Value="La funzionalità completa non sarà disponibile" />
+    <String Id="UITextMenuAdvertise" Value="La funzionalità sarà installata quando richiesto" />
+    <String Id="UITextMenuAllCD" Value="La funzionalità completa sarà installata per essere eseguita da CD" />
+    <String Id="UITextMenuAllLocal" Value="La funzionalità completa sarà installata sul disco fisso locale" />
+    <String Id="UITextMenuAllNetwork" Value="La funzionalità completa sarà installata per essere eseguita dalla rete" />
+    <String Id="UITextMenuCD" Value="Sarà installata per essere eseguita da CD" />
+    <String Id="UITextMenuLocal" Value="Sarà installata sul disco fisso locale" />
+    <String Id="UITextMenuNetwork" Value="Sarà installata per essere eseguita dalla rete" />
+    <String Id="UITextScriptInProgress" Value="Raccolta delle informazioni necessarie in corso..." />
+    <String Id="UITextSelAbsentAbsent" Value="Questa funzionalità rimarrà disinstallata" />
+    <String Id="UITextSelAbsentAdvertise" Value="Questa funzionalità sarà impostata per essere installata quando necessario" />
+    <String Id="UITextSelAbsentCD" Value="Questa funzionalità sarà installata per essere eseguita da CD" />
+    <String Id="UITextSelAbsentLocal" Value="Questa funzionalità sarà installata sul disco fisso locale" />
+    <String Id="UITextSelAbsentNetwork" Value="Questa funzionalità sarà installata per essere eseguita dalla rete" />
+    <String Id="UITextSelAdvertiseAbsent" Value="Questa funzionalità diventerà indisponibile" />
+    <String Id="UITextSelAdvertiseAdvertise" Value="Sarà installata quando richiesto" />
+    <String Id="UITextSelAdvertiseCD" Value="Questa funzionalità sarà disponibile per essere eseguita da CD" />
+    <String Id="UITextSelAdvertiseLocal" Value="Questa funzionalità sarà installata sul disco fisso locale" />
+    <String Id="UITextSelAdvertiseNetwork" Value="Questa funzionalità sarà disponibile per essere eseguita dalla rete" />
+    <String Id="UITextSelCDAbsent" Value="Questa funzionalità sarà disinstallata completamente, non potrai eseguirla da CD" />
+    <String Id="UITextSelCDAdvertise" Value="Questa funzionalità cambierà dallo stato di esecuzione da CD a impostazione per essere installata quando necessario" />
+    <String Id="UITextSelCDCD" Value="Questa funzionalità continuerà ad essere eseguibile da CD" />
+    <String Id="UITextSelCDLocal" Value="Questa funzionalità cambierà dallo stato di esecuzione da CD a impostazione per essere installata sul disco fisso locale" />
+    <String Id="UITextSelChildCostNeg" Value="Questa funzionalità libera [1] sul tuo disco fisso." />
+    <String Id="UITextSelChildCostPos" Value="Questa funzionalità richiede [1] del tuo disco fisso." />
+    <String Id="UITextSelCostPending" Value="Costo di compilazione per questa funzionalità..." />
+    <String Id="UITextSelLocalAbsent" Value="Questa funzionalità sarà rimossa completamente" />
+    <String Id="UITextSelLocalAdvertise" Value="Questa funzionalità sarà rimossa dal tuo disco fisso locale, ma sarà impostata per essere installata quando necessario" />
+    <String Id="UITextSelLocalCD" Value="Questa funzionalità sarà rimossa dal tuo disco fisso locale, ma sarà ancora disponibile per l'esecuzione da CD" />
+    <String Id="UITextSelLocalLocal" Value="Questa funzionalità rimarrà sul tuo disco fisso locale" />
+    <String Id="UITextSelLocalNetwork" Value="Questa funzionalità sarà rimossa dal tuo disco fisso locale, ma sarà ancora disponibile per essere eseguita dalla rete" />
+    <String Id="UITextSelNetworkAbsent" Value="Questa funzionalità sarà disinstallata completamente, non potrai eseguirla dalla rete" />
+    <String Id="UITextSelNetworkAdvertise" Value="Questa funzionalità cambierà dallo stato di esecuzione da rete a impostazione per essere installata quando necessario" />
+    <String Id="UITextSelNetworkLocal" Value="Questa funzionalità cambierà dallo stato di esecuzione da rete a essere installata sul disco fisso locale" />
+    <String Id="UITextSelNetworkNetwork" Value="Questa funzionalità continuerà ad essere eseguibile dalla rete" />
+    <String Id="UITextSelParentCostNegNeg" Value="Questa funzionalità libera [1] sul tuo disco fisso. Ha [2] di [3] sotto-funzionalità selezionate. Le sotto-funzionalità liberano [4] sul tuo disco fisso.." />
+    <String Id="UITextSelParentCostNegPos" Value="Questa funzionalità libera [1] sul tuo disco fisso. Ha [2] di [3] sotto-funzionalità selezionate. Le sotto-funzionalità richiedono [4] sul tuo disco fisso." />
+    <String Id="UITextSelParentCostPosNeg" Value="Questa funzionalità richiede [1] sul tuo disco fisso. Ha [2] di [3] sotto-funzionalità selezionate. Le sotto-funzionalità liberano [4] sul tuo disco fisso." />
+    <String Id="UITextSelParentCostPosPos" Value="Questa funzionalità richiede [1] sul tuo disco fisso. Ha [2] di [3] sotto-funzionalità selezionate. Le sotto-funzionalità richiedono [4] sul tuo disco fisso." />
+    <String Id="UITextTimeRemaining" Value="Tempo rimanente: {[1] minuti }{[2] secondi}" />
+    <String Id="UITextVolumeCostAvailable" Value="Disponibile" />
+    <String Id="UITextVolumeCostDifference" Value="Differenza" />
+    <String Id="UITextVolumeCostRequired" Value="Richiesto" />
+    <String Id="UITextVolumeCostSize" Value="Dimensione disco" />
+    <String Id="UITextVolumeCostVolume" Value="Volume" />
+
+</WixLocalization>

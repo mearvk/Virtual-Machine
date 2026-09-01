@@ -1,4 +1,4 @@
-; $Id: libsvn_repos-1.def $
+; $Id: libsvn_repos-1.def 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
 ;; @file
 ; libsvn_repos-1 - Definition file for lazy import generation for svn2git.
 ;

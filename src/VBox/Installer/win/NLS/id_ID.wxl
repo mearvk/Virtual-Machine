@@ -1,0 +1,639 @@
+﻿<!--
+    Language Definition Include for VirtualBox WiX script.
+-->
+<!--
+    Copyright (C) 2011-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="id_ID" Codepage="1252">
+    <String Id="LANG" Value="1057" />
+    <String Id="CODEPAGE" Value="1252" />
+    <String Id="LangName" Value="Indonesian" />
+
+    <String Id="ButtonText_No" Value="&amp;Tidak" />
+    <String Id="ButtonText_Yes" Value="&amp;Ya" />
+    <String Id="ButtonText_Cancel" Value="B&amp;atal" />
+    <String Id="ButtonText_Next" Value="Be&amp;rikutnya" />
+    <String Id="ButtonText_Back" Value="Sebelu&amp;mnya" />
+    <String Id="ButtonText_Browse" Value="&amp;Ubah" />
+    <String Id="ButtonText_OK" Value="&amp;OK" />
+    <String Id="ButtonText_Check" Value="P&amp;eriksa" />
+    <String Id="ButtonText_Install" Value="&amp;Pasang" />
+    <String Id="ButtonText_Remove" Value="&amp;Buang" />
+    <String Id="ButtonText_Finish" Value="&amp;Selesai" />
+    <String Id="ButtonText_Repair" Value="Perba&amp;iki" />
+    <String Id="ButtonText_Return" Value="Kemba&amp;li" />
+    <String Id="ButtonText_Retry" Value="&amp;Coba Lagi" />
+    <String Id="ButtonText_Ignore" Value="Abaika&amp;n" />
+    <String Id="ButtonText_Exit" Value="&amp;Keluar" />
+
+    <String Id="InstallModeCustom" Value="Ubahan" />
+    <String Id="Setup" Value="Pemasang" />
+
+    <!---->
+
+    <String Id="StartMenu_License" Value="Lisensi" />
+    <String Id="StartMenu_UserManual" Value="Manual pengguna" />
+
+    <!---->
+
+    <String Id="VB_App" Value="Aplikasi [ProductName]." />
+    <String Id="VB_USBDriver" Value="Device driver USB [ProductName] untuk dukungan perangkat USB." />
+    <String Id="VB_Network" Value="Device driver jaringan [ProductName] untuk dukungan jaringan." />
+    <String Id="VB_NetLwfDriver" Value="Driver [ProductName] untuk Jaringan Bridge NDIS6." />
+    <String Id="VB_NetAdp6Driver" Value="Driver adaptor jaringan virtual [ProductName] untuk Jaringan Hanya Host NDIS6." />
+    <String Id="VB_Python" Value="Dukungan Python bagi VirtualBox." />
+
+    <!---->
+
+    <String Id="UsedByOtherApp" Value="Terdeteksi suatu aplikasi yang sedang memakai versi VirtualBox yang kini terpasang. Anda mesti membuang aplikasi ini sebelum melanjutkan instalasi. Lihat berkas dependency.dep dalam direktori instalasi VirtualBox untuk rinciannya." />
+    <String Id="NeedAdmin" Value="Anda perlu punya hak administrator untuk membongkar/memasang [ProductName]! Pemasang ini sekarang akan ditutup." />
+    <String Id="NeedMSCRT" Value="[ProductName] memerlukan terpasangnya Microsoft Visual C++ 2019 Redistributable Package terlebih dahulu. Harap pasang dan mulai ulang instalasi [ProductName]." />
+    <String Id="WrongOS" Value="[ProductName] hanya berjalan pada Windows 10 atau yang lebih tinggi." />
+    <String Id="Only64Bit" Value="[ProductName] hanya berjalan pada sistem Windows 64-bit." />
+    <String Id="WrongPlatformArch" Value="Versi [ProductName] ini dikembangkan untuk arsitektur platform lain sehingga tidak bisa dipasang. Harap pasang versi yang cocok dari [ProductName]!" />
+    <String Id="NewerVersionDetected" Value="A newer version of VirtualBox is already installed. Please uninstall it first before installing older versions of VirtualBox." />
+    <String Id="InvalidTargetDir" Value="Direktori instalasi yang tidak valid ditentukan! Harap pakai direktori instalasi lain untuk memasang [ProductName]. Lihat manual [ProductName] untuk informasi lebih lanjut." />
+
+    <!---->
+
+    <String Id="CancelDlg_Question" Value="Anda yakin hendak membatalkan instalasi [ProductName]?" />
+
+    <!---->
+
+    <String Id="WelcomeDlg_Header" Value="Selamat datang ke Pemasang [ProductName]" />
+    <String Id="WelcomeDlg_Body" Value="Pemasang akan memasang [ProductName] pada kompunter Anda. Klik Berikutnya untuk melanjutkan atau Batal untuk keluar dari Pemasang." />
+
+    <!---->
+
+    <String Id="LicenseAgreementDlg_Header" Value="Perjanjian Lisensi Pengguna Akhir" />
+    <String Id="LicenseAgreementDlg_Body" Value="Bacalah perjanjian lisensi berikut dengan hati-hati." />
+    <String Id="LicenseAgreementDlg_Accept" Value="Saya menerim&amp;a persyaratan dari perjanjian lisensi" />
+    <String Id="LicenseAgreementDlg_Decline" Value="Saya ti&amp;dak menerima persyaratan dari perjanjian lisensi" />
+
+    <!---->
+
+    <String Id="InvalidTargetDirDlg_Header" Value="Direktori instalasi tidak valid" />
+    <String Id="InvalidTargetDirDlg_Desc1" Value="Direktori instalasi yang dipilih tidak valid, karena itu tidak memenuhi persyaratan keamanan. Lihat manual [ProductName] untuk informasi lebih lanjut." />
+    <String Id="InvalidTargetDirDlg_Desc2" Value="Silakan pilih direktori lain untuk memasang [ProductName]." />
+
+    <!---->
+
+    <String Id="CheckSerialDlg_Header" Value="Nomor Seri" />
+    <String Id="CheckSerialDlg_Body" Value="Silakan masukkan nomor seri dalam bidang di bawah. Anda akan menemukannya pada stiker di dalam kotak CD VirtualBox." />
+    <String Id="CheckSerialDlg_Footer" Value="Setelah memasukkan nomor seri, tekan tombol &quot;Periksa&quot; di bawah." />
+
+    <!---->
+
+    <String Id="WrongSerialDlg_Header" Value="Nomor seri yang dimasukkan tidak valid!" />
+    <String Id="WrongSerialDlg_Desc1" Value="Silakan mundur untuk memasukkan nomor seri lagi." />
+    <String Id="WrongSerialDlg_Desc2" Value="Ingat bahwa nomor seri harus dieja tepat seperti yang dicetak pada stiker." />
+
+    <!---->
+
+    <String Id="WarnSaveStatesDlg_Header" Value="Peringatan:" />
+    <String Id="WarnSaveStatesDlg_Header2" Value="Keadaan Tersimpan Yang Tidak Kompatibel!" />
+    <String Id="WarnSaveStatesDlg_Desc" Value="Saat meningkatkan [ProductName], semua keadaan tersimpan dari mesin yang sudah ada tak akan bekerja lagi! Setelah instalasi, Anda harus membuang mereka secara manual." />
+    <String Id="WarnSaveStatesDlg_Proceed" Value="Lanjutkan dengan instalasi sekarang?" />
+
+    <!---->
+
+    <String Id="WarnTAPDevicesDlg_Header" Value="Antarmuka Host" />
+    <String Id="WarnTAPDevicesDlg_Desc" Value="Bila Anda memakai antarmuka host bagi mesin Anda dalam versi sebelumnya, Anda harus membuat ulang mereka setelah instalasi ini." />
+
+    <!---->
+
+    <String Id="NetCfgLocked" Value="Aplikasi berikut mesti ditutup sebelum melanjutkan pemasangan: &quot;[2]&quot;" />
+
+    <!---->
+
+    <String Id="CustomizeDlg_Location" Value="Lokasi Instalasi:" />
+    <String Id="CustomizeDlg_DiskUsage" Value="Periksa Ruang Disk" />
+    <String Id="CustomizeDlg_SelFeatures" Value="Pilih fitur yang akan dipasang" />
+    <String Id="CustomizeDlg_IconTree" Value="Klik pada ikon dalam pohon di bawah untuk mengubah cara fitur-fitur akan dipasang." />
+    <String Id="CustomizeDlg_CustomSetup" Value="Penyiapan Ubahan" />
+    <String Id="CustomizeDlg_SelItemDesc" Value="CustomizeDlgItemDescription-CustomizeDlgItemDescription" />
+    <String Id="CustomizeDlg_SelItemSize" Value="CustomizeDlgItemSize-CustomizeDlgItemSize" />
+    <String Id="CustomizeDlg_SelItemPath" Value="CustomizeDlgLocation-CustomizeDlgLocation" />
+
+    <!---->
+
+    <String Id="Customize2Dlg_Header" Value="Sesuaikan" />
+    <String Id="Customize2Dlg_Desc" Value="Pilih satu atau lebih opsi awal mula" />
+    <String Id="Customize2Dlg_CreateStartMenuEntries" Value="Tambahkan ke menu Start" />
+    <String Id="Customize2Dlg_CreateDesktopShortcut" Value="Buat suatu pintasan desktop" />
+    <String Id="Customize2Dlg_RegisterFileExtensions" Value="Dimulai secara baku ketika membuka berkas .ova atau .ovf" />
+
+    <!---->
+
+    <String Id="SelectionNetworkTypeDlg_CommonDescription" Value="Pilih tipe driver jaringan yang akan Anda pakai:" />
+    <String Id="SelectionNetworkTypeDlg_DescriptionNDIS6" Value="Driver jaringan NDIS6.&#xA;Ini adalah baku bagi versi Windows yang lebih baru (Vista dan yang lebih baru)." />
+    <String Id="SelectionNetworkTypeDlg_RadioButtonNDIS6" Value="Gunakan driver jaringan NDIS6." />
+
+    <!---->
+
+    <String Id="WarnDisconNetIfacesDlg_Title" Value="Peringatan:" />
+    <String Id="WarnDisconNetIfacesDlg_Title2" Value="Pemutusan Jaringan" />
+    <String Id="WarnDisconNetIfacesDlg_Desc" Value="Selama instalasi Jaringan [ProductName], jaringan Anda akan terputus. Pastikan bahwa sebarang operasi yang memerlukan koneksi jaringan telah selesai sebelum melanjutkan." />
+
+    <!---->
+
+    <String Id="WarnPythonDlg_Title" Value="Kurang Ketergantungan" />
+    <String Id="WarnPythonDlg_Title2" Value="Python Core dan win32api" />
+    <String Id="WarnPythonDlg_Desc" Value="Memasang pengikatan Python [ProductName] memerlukan terpasangnya paket Python Core dan pengikatan win32api." />
+    <String Id="WarnPythonDlg_Desc2" Value="Anda dapat memasang dan mengonfigurasi ini nanti. Untuk instruksi, lihat Panduan Pemrograman SDK [ProductName]. Atau pasang mereka sebelum melanjutkan dengan instalasi Oracle VirtualBox." />
+
+    <!---->
+
+    <String Id="DiskCostDlg_SpaceRequired" Value="Ruang disk yang dibutuhkan untuk pemasangan fitur-fitur yang dipilih." />
+    <String Id="DiskCostDlg_NotEnoughSpace" Value="Volume yang disorot (bila ada) tidak punya cukuo ruang untuk fitur-fitur yang kini dipilih. Anda dapat menghapus beberapa berkas dari volume yang disorot, atau memilih untuk memasang lebih sedikit fitur ke drive lokal, atau memilih drive tujuan lain." />
+    <String Id="DiskCostDlg_SpaceRequirements" Value="Kebutuhan Ruang Disk" />
+    <String Id="DiskCostDlg_VolumeList" Value="{120}{70}{70}{70}{70}" />
+
+    <!---->
+
+    <String Id="BrowseDlg_BrowseDestFolder" Value="Ramban ke folder tujuan" />
+    <String Id="BrowseDlg_ChangeCurFolder" Value="Ubah folder tujuan saat ini" />
+    <String Id="BrowseDlg_UpOneLevelTooltip" Value="Naik satu tingkat" />
+    <String Id="BrowseDlg_CreateNewFolderTooltip" Value="Buat suatu folder baru" />
+    <String Id="BrowseDlg_LookIn" Value="&amp;Cari di:" />
+    <String Id="BrowseDlg_FolderName" Value="Nama &amp;folder:" />
+
+    <!---->
+
+    <String Id="VerifyReadyDlg_ReadyToBegin" Value="Siap memasang tipe instalasi &quot;[InstallMode]&quot;." />
+    <String Id="VerifyReadyDlg_ReadyToInstall" Value="Siap Memasang" />
+
+    <!---->
+
+    <String Id="ExitDlg_ClickFinish" Value="Anda mungkin juga perlu VirtualBox Extension Pack. Baca Panduan Pengguna VirtualBox untuk informasi lebih lanjut." />
+    <String Id="ExitDlg_InstComplete" Value="[ProductName] telah dipasang." />
+    <String Id="ExitDlg_StartVBox" Value="Mulai Jalankan [ProductName]?" />
+
+    <!---->
+
+    <String Id="FatalErrorDlg_Title" Value="Pemasang [ProductName] berakhir secara prematur" />
+    <String Id="FatalErrorDlg_Description1" Value="Silakan boot ulang dan coba lagi menjalankan instalasi." />
+    <String Id="FatalErrorDlg_Description2" Value="Atau, tanyaka ke forum atau dokumentasi [ProductName]." />
+    <String Id="FatalErrorDlg_DescLogOpen" Value="Buka Berkas Log" />
+    <String Id="FatalErrorDlg_DescLogPath" Value="Berkas log ditulis ke:" />
+
+    <!---->
+
+    <String Id="FilesInUse_Text" Value="Aplikasi berikut sedang memakai berkas yang perlu diperbarui oleh penyiapan ini. Tutup aplikasi ini lalu klik &amp;Coba Lagi untuk melanjutkan instalasi atau Keluar untuk keluar darinya." />
+    <String Id="FilesInUse_Description" Value="Beberapa berkas yang perlu diperbarui sedang dipakai." />
+    <String Id="FilesInUse_Title" Value="Berkas sedang Dipakai" />
+
+    <!---->
+
+    <String Id="UserExitDlg_Header" Value="Pemasang [ProductName] terinterupsi" />
+    <String Id="UserExitDlg_Desc" Value="Instalasi [ProductName] terinterupsi. Sistem Anda belum diubah. Untuk memasang program ini nanti, silakan jalankan instalasi lagi." />
+    <String Id="UserExitDlg_Footer" Value="Klik tombol Selesai untuk keluar dari Pemasang." />
+
+    <!---->
+
+    <String Id="ProgressDlg_PleaseWait" Value="Proses instalasi akan membutuhkan beberapa menit" />
+
+    <!---->
+
+    <String Id="ResumeDlg_Header" Value="Melanjutkan Pemasang [ProductName]" />
+    <String Id="ResumeDlg_Desc" Value="Pemasang akan menyelesaikan instalasi [ProductName] pada komputer Anda. Klik Pasang untuk melanjutkan atau Batal untuk keluar dari Pemasang." />
+
+    <!---->
+
+    <String Id="MaintenanceTypeDlg_Header" Value="Mengubah, Memperbaiki, atau Menghapus instalasi" />
+    <String Id="MaintenanceTypeDlg_SelOption" Value="Pilih operasi yang ingin Anda lakukan." />
+    <String Id="MaintenanceTypeDlg_Repair" Value="&amp;Perbaiki" />
+    <String Id="MaintenanceTypeDlg_RepairText" Value="Memperbaiki kesalahan dalam keadaan instalasi terkini - memperbaiki berkas, pintasan, dan entri registry yang kurang atau rusak." />
+    <String Id="MaintenanceTypeDlg_RepairTooltip" Value="Perbaiki instalasi" />
+    <String Id="MaintenanceTypeDlg_RepairProgress1" Value="Memperbaiki" />
+    <String Id="MaintenanceTypeDlg_RepairProgress2" Value="memperbaiki" />
+    <String Id="MaintenanceTypeDlg_Remove" Value="&amp;Hapus" />
+    <String Id="MaintenanceTypeDlg_RemoveText" Value="Menghapus [ProductName] dari komputer Anda." />
+    <String Id="MaintenanceTypeDlg_RemoveTooltip" Value="Hapus instalasi" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress1" Value="Menghapus" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress2" Value="menghapus" />
+
+    <!---->
+
+    <String Id="MaintenanceWelcomeDlg_Header" Value="Selamat datang ke Pemasang [ProductName]" />
+    <String Id="MaintenanceWelcomeDlg_Desc" Value="Pemasang akan memungkinkan Anda memperbaiki instalasi Anda saat ini atau menghapus [ProductName] dari komputer Anda. Klik Selanjutnya untuk melanjutkan atau Batal untuk keluar dari Pemasang." />
+
+    <!---->
+
+    <String Id="OutOfDiskDlg_InstallationExceeds" Value="Ruang disk yang diperlukan untuk instalasi melampaui ruang disk yang tersedia." />
+    <String Id="OutOfDiskDlg_NotEnoughDiskSpace" Value="Volume yang disorot tidak punya ruang disk yang cukup untuk fitur-fitur yang kini dipilih. Anda dapat menghapus beberapa berkas dari volume yang disorot, atau memilih untuk memasang lebih sedikit fitur ke drive lokal, atau memilih drive tujuan yang lain." />
+    <String Id="OutOfDiskDlg_OutOfDiskSpace" Value="Kehabisan Ruang Disk" />
+
+    <!---->
+
+    <String Id="OutOfRbDiskDlg_InstallationExceeds" Value="Ruang disk yang diperlukan untuk instalasi melampaui ruang disk yang tersedia." />
+    <String Id="OutOfRbDiskDlg_NotEnoughDiskSpace" Value="Volume yang disorot tidak punya ruang disk yang cukup untuk fitur-fitur yang kini dipilih. Anda dapat menghapus beberapa berkas dari volume yang disorot, atau memilih untuk memasang lebih sedikit fitur ke drive lokal, atau memilih drive tujuan yang lain." />
+    <String Id="OutOfRbDiskDlg_OutOfDiskSpace" Value="Kehabisan Ruang Disk" />
+    <String Id="OutOfRbDiskDlg_Desc" Value="Atau, Anda bisa memilih untuk menonaktifkan fungsionalitas rollback pemasang. Ini memungkinkan pemasang memulihkan keadaan asli komputer Anda kalau instalasi terinterupsi dengan cara apa pun. Klik Ya bila Anda hendak mengambil risiko untuk menonaktifkan rollback." />
+
+    <!---->
+
+    <String Id="VerifyRemoveDlg_Header" Value="Hapus [ProductName]" />
+    <String Id="VerifyRemoveDlg_Desc" Value="Anda telah memilih untuk menghapus program dari komputer Anda." />
+    <String Id="VerifyRemoveDlg_ClickRemove" Value="Klik untuk Menghapus [ProductName] dari komputer Anda. Bila Anda ingin meninjau atau mengubah sebarang pengaturan instalasi Anda, klik Kembali. Klik Batal untuk keluar dari wahana pandu." />
+
+    <!---->
+
+    <String Id="VerifyRepairDlg_Header" Value="Perbaiki [ProductName]" />
+    <String Id="VerifyRepairDlg_ReadyToBegin" Value="Pemasang siap mulai perbaikan [ProductName]." />
+    <String Id="VerifyRepairDlg_ClickRepair" Value="Klik Perbaiki untuk memperbaiki instalasi [ProductName]. Bila Anda ingin meninjau atau mengubah sebarang pengaturan instalasi Anda, klik Kembali. Klik Batal untuk keluar dari wahana pandu." />
+
+    <!---->
+
+    <String Id="WaitForCostingDlg_PleaseWait" Value="Silakan tunggu sementara pemasang menyelesaikan menentukan kebutuhan ruang disk Anda." />
+
+    <!---->
+
+    <String Id="MsiRMFilesInUse_Text" Value="Aplikasi berikut sedang memakai berkas yang perlu diperbarui untuk penyiapan ini. Anda dapat membiarkan Pemasang menutup mereka dan mencoba memulai ulang mereka atau mem-boot ulang mesin nanti." />
+    <String Id="MsiRMFilesInUse_Description" Value="Beberapa berkas yang perlu diperbarui kini sedang dipakai." />
+    <String Id="MsiRMFilesInUse_Title" Value="Berkas Dipakai" />
+    <String Id="MsiRMFilesInUse_UseRM" Value="&amp;Tutup aplikasi dan coba memulai ulang mereka." />
+    <String Id="MsiRMFilesInUse_DontUseRM" Value="Jangan tutup aplikasi. Boot ulang akan &amp;diperlukan." />
+
+    <!-- The following strings are internally used by WiX and MSI -->
+    <String Id="Error0" Value="{{Galat fatal: }}" />
+    <String Id="Error1" Value="{{Galat [1]. }}" />
+    <String Id="Error2" Value="Peringatan [1]." />
+    <String Id="Error3" Value="Galat [1]." />
+    <String Id="Error4" Value="Info [1]." />
+    <String Id="Error5" Value="Pemasang telah menemui galat yang tidak diharapkan saat memasang paket ini. Ini mungkin mengindikasikan suatu masalah dengan paket ini. Kode galat adalah [1]. {{Argumennya adalah: [2], [3], [4]}}" />
+    <String Id="Error6" Value="" />
+    <String Id="Error7" Value="{{Disk penuh: }}" />
+    <String Id="Error8" Value="Aksi [Time]: [1]. [2]" />
+    <String Id="Error9" Value="[ProductName]" />
+    <String Id="Error10" Value="{[2]}{, [3]}{, [4]}" />
+    <String Id="Error11" Value="Tipe pesan: [1], Argumen: [2]" />
+    <String Id="Error12" Value="=== Pencatatan log dimulai:    [Date]  [Time] ===" />
+    <String Id="Error13" Value="=== Pencatatan log dihentikan: [Date]  [Time] ===" />
+    <String Id="Error14" Value="Aksi dimulai  [Time]: [1]." />
+    <String Id="Error15" Value="Aksi berakhir [Time]: [1]. Nilai balikan [2]." />
+    <String Id="Error16" Value="Waktu tersisa: {[1] menit }{[2] detik}" />
+    <String Id="Error17" Value="Habis memori. Matikan aplikasi lain sebelum mencoba lagi." />
+    <String Id="Error18" Value="Pemasang tidak lagi merespon." />
+    <String Id="Error19" Value="Pemasang berhenti secara prematur." />
+    <String Id="Error20" Value="Silakan tunggu sementara Windows mengonfigurasi [ProductName]" />
+    <String Id="Error21" Value="Mengumpulkan informasi yang diperlukan..." />
+    <String Id="Error22" Value="Menghapus versi lebih lama dari aplikasi ini..." />
+    <String Id="Error23" Value="Mempersiapkan menghapus versi lebih lama dari aplikasi ini..." />
+    <String Id="Error32" Value="Instalasi {[ProductName] }selesai dengan sukses." />
+    <String Id="Error33" Value="Instalasi {[ProductName] }gagal." />
+    <String Id="Error1101" Value="Galat saat membaca dari berkas: [2]. {{ Galat sistem [3].}} Pastikan bahwa berkas itu ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1301" Value="Tidak bisa membuat berkas '[2]'. Suatu direktori dengan nama ini sudah ada. Batalkan pemasangan dan cobalah memasang di lokasi lain." />
+    <String Id="Error1302" Value="Silakan masukkan disk: [2]" />
+    <String Id="Error1303" Value="Pemasang tidak punya cukup hak untuk mengakses direktori ini: [2]. Instalasi tidak bisa dilanjutkan. Log masuklah sebagai administrator atau hubungi administrator sistem Anda." />
+    <String Id="Error1304" Value="Galat saat menulis ke berkas: [2]. Pastikan bahwa Anda punya akses ke direktori itu." />
+    <String Id="Error1305" Value="Galat saat membaca dari berkas [2]. {{ Galat sistem [3].}} Pastikan bahwa berkas ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1306" Value="Aplikasi lain punya akses eksklusif ke berkas '[2]'. Silakan matikan semua aplikasi lain, lalu klik Coba Lagi." />
+    <String Id="Error1307" Value="Tidak ada cukup ruang disk untuk memasang berkas ini: [2]. Bebaskan ruang disk dan klik Coba Lagi, atau klik Batal untuk keluar." />
+    <String Id="Error1308" Value="Berkas sumber tak ditemukan: [2]. Pastikan bahwa berkas itu ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1309" Value="Galat saat membaca dari berkas: [3]. {{ Galat sistem [2].}} Pastikan bahwa berkas itu ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1310" Value="Galat saat menulis ke berkas: [3]. {{ Galat sistem [2].}}  Pastikan bahwa Anda punya akses ke direktori itu." />
+    <String Id="Error1311" Value="Berkas sumber tak ditemukan{{(cabinet)}}: [2]. Pastikan bahwa berkas itu ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1312" Value="Tidak bisa membuat direktori '[2]'. Suatu berkas dengan nama ini sudah ada. Silakan ubah nama atau hapus berkas tersebut dan klik Coba Lagi, atau klik Batal untuk keluar." />
+    <String Id="Error1313" Value="Volume [2] saat ini tidak tersedia. Silakan pilih yang lain." />
+    <String Id="Error1314" Value="Path '[2]' yang ditentukan tidak tersedia." />
+    <String Id="Error1315" Value="Tidak bisa menulis ke folder yang ditentukan: [2]." />
+    <String Id="Error1316" Value="Terjadi kesalahan jaringan saat mencoba membaca dari berkas: [2]" />
+    <String Id="Error1317" Value="Terjadi kesalahan saat mencoba membuat direktori: [2]" />
+    <String Id="Error1318" Value="Terjadi kesalahan jaringan saat mencoba membuat direktori: [2]" />
+    <String Id="Error1319" Value="Terjadi kesalahan jaringan saat memcoba membuka kabinet berkas sumber: [2]" />
+    <String Id="Error1320" Value="Path yang ditentukan terlalu panjang: [2]" />
+    <String Id="Error1321" Value="Pemasang tidak punya cukup hak untuk mengubah berkas ini: [2]." />
+    <String Id="Error1322" Value="Sebagian dari path folder '[2]' tidak valid. Itu kosong atau melampaui panjang yang diizinkan oleh sistem." />
+    <String Id="Error1323" Value="Path folder '[2]' mengandung kata yang tidak valid dalam path folder." />
+    <String Id="Error1324" Value="Path folder '[2]' mengandung sebuah karakter yang tidak valid." />
+    <String Id="Error1325" Value="'[2]' bukanlah suatu nama berkas pendek yang valid." />
+    <String Id="Error1326" Value="Galat saat mendapatkan keamanan berkas: [3] GetLastString: [2]" />
+    <String Id="Error1327" Value="Drive Tidak Valid: [2]" />
+    <String Id="Error1328" Value="Galat saat menerapkan patch ke berkas [2]. Itu mungkin diperbarui dengan cara lain, dan tidak bisa lagi diubah oleh patch ini. Untuk informasi lebih lanjut hubungi vendor patch Anda. {{Galat Sistem: [3]}}" />
+    <String Id="Error1329" Value="Suatu berkas yang diperlukan tidak bisa dipasang karena berkas kabinet [2] tidak ditandatangani secara digital. Ini mungkin mengindikasikan bahwa berkas kabinet rusak." />
+    <String Id="Error1330" Value="Suatu berkas yang diperlukan tidak bisa dipasang karena berkas kabinet [2] punya tanda tangan digital yang tidak valid. Ini mungkin mengindikasikan bahwa berkas kabinet rusak.{{  Galat [3] dikembalikan oleh WinVerifyTrust.}}" />
+    <String Id="Error1331" Value="Gagal dengan benar menyalin berkas [2]. Galat CRC." />
+    <String Id="Error1332" Value="Gagal dengan benar memindah berkas [2]. Galat CRC." />
+    <String Id="Error1333" Value="Gagal dengan benar mem-patch berkas [2]. Galat CRC." />
+    <String Id="Error1334" Value="Berkas '[2]' tidak bisa dipasang karena berkas ini tidak bisa ditemukan dalam berkas kabinet '[3]'. Ini bisa mengindikasikan galat jaringan, galat saat membaca dari CD-ROM, atau suatu masalah dengan paket ini." />
+    <String Id="Error1335" Value="Berkas kabinet '[2]' yang diperlukan bagi instalasi ini rusak dan tidak bisa dipakai. Ini bisa mengindikasikan galat jaringan, galat saat membaca dari CD-ROM, atau suatu masalah dengan paket ini." />
+    <String Id="Error1336" Value="Ada galat saat membuat berkas sementara yang diperlukan untuk menyelesaikan instalasi ini.{{  Folder: [3]. Kode galat sistem: [2]}}" />
+    <String Id="Error1401" Value="Tidak bisa membuat kunci: [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1402" Value="Tidak bisa membuka kunci: [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1403" Value="Tidak bisa menghapus nilai [2] dari kunci: [3]. {{ Galat sistem [4].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1404" Value="Tidak bisa menghapus kunci [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1405" Value="Tidak bisa membaca nilai [2] dari kunci [3]. {{ Galat sistem [4].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1406" Value="Tidak bisa menulis nilai [2] ke kunci [3]. {{ Galat sistem [4].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1407" Value="Tidak bisa mendapatkan nama-nama nilai bagi kunci [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1408" Value="Tidak bisa mendapatkan nama-nama sub kunci bagi kunci [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1409" Value="Tidak bisa membaca informasi keamanan bagi kunci [2]. {{ Galat sistem [3].}}  Pastikan bahwa Anda punya cukup akses ke kunci itu, atau hubungi personil dukungan Anda." />
+    <String Id="Error1410" Value="Tidak bisa menaikkan ruang registri yang tersedia. [2] KB ruang registri yang bebas diperlukan untuk instalasi aplikasi ini." />
+    <String Id="Error1500" Value="Instalasi lain tengah berlangsung. Anda mesti menyelesaikan instalasi itu sebelum melanjutkan yang ini." />
+    <String Id="Error1501" Value="Galat saat mengakses data yang diamankan. Pastikan bahwa Windows Installer dikonfigurasi secara tepat dan cobalah memasang lagi." />
+    <String Id="Error1502" Value="Pengguna '[2]' sebelumnya telah memulai instalasi untuk produk '[3]'. Pengguna itu akan perlu menjalankan instalasi itu lagi sebelum mereka dapat memakai produk itu. Instalasi Anda kini akan berlanjut." />
+    <String Id="Error1503" Value="Pengguna '[2]' sebelumnya telah memulai instalasi untuk produk '[3]'. Pengguna itu akan perlu menjalankan instalasi itu lagi sebelum mereka dapat memakai produk itu." />
+    <String Id="Error1601" Value="Kehabisan ruang disk -- Volume: '[2]'; ruang yang diperlukan: [3] KB; ruang tersedia: [4] KB. Bebaskan sebagian ruang disk dan coba lagi." />
+    <String Id="Error1602" Value="Anda yakin ingin membatalkan?" />
+    <String Id="Error1603" Value="Berkas [2][3] sedang dipakai{ oleh proses berikut: Nama: [4], Id: [5], Judul Jendela: '[6]'}. Tutup aplikasi itu dan coba lagi." />
+    <String Id="Error1604" Value="Produk '[2]' sudah terpasang, mencegah instalasi produk ini. Kedua produk itu tidak kompatibel." />
+    <String Id="Error1605" Value="Tidak ada cukup ruang disk pada volume '[2]' untuk melanjutkan instalasi dengan pemulihan yang difungsikan. [3] KB diperlukan, tapi hanya [4] KB tersedia. Klik Abaikan untuk melanjutkan instalasi tanpa menyimpan informasi pemulihan, klik Coba Lagi untuk memeriksa lagi ruang yang tersedia, atau klik Batal untuk keluar dari instalasi." />
+    <String Id="Error1606" Value="Tidak bisa mengakses lokasi jaringan [2]." />
+    <String Id="Error1607" Value="Aplikasi berikut mesti ditutup sebelum melanjutkan instalasi:" />
+    <String Id="Error1608" Value="Tidak bisa menemukan sebarang produk compliant yang sebelumnya terpasang pada mesin untuk memasang produk ini." />
+    <String Id="Error1609" Value="Terjadi kesalahan saat menerapkan pengaturan keamanan. [2] bukan suatu pengguna atau grup yang valid. Ini mungkin suatu masalah dengan paket, atau suatu masalah menyambung ke pengendali domain pada jaringan. Periksa koneksi jaringan Anda dan klik Coba Lagi, atau Batal untuk mengakhiri instalasi. {{Tidak bisa menemumakn SID pengguna, galat sistem [3]}}" />
+    <String Id="Error1701" Value="Kunci [2] tidak valid. Pastikan bahwa Anda memasukkan kunci yang benar." />
+    <String Id="Error1702" Value="Pemasang mesti memulai ulang sistem Anda sebelum konfigurasi [2] dapat dilanjutkan. Klik Ya untuk memulai ulang sekarang atau Tidak bila Anda berrencana untuk memulai ulang secara manual nanti." />
+    <String Id="Error1703" Value="Anda mesti memulai ulang sistem Anda agar perubahan konfigurasi yang dibuat ke [2] berdampak. Klik Ya untuk memulai ulang sekarang atau Tidak bila Anda berrencana untuk memulai ulang secara manual nanti." />
+    <String Id="Error1704" Value="Suatu instalasi untuk [2] saat ini ditangguhkan. Anda mesti membatalkan perubahan yang dibuat oleh instalasi itu untuk melanjutkan. Apakah Anda hendak membatalkan perubahan itu?" />
+    <String Id="Error1705" Value="Instalasi sebelumnya bagi produk ini sedang berlangsung. Anda mesti membatalkan perubahan yang dibuat oleh instalasi itu untuk melanjutkan. Apakah Anda hendak membatalkan perubahan itu?" />
+    <String Id="Error1706" Value="Suatu paket instalasi bagi produk [2] tidak bisa ditemukan. Cobalah memasang lagi memakai suatu salinan valid dari paket instalasi '[3]'." />
+    <String Id="Error1707" Value="Instalasi selesai dengan sukses." />
+    <String Id="Error1708" Value="Instalasi gagal." />
+    <String Id="Error1709" Value="Produk: [2] -- [3]" />
+    <String Id="Error1710" Value="Anda bisa memulihkan komputer Anda ke keadaan sebelumnya atau melanjutkan instalasi nanti. Apakah Anda hendak memulihkan?" />
+    <String Id="Error1711" Value="Terjadi kesalahan saat menulis informasi instalasi ke disk. Periksa untuk memastikan bahwa tersedia cukup ruang disk, dan klik Coba Lagi, atau Batal untuk mengakhiri instalasi." />
+    <String Id="Error1712" Value="Satu atau lebih dari berkas yang diperlukan untuk memulihkan komputer Anda ke keadaan sebelumnya tidak bisa ditemukan. Pemulihan tidak akan mungkin." />
+    <String Id="Error1713" Value="[2] tidak bisa memasang satu dari produk yang diperlukannya. Hubungi grup dukungan teknis. {{String Sistem: [3].}}" />
+    <String Id="Error1714" Value="Versi lebih lama dari [2] tidak bisa dihapus. Hubungi grup dukungan teknis. {{String Sistem: [3].}}" />
+    <String Id="Error1715" Value="Terpasang [2]" />
+    <String Id="Error1716" Value="Terkonfigurasi [2]" />
+    <String Id="Error1717" Value="Dihapus [2]" />
+    <String Id="Error1718" Value="Berkas [2] ditolak oleh kebijakan tanda tangan digital." />
+    <String Id="Error1719" Value="Windows Installer Service tidak bisa diakses. Ini bisa terjadi bila Anda menjalankan Windows dalam mode aman, atau bila Windows Installer tidak terpasang secara benar. Hubungi personil dukungan untuk bantuan." />
+    <String Id="Error1720" Value="Ada masalah dengan paket Windows Installer ini. Suatu skrip yang diperlukan agar instalasi ini lengkap tidak bisa dijalankan. Hubungi personil dukungan atau vendor paket Anda. {{Aksi ubahan [2] galat skrip [3], [4]: [5] Baris [6], Kolom [7], [8] }}" />
+    <String Id="Error1721" Value="Ada masalah dengan paket Windows Installer ini. Suatu program yang diperlukan agar instalasi ini lengkap tidak bisa dijalankan. Hubungi personil dukungan atau vendor paket Anda. {{Aksi: [2], lokasi: [3], perintah: [4] }}" />
+    <String Id="Error1722" Value="Ada masalah dengan paket Windows Installer ini. Suatu program yang dijalankan sebagai bagian dari penyiapan tidak selesai seperti yang diharapkan. Hubungi personil dukungan atau vendor paket Anda. {{Aksi [2], lokasi: [3], perintah: [4] }}" />
+    <String Id="Error1723" Value="Ada masalah dengan paket Windows Installer ini. Suatu DLL yang diperlukan agar instalasi ini lengkap tidak bisa dijalankan. Hubungi personil dukungan atau vendor paket Anda. {{Aksi [2], entri: [3], pustaka: [4] }}" />
+    <String Id="Error1724" Value="Penghapusan selesai dengan sukses." />
+    <String Id="Error1725" Value="Penghapusan gagal." />
+    <String Id="Error1726" Value="Pengumuan selesai dengan sukses." />
+    <String Id="Error1727" Value="Pengumuman gagal." />
+    <String Id="Error1728" Value="Konfigurasi selesai dengan sukses." />
+    <String Id="Error1729" Value="Konfigurasi gagal." />
+    <String Id="Error1730" Value="Anda mesti seorang Administrator untuk menghapus aplikasi ini. Untuk menghapus aplikasi ini, Anda dapat log masuk sebagai Administrator, atau hubungi grup dukungan teknis Anda untuk bantuan." />
+    <String Id="Error1801" Value="Path [2] tidak valid. Harap tentukan suatu path yang valid." />
+    <String Id="Error1802" Value="Kehabisan memori. Matikan aplikasi lain sebelum mencoba lagi." />
+    <String Id="Error1803" Value="Tidak ada disk dalam drive [2]. Harap masukkan satu dan klik Coba Lagi, atau klik Batal untuk kembali ke volume yang sebelumnya dipilih." />
+    <String Id="Error1804" Value="Tidak ada disk dalam drive [2]. Harap masukkan satu dan klik Coba Lagi, atau klik Batal untuk kembali ke dialog ramban dan memilih volume lain." />
+    <String Id="Error1805" Value="Folder [2] tidak ada. Harap masukkan suatu path ke folder yang ada." />
+    <String Id="Error1806" Value="Anda tidak punya cukup izin untuk membaca folder ini." />
+    <String Id="Error1807" Value="Suatu folder tujuan yang valid untuk instalasi tidak dapat ditentukan." />
+    <String Id="Error1901" Value="Kesalahan saat mencoba membaca basis data instalasi sumber: [2]." />
+    <String Id="Error1902" Value="Menjadwalkan operasi boot ulang: Mengubah nama berkas [2] ke [3]. Mesti boot ulang untuk menyelesaikan operasi." />
+    <String Id="Error1903" Value="Menjadwalkan operasi boot ulang: Menghapus berkas [2]. Mesti boot ulang untuk menyelesaikan operasi." />
+    <String Id="Error1904" Value="Modul [2] gagal didaftarkan. HRESULT [3]. Hubungi petugas dukungan Anda." />
+    <String Id="Error1905" Value="Modul [2] gagal dicabut pendaftarannya. HRESULT [3]. Hubungi petugas dukungan Anda." />
+    <String Id="Error1906" Value="Gagal menyinggahkan paket [2]. Galat: [3]. Hubungi petugas dukungan Anda." />
+    <String Id="Error1907" Value="Tidak bisa mendaftarkan fonta [2]. Pastikan bahwa Anda punya cukup hak untuk memasang fonta, dan bahwa sistem mendukung fonta ini." />
+    <String Id="Error1908" Value="Tidak bisa mencabut pendaftaran fonta [2]. Pastikan bahwa Anda punya cukup hak untuk menghapus fonta." />
+    <String Id="Error1909" Value="Tidak bisa membuat Pintasan [2]. Pastikan bahwa folder tujuan ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1910" Value="Tidak bisa menghapus Pintasan [2]. Pastikan bahwa berkas pintasan ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1911" Value="Tidak bisa mendaftarkan pustaka tipe bagi berkas [2]. Hubungi petugas dukungan Anda." />
+    <String Id="Error1912" Value="Tidak bisa mencabut pendaftaran pustaka tipe bagi berkas [2]. Hubungi petugas dukungan Anda." />
+    <String Id="Error1913" Value="Tidak bisa memperbarui berkas ini [2][3]. Pastikan bahwa berkas tersebut ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1914" Value="Tidak bisa menjadwalkan berkas [2] untuk menggantikan [3] saat boot ulang. Pastikan bahwa Anda punya hak tulis ke berkas [3]." />
+    <String Id="Error1915" Value="Kesalahan saat menghapus manajer driver ODBC, galat ODBC [2]: [3]. Hubungi personil dukungan Anda." />
+    <String Id="Error1916" Value="Kesalahan saat memasang manajer driver ODBC, galat ODBC [2]: [3]. Hubungi personil dukungan Anda." />
+    <String Id="Error1917" Value="Kesalahan saat menghapus driver ODBC: [4], galat ODBC [2]: [3]. Pastikan bahwa Anda punya cukup hak untuk menghapus driver ODBC." />
+    <String Id="Error1918" Value="Kesalahan saat memasang driver ODBC: [4], galat ODBC [2]: [3]. Pastikan bahwa berkas [4] ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1919" Value="Kesalahan saat mengonfigurasi sumber data ODBC: [4], galat ODBC [2]: [3]. Pastikan bahwa berkas [4] ada dan Anda dapat mengaksesnya." />
+    <String Id="Error1920" Value="Layanan '[2]' ([3]) gagal mulai. Pastikan bahwa Anda punya cukup hak untuk memulai layanan sistem." />
+    <String Id="Error1921" Value="Layanan '[2]' ([3]) tidak bisa dihentikan. Pastikan bahwa Anda punya cukup hak untuk menghentikan layanan sistem." />
+    <String Id="Error1922" Value="Layanan '[2]' ([3]) tidak bisa dihapus. Pastikan bahwa Anda punya cukup hak untuk menghapus layanan sistem." />
+    <String Id="Error1923" Value="Layanan '[2]' ([3]) tidak bisa dipasang. Pastikan bahwa Anda punya cukup hak untuk memasang layanan sistem." />
+    <String Id="Error1924" Value="Tidak bisa memperbarui variabel lingkungan '[2]'. Pastikan bahwa Anda punya cukup hak untuk mengubah variabel lingkungan." />
+    <String Id="Error1925" Value="Anda tidak punya cukup hak untuk menyelesaikan instalasi ini bagi semua pengguna mesin. Log masuklah sebagai administrator lalu coba lagi instalasi ini." />
+    <String Id="Error1926" Value="Tidak bisa menata keamanan berkas untuk berkas '[3]'. Galat: [2]. Pastikan bahwa Anda punya cukup hak untuk mengubah izin keamanan bagi berkas ini." />
+    <String Id="Error1927" Value="Layanan Komponen (COM+ 1.0) tidak terpasang pada komputer ini. Instalasi ini memerlukan Layanan Komponen agar bisa selesai dengan sukses. Layanan Komponen tersedia pada Windows 2000." />
+    <String Id="Error1928" Value="Kesalahan saat mendaftarkan Aplikasi COM+. Hubungi petugas dukungan Anda untuk informasi lebih lanjut." />
+    <String Id="Error1929" Value="Kesalahan saat mencabut pendaftaran Aplikasi COM+.Hubungi petugas dukungan Anda untuk informasi lebih lanjut." />
+    <String Id="Error1930" Value="Deskripsi untuk layanan '[2]' ([3]) tidak bisa diubah." />
+    <String Id="Error1931" Value="Layanan Pemasang Windows tidak bisa memperbarui berkas sistem [2] karena berkas tersebut diproteksi oleh Windows. Anda mungkin perlu memperbarui sistem operasi Anda agar program ini bekerja dengan benar. {{Versi paket: [3], Versi Terproteksi OS: [4]}}" />
+    <String Id="Error1932" Value="Layanan Pemasang Windows tidak bisa memperbarui berkas terproteksi Windows [2]. {{Versi paket: [3], Versi Terproteksi OS: [4], Galat SFP: [5]}}" />
+    <String Id="Error1933" Value="Layanan Pemasang Windows tidak bisa memperbarui satu atau lebih berkas terproteksi Windows. {{String SFP: [2], Daftar berkas terproteksi:\r\n[3]}}" />
+    <String Id="Error1934" Value="Instalasi pengguna dinonaktifkan melalui kebijakan pada mesin ini." />
+    <String Id="Error1935" Value="Terjadi kesalahan selama instalasi komponen assembly [2]. HRESULT: [3]. {{antar muka assembly: [4], fungsi: [5], nama assembly: [6]}}" />
+
+    <!-- Own / special errors -->
+    <String Id="Error25001" Value="Aplikasi &quot;[2]&quot; perlu ditutup agar instalasi berlanjut." />
+
+    <String Id="ProgressTextInstallValidate" Value="Memvalidasi instalasi" />
+    <String Id="ProgressTextInstallFiles" Value="Menyalin berkas-berkas baru" />
+    <String Id="ProgressTextInstallFilesTemplate" Value="Berkas: [1],  Directori: [9],  Ukuran: [6]" />
+    <String Id="ProgressTextInstallAdminPackage" Value="Menyalin berkas instalasi jaringan" />
+    <String Id="ProgressTextInstallAdminPackageTemplate" Value="Berkas: [1],  Directori: [9],  Ukuran: [6]" />
+    <String Id="ProgressTextFileCost" Value="Menghitung persyaratan ruang" />
+    <String Id="ProgressTextCostInitialize" Value="Menghitung persyaratan ruang" />
+    <String Id="ProgressTextCostFinalize" Value="Menghitung persyaratan ruang" />
+    <String Id="ProgressTextCreateShortcuts" Value="Membuat pintasan" />
+    <String Id="ProgressTextCreateShortcutsTemplate" Value="Pintasan: [1]" />
+    <String Id="ProgressTextPublishComponents" Value="Memublikasikan Komponen Terkualifikasi" />
+    <String Id="ProgressTextPublishComponentsTemplate" Value="ID Komponen: [1], Kualifier: [2]" />
+    <String Id="ProgressTextPublishFeatures" Value="Memublikasikan Fitur Produk" />
+    <String Id="ProgressTextPublishFeaturesTemplate" Value="Fitur: [1]" />
+    <String Id="ProgressTextPublishProduct" Value="Memublikasikan informasi produk" />
+    <String Id="ProgressTextRegisterClassInfo" Value="Mendaftarkan server Kelas" />
+    <String Id="ProgressTextRegisterClassInfoTemplate" Value="Id Kelas: [1]" />
+    <String Id="ProgressTextRegisterExtensionInfo" Value="Mendaftarkan server ekstensi" />
+    <String Id="ProgressTextRegisterExtensionInfoTemplate" Value="Ekstensi: [1]" />
+    <String Id="ProgressTextRegisterMIMEInfo" Value="Mendaftarkan info MIME" />
+    <String Id="ProgressTextRegisterMIMEInfoTemplate" Value="Tipe Konten MIME: [1], Ekstensi: [2]" />
+    <String Id="ProgressTextRegisterProgIdInfo" Value="Mendaftarkan identifier program" />
+    <String Id="ProgressTextRegisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextAllocateRegistrySpace" Value="Mengalokasikan ruang registri" />
+    <String Id="ProgressTextAllocateRegistrySpaceTemplate" Value="Ruang bebas: [1]" />
+    <String Id="ProgressTextAppSearch" Value="Mencari aplikasi yang terpasang" />
+    <String Id="ProgressTextAppSearchTemplate" Value="Properti: [1], Tanda tangan: [2]" />
+    <String Id="ProgressTextBindImage" Value="Mengikat executable" />
+    <String Id="ProgressTextBindImageTemplate" Value="Berkas: [1]" />
+    <String Id="ProgressTextCCPSearch" Value="Mencari produk yang memenuhi" />
+    <String Id="ProgressTextCreateFolders" Value="Membuat folder" />
+    <String Id="ProgressTextCreateFoldersTemplate" Value="Folder: [1]" />
+    <String Id="ProgressTextDeleteServices" Value="Menghapus layanan" />
+    <String Id="ProgressTextDeleteServicesTemplate" Value="Layanan: [1]" />
+    <String Id="ProgressTextDuplicateFiles" Value="Membuat berkas-berkas duplikat" />
+    <String Id="ProgressTextDuplicateFilesTemplate" Value="Berkas: [1],  Direktori: [9],  Ukuran: [6]" />
+    <String Id="ProgressTextFindRelatedProducts" Value="Mencari aplikasi terkait" />
+    <String Id="ProgressTextFindRelatedProductsTemplate" Value="Aplikasi ditemukan: [1]" />
+    <String Id="ProgressTextInstallODBC" Value="Memasang komponen ODBC" />
+    <String Id="ProgressTextInstallServices" Value="Memasang layanan baru" />
+    <String Id="ProgressTextInstallServicesTemplate" Value="Layanan: [2]" />
+    <String Id="ProgressTextLaunchConditions" Value="Mengevaluasi syarat peluncuran" />
+    <String Id="ProgressTextMigrateFeatureStates" Value="Memigrasi keadaan fitur-fitur dari aplikasi terkait" />
+    <String Id="ProgressTextMigrateFeatureStatesTemplate" Value="Aplikasi: [1]" />
+    <String Id="ProgressTextMoveFiles" Value="Memindah berkas" />
+    <String Id="ProgressTextMoveFilesTemplate" Value="Berkas: [1],  Direktori: [9],  Ukuran: [6]" />
+    <String Id="ProgressTextPatchFiles" Value="Mem-patch berkas" />
+    <String Id="ProgressTextPatchFilesTemplate" Value="Berkas: [1],  Direktori: [2],  Ukuran: [3]" />
+    <String Id="ProgressTextProcessComponents" Value="Memperbarui pendaftaran komponen" />
+    <String Id="ProgressTextRegisterComPlus" Value="Mendaftarkan Komponen dan Aplikasi COM+" />
+    <String Id="ProgressTextRegisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2], Pengguna: [3], RSN: [4]}}" />
+    <String Id="ProgressTextRegisterFonts" Value="Mendaftarkan fonta" />
+    <String Id="ProgressTextRegisterFontsTemplate" Value="Fonta: [1]" />
+    <String Id="ProgressTextRegisterProduct" Value="Mendaftarkan produk" />
+    <String Id="ProgressTextRegisterProductTemplate" Value="[1]" />
+    <String Id="ProgressTextRegisterTypeLibraries" Value="Mendaftarkan pustaka tipe" />
+    <String Id="ProgressTextRegisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextRegisterUser" Value="Mendaftarkan pengguna" />
+    <String Id="ProgressTextRegisterUserTemplate" Value="[1]" />
+    <String Id="ProgressTextRemoveDuplicateFiles" Value="Menghapus berkas-berkas duplikat" />
+    <String Id="ProgressTextRemoveDuplicateFilesTemplate" Value="Berkas: [1], Direktori: [9]" />
+    <String Id="ProgressTextRemoveEnvironmentStrings" Value="Memperbarui string environment" />
+    <String Id="ProgressTextRemoveEnvironmentStringsTemplate" Value="Name: [1], Nilai: [2], Aksi [3]" />
+    <String Id="ProgressTextRemoveExistingProducts" Value="Menghapus aplikasi" />
+    <String Id="ProgressTextRemoveExistingProductsTemplate" Value="Aplikasi: [1], Baris perintah: [2]" />
+    <String Id="ProgressTextRemoveFiles" Value="Menghapus berkas" />
+    <String Id="ProgressTextRemoveFilesTemplate" Value="Berkas: [1], Direktori: [9]" />
+    <String Id="ProgressTextRemoveFolders" Value="Menghapus folder" />
+    <String Id="ProgressTextRemoveFoldersTemplate" Value="Folder: [1]" />
+    <String Id="ProgressTextRemoveIniValues" Value="Menghapus entri berkas INI" />
+    <String Id="ProgressTextRemoveIniValuesTemplate" Value="Berkas: [1],  Seksi: [2],  Kunci: [3], Nilai: [4]" />
+    <String Id="ProgressTextRemoveODBC" Value="Menghapus komponen ODBC" />
+    <String Id="ProgressTextRemoveRegistryValues" Value="Menghapus nilai registri sistem" />
+    <String Id="ProgressTextRemoveRegistryValuesTemplate" Value="Kunci: [1], Nama: [2]" />
+    <String Id="ProgressTextRemoveShortcuts" Value="Menghapus pintasan" />
+    <String Id="ProgressTextRemoveShortcutsTemplate" Value="Pintasan: [1]" />
+    <String Id="ProgressTextRMCCPSearch" Value="Mencari produk yang memenuhi" />
+    <String Id="ProgressTextSelfRegModules" Value="Mendaftarkan modul" />
+    <String Id="ProgressTextSelfRegModulesTemplate" Value="Berkas: [1], Folder: [2]" />
+    <String Id="ProgressTextSelfUnregModules" Value="Mencabut pendaftaran modul" />
+    <String Id="ProgressTextSelfUnregModulesTemplate" Value="Berkas: [1], Folder: [2]" />
+    <String Id="ProgressTextSetODBCFolders" Value="Menginisialisasi direktori ODBC" />
+    <String Id="ProgressTextStartServices" Value="Memulai layanan" />
+    <String Id="ProgressTextStartServicesTemplate" Value="Layanan: [1]" />
+    <String Id="ProgressTextStopServices" Value="Menghentikan layanan" />
+    <String Id="ProgressTextStopServicesTemplate" Value="Layanan: [1]" />
+    <String Id="ProgressTextUnpublishComponents" Value="Mencabut Publikasi Komponen Terkualifikasi" />
+    <String Id="ProgressTextUnpublishComponentsTemplate" Value="ID Komponen: [1], Kualifier: [2]" />
+    <String Id="ProgressTextUnpublishFeatures" Value="Mencabut Publikasi Fitur Produk" />
+    <String Id="ProgressTextUnpublishFeaturesTemplate" Value="Fitur: [1]" />
+    <String Id="ProgressTextUnregisterClassInfo" Value="Mencabut pendaftaran server Kelas" />
+    <String Id="ProgressTextUnregisterClassInfoTemplate" Value="Id Kelas: [1]" />
+    <String Id="ProgressTextUnregisterComPlus" Value="Mencabut Pendaftaran Komponen dan Aplikasi COM+" />
+    <String Id="ProgressTextUnregisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2]}}" />
+    <String Id="ProgressTextUnregisterExtensionInfo" Value="Mencabut pendaftaran server ekstensi" />
+    <String Id="ProgressTextUnregisterExtensionInfoTemplate" Value="Ekstensi: [1]" />
+    <String Id="ProgressTextUnregisterFonts" Value="Mecabut pendaftaran fonta" />
+    <String Id="ProgressTextUnregisterFontsTemplate" Value="Fonta: [1]" />
+    <String Id="ProgressTextUnregisterMIMEInfo" Value="Mencabut pendaftaran info MIME" />
+    <String Id="ProgressTextUnregisterMIMEInfoTemplate" Value="Tipe Konten MIME: [1], Ekstensi: [2]" />
+    <String Id="ProgressTextUnregisterProgIdInfo" Value="Mencabut pendaftaran identifier program" />
+    <String Id="ProgressTextUnregisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextUnregisterTypeLibraries" Value="Mencabut pendaftaran pustaka tipe" />
+    <String Id="ProgressTextUnregisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextWriteEnvironmentStrings" Value="Memperbarui string lingkungan" />
+    <String Id="ProgressTextWriteEnvironmentStringsTemplate" Value="Nama: [1], Nilai: [2], Aksi [3]" />
+    <String Id="ProgressTextWriteIniValues" Value="Menulis nilai-nilai berkas INI" />
+    <String Id="ProgressTextWriteIniValuesTemplate" Value="Berkas: [1],  Seksi: [2],  Kunci: [3], Nilai: [4]" />
+    <String Id="ProgressTextWriteRegistryValues" Value="Menulis nilai-nilai registri sistem" />
+    <String Id="ProgressTextWriteRegistryValuesTemplate" Value="Kunci: [1], Nama: [2], Nilai: [3]" />
+    <String Id="ProgressTextAdvertise" Value="Mengumumkan aplikasi" />
+    <String Id="ProgressTextGenerateScript" Value="Membangkitkan operasi skrip untuk aksi:" />
+    <String Id="ProgressTextGenerateScriptTemplate" Value="[1]" />
+    <String Id="ProgressTextInstallSFPCatalogFile" Value="Memasang katalog sistem" />
+    <String Id="ProgressTextInstallSFPCatalogFileTemplate" Value="Berkas: [1],  Ketergantungan: [2]" />
+    <String Id="ProgressTextMsiPublishAssemblies" Value="Memublikasikan informasi assembly" />
+    <String Id="ProgressTextMsiPublishAssembliesTemplate" Value="Konteks Aplikasi:[1], Nama Assembly:[2]" />
+    <String Id="ProgressTextMsiUnpublishAssemblies" Value="Mencabut publikasi informasi assembly" />
+    <String Id="ProgressTextMsiUnpublishAssembliesTemplate" Value="Konteks Aplikasi:[1], Nama Assembly:[2]" />
+    <String Id="ProgressTextRollback" Value="Me-roll back aksi:" />
+    <String Id="ProgressTextRollbackTemplate" Value="[1]" />
+    <String Id="ProgressTextRollbackCleanup" Value="Menghapus berkas-berkas cadangan" />
+    <String Id="ProgressTextRollbackCleanupTemplate" Value="Berkas: [1]" />
+    <String Id="ProgressTextUnmoveFiles" Value="Menghapus berkas-berkas yang dipindah" />
+    <String Id="ProgressTextUnmoveFilesTemplate" Value="Berkas: [1], Directori: [9]" />
+    <String Id="ProgressTextUnpublishProduct" Value="Mencabut publikasi informasi produk" />
+
+    <String Id="ProgressTextCheckTargetDir" Value="Memeriksa direktori target ..." />
+
+    <String Id="ProgressTextSupDrvInt" Value="Memasang driver dukungan ..." />
+    <String Id="ProgressTextSupDrvStart" Value="Memulai driver dukungan ..." />
+    <String Id="ProgressTextSupDrvUninst" Value="Membongkar instalasi driver dukungan ..." />
+
+    <String Id="ProgressTextUSBDevDrvInst" Value="Memasang driver perangkat USB ..." />
+    <String Id="ProgressTextUSBDevDrvUninst" Value="Membongkar instalasi driver perangkat USB ..." />
+    <String Id="ProgressTextUSBMonDrvInst" Value="Memasang driver pemantau USB ..." />
+    <String Id="ProgressTextUSBMonDrvStart" Value="Memulai driver pemantau USB ..." />
+    <String Id="ProgressTextUSBMonDrvUninst" Value="Membongkar instalasi driver pemantau USB ..." />
+
+    <String Id="ProgressTextNetAdp6Create" Value="Membuat adaptor jaringan ..." />
+    <String Id="ProgressTextNetAdp6Remove" Value="Menghapus adaptor jaringan ..." />
+    <String Id="ProgressTextNetAdp6Update" Value="Memperbarui adaptor jaringan ..." />
+    <String Id="ProgressTextNetAdp6Uninst" Value="Membongkar instalasi adaptor jaringan ..." />
+
+    <String Id="ProgressTextNetLwfInst" Value="Memasang filter jaringan ..." />
+    <String Id="ProgressTextNetLwfRollbackInst" Value="Me-roll back instalasi filter jaringan ..." />
+    <String Id="ProgressTextNetLwfUninst" Value="Membongkar instalasi filter jaringan ..." />
+    <String Id="ProgressTextNetLwfRollbackUninst" Value="Me-roll back pembongkaran instalasi filter jaringan ..." />
+
+    <String Id="UITextbytes" Value="byte" />
+    <String Id="UITextGB" Value="GB" />
+    <String Id="UITextKB" Value="KB" />
+    <String Id="UITextMB" Value="MB" />
+    <String Id="UITextMenuAbsent" Value="Jangan pasang" />
+    <String Id="UITextMenuAdvertise" Value="Fitur akan dipasang ketika diperlukan" />
+    <String Id="UITextMenuAllCD" Value="Seluruh fitur akan dipasang untuk dijalankan dari CD" />
+    <String Id="UITextMenuAllLocal" Value="Seluruh fitur akan dipasang pada hard disk lokal" />
+    <String Id="UITextMenuAllNetwork" Value="Seluruh fitur akan dipasang untuk dijalankan dari jaringan" />
+    <String Id="UITextMenuCD" Value="Akan dipasang untuk dijalankan dari CD" />
+    <String Id="UITextMenuLocal" Value="Akan dipasang pada hard disk lokal" />
+    <String Id="UITextMenuNetwork" Value="Akan dipasang untuk dijalankan dari jaringan" />
+    <String Id="UITextScriptInProgress" Value="Mengumpulkan informasi yang diperlukan..." />
+    <String Id="UITextSelAbsentAbsent" Value="Fitur ini akan tetap tidak dipasang" />
+    <String Id="UITextSelAbsentAdvertise" Value="Fitur ini akan ditata agar dipasang ketika diperlukan" />
+    <String Id="UITextSelAbsentCD" Value="Fitur ini akan dipasang untuk dijalankan dari CD" />
+    <String Id="UITextSelAbsentLocal" Value="Fitur ini akan dipasang pada hard disk lokal" />
+    <String Id="UITextSelAbsentNetwork" Value="Fitur ini akan dipasang untuk dijalankan dari jaringan" />
+    <String Id="UITextSelAdvertiseAbsent" Value="Fitur ini akan menjadi tidak tersedia" />
+    <String Id="UITextSelAdvertiseAdvertise" Value="Akan dipasang ketika diperlukan" />
+    <String Id="UITextSelAdvertiseCD" Value="Fitur ini akan tersedia untuk dijalankan dari CD" />
+    <String Id="UITextSelAdvertiseLocal" Value="Fitur ini akan dipasang pada hard disk lokal Anda" />
+    <String Id="UITextSelAdvertiseNetwork" Value="Fitur ini akan tersedia untuk dijalankan dari jaringan" />
+    <String Id="UITextSelCDAbsent" Value="Fitur ini akan dibongkar instalasinya secara lengkap, Anda tak akan bisa menjalankannya dari CD" />
+    <String Id="UITextSelCDAdvertise" Value="Fitur ini akan berubah keadaan dari dijalankan dari CD ke dipasang ketika diperlukan" />
+    <String Id="UITextSelCDCD" Value="Fitur ini akan tetap dijalankan dari CD" />
+    <String Id="UITextSelCDLocal" Value="Fitur ini akan berubah keadaan dari dijalankan dari CD ke dipasang ke hard disk lokal" />
+    <String Id="UITextSelChildCostNeg" Value="Fitur ini membebaskan [1] pada hard disk Anda." />
+    <String Id="UITextSelChildCostPos" Value="Fitur ini memerlukan [1] pada hard disk Anda." />
+    <String Id="UITextSelCostPending" Value="Mengkompilasi biaya bagi fitur ini..." />
+    <String Id="UITextSelLocalAbsent" Value="Fitur ini akan sepenuhnya dihapus" />
+    <String Id="UITextSelLocalAdvertise" Value="Fitur ini akan dihapus dari hard disk lokal Anda, tapi akan ditata untuk dipasang ketika diperlukan" />
+    <String Id="UITextSelLocalCD" Value="Fitur ini akan dihapus dari hard disk lokal Anda, tapi akan tetap tersedia untuk dijalankan dari CD" />
+    <String Id="UITextSelLocalLocal" Value="Fitur ini akan tetap ada pada hard disk lokal Anda" />
+    <String Id="UITextSelLocalNetwork" Value="Fitur ini akan dihapus dari hard disk lokal Anda, tapi akan tetap tersedia untuk dijalankan dari jaringan" />
+    <String Id="UITextSelNetworkAbsent" Value="Fitur akan sepenuhnya dibongkar instalasinya, Anda tak akan dapat menjalankannya dari jaringan" />
+    <String Id="UITextSelNetworkAdvertise" Value="Fitur ini akan berubah keadaan dari dijalankan dari jaringan ke ditata agar dipasang ketika diperlukan" />
+    <String Id="UITextSelNetworkLocal" Value="Fitur ini akan berubah keadaan dari dijalankan dari jaringan ke untuk dipasang pada hard disk lokal" />
+    <String Id="UITextSelNetworkNetwork" Value="Fitur ini akan tetap dijalankan dari jaringan" />
+    <String Id="UITextSelParentCostNegNeg" Value="Fitur ini membebaskan [1] pada hard disk Anda. Itu punya sub fitur [2] dari [3] yang dipilih. Sub fitur membebaskan [4] pada hard disk Anda." />
+    <String Id="UITextSelParentCostNegPos" Value="Fitur ini membebaskan [1] pada hard disk Anda. Itu punya sub fitur [2] dari [3] yang dipilih. Sub fitur memerlukan [4] pada hard disk Anda." />
+    <String Id="UITextSelParentCostPosNeg" Value="Fitur ini memerlukan [1] pada hard disk Anda. Itu punya sub fitur [2] dari [3] yang dipilih. Sub fitur membebaskan [4] pada hard disk Anda." />
+    <String Id="UITextSelParentCostPosPos" Value="Fitur ini memerlukan [1] pada hard disk Anda. Itu punya sub fitur [2] dari [3] yang dipilih. Sub fitur memerlukan [4] pada hard disk Anda." />
+    <String Id="UITextTimeRemaining" Value="Waktu tersisa: {[1] menit }{[2] detik}" />
+    <String Id="UITextVolumeCostAvailable" Value="Tersedia" />
+    <String Id="UITextVolumeCostDifference" Value="Perbedaan" />
+    <String Id="UITextVolumeCostRequired" Value="Diperlukan" />
+    <String Id="UITextVolumeCostSize" Value="Ukuran Disk" />
+    <String Id="UITextVolumeCostVolume" Value="Volume" />
+
+</WixLocalization>

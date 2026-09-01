@@ -1,0 +1,73 @@
+# $Id: Makefile.kmk 114182 2026-05-22 16:32:53Z vitali.pelenjow@oracle.com $
+## @file
+# Makefile for D3D11 shader compilation.
+#
+
+#
+# Copyright (C) 2022-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+SHADER_H_FILES := \
+	$(PATH_SUB_CURRENT)/d3d11blitter.hlsl.vs.h \
+	$(PATH_SUB_CURRENT)/d3d11blitter.hlsl.ps.h \
+	$(PATH_SUB_CURRENT)/d3d11screen.hlsl.vs.h \
+	$(PATH_SUB_CURRENT)/d3d11screen.hlsl.ps.h \
+	$(PATH_SUB_CURRENT)/d3d11screen.hlsl.ps_SRGB.h \
+	$(PATH_SUB_CURRENT)/d3d11yuv.hlsl.cs_y.h \
+	$(PATH_SUB_CURRENT)/d3d11yuv.hlsl.cs_uv.h
+
+OTHERS        += \
+	$(SHADER_H_FILES)
+
+OTHERS_CLEAN  += \
+	$(SHADER_H_FILES)
+
+VBOX_FXC ?= $(PATH_SDK_$(VBOX_WINPSDK)_BIN)/fxc.exe
+
+##
+# Generates a rule for compiling a HLSL shader and creating a C header file with the shader hex dump.
+#
+# @param    1        The output C header file.
+# @param    2        The input .hlsl filename relative to the current sub-makefile.
+# @param    3        The entry point name in the .hlsl file.
+# @param    4        The shader type and version (vs_5_0, ps_4_0, etc).
+#
+define CREATE_SHADER_H_RULE
+ $(PATH_SUB_CURRENT)/$(1): \
+ 		$(PATH_SUB_CURRENT)/Makefile.kmk \
+ 		$(PATH_SUB_CURRENT)/$(2)
+	$(VBOX_FXC) /nologo /Fh$(1) /E$(3) /T$(4) $(PATH_SUB_CURRENT)/$(2)
+endef
+
+$(eval $(call CREATE_SHADER_H_RULE,d3d11blitter.hlsl.vs.h,d3d11blitter.hlsl,vs_blitter,vs_5_0))
+$(eval $(call CREATE_SHADER_H_RULE,d3d11blitter.hlsl.ps.h,d3d11blitter.hlsl,ps_blitter,ps_5_0))
+
+$(eval $(call CREATE_SHADER_H_RULE,d3d11screen.hlsl.vs.h,d3d11screen.hlsl,vs_screen,vs_5_0))
+$(eval $(call CREATE_SHADER_H_RULE,d3d11screen.hlsl.ps.h,d3d11screen.hlsl,ps_screen,ps_5_0))
+$(eval $(call CREATE_SHADER_H_RULE,d3d11screen.hlsl.ps_SRGB.h,d3d11screen.hlsl,ps_screen_SRGB,ps_5_0))
+
+$(eval $(call CREATE_SHADER_H_RULE,d3d11yuv.hlsl.cs_y.h,d3d11yuv.hlsl,cs_y,cs_5_0))
+$(eval $(call CREATE_SHADER_H_RULE,d3d11yuv.hlsl.cs_uv.h,d3d11yuv.hlsl,cs_uv,cs_5_0))
+
+include $(FILE_KBUILD_SUB_FOOTER)

@@ -1,0 +1,128 @@
+# $Id: .scm-settings 114668 2026-07-09 10:43:50Z klaus.espenlaub@oracle.com $
+## @file
+# Source code massager settings for PC devices/drivers.
+#
+
+#
+# Copyright (C) 2017-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+
+
+#--filter-out-files /BIOS/notes.txt
+#--filter-out-files /BIOS/makefile
+#--filter-out-files /BIOS/VBoxBiosAlternative*.asm
+#--filter-out-files /BIOS/VBoxBiosAlternative*.md5sum
+
+# PD
+/BIOS/font8x8.inc:  --external-copyright
+# ???
+/BIOS/pcicfg.inc:   --external-copyright
+
+# LGPL turned GPL.
+/BIOS/ata.c:        --lgpl-disclaimer
+/BIOS/ata.h:        --lgpl-disclaimer
+/BIOS/bios.c:       --lgpl-disclaimer
+/BIOS/biosint.h:    --lgpl-disclaimer
+/BIOS/boot.c:       --lgpl-disclaimer
+/BIOS/disk.c:       --lgpl-disclaimer
+/BIOS/ebda.h:       --lgpl-disclaimer
+/BIOS/eltorito.c:   --lgpl-disclaimer
+/BIOS/floppy.c:     --lgpl-disclaimer
+/BIOS/keyboard.c:   --lgpl-disclaimer
+/BIOS/orgs.asm:     --lgpl-disclaimer
+/BIOS/parallel.c:   --lgpl-disclaimer
+/BIOS/pcibios.inc:  --lgpl-disclaimer
+/BIOS/pirq.inc:     --lgpl-disclaimer
+/BIOS/print.c:      --lgpl-disclaimer
+/BIOS/ps2mouse.c:   --lgpl-disclaimer
+/BIOS/serial.c:     --lgpl-disclaimer
+/BIOS/smidmi.inc:   --lgpl-disclaimer
+/BIOS/system.c:     --lgpl-disclaimer
+/BIOS/timepci.c:    --lgpl-disclaimer
+
+# For now don't mess up the tabs in the BIOS assembly sources.
+/BIOS/*.asm|/BIOS/*.inc: --no-convert-tabs
+
+/BIOS/makefile:     --treat-as make
+/BIOS/VBoxBiosAlternative*.asm: --external-copyright --allow-lgpl-without-disclaimer ## @todo the latter is a bug in the generator.
+/BIOS/VBoxBiosAlternative*.md5sum: --treat-as plaintext
+
+# PXE
+/PXE/*.asm:     --external-copyright --no-convert-tabs --no-strip-trailing-blanks
+/PXE/*.c:       --external-copyright --no-convert-tabs --no-strip-trailing-blanks
+/PXE/*.h:       --external-copyright --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords --no-fix-header-guards
+/PXE/*.inc:     --external-copyright --no-convert-tabs --no-strip-trailing-blanks
+/PXE/*.i:       --external-copyright --no-convert-tabs --no-strip-trailing-blanks --strip-no-trailing-lines --treat-as .inc
+/PXE/*.r:       --external-copyright --no-convert-tabs --no-strip-trailing-blanks --strip-no-trailing-lines --treat-as .inc
+/PXE/*makefile: --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+/PXE/romcfg:    --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+/PXE/defrules:  --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+/PXE/defrules:  --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+/PXE/deftargs:  --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+/PXE/hostcfg:   --external-copyright --no-convert-tabs --no-strip-trailing-blanks --treat-as Makefile
+--filter-out-files /PXE/PXE-Intel.rom
+--filter-out-files /PXE/readme.txt
+
+# iPXE
+/ipxe/src/*:                    --external-copyright --lgpl-disclaimer --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords --no-fix-todos --strip-no-trailing-lines --no-convert-eol
+/ipxe/contrib/*:                --external-copyright --lgpl-disclaimer --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords --no-fix-todos --strip-no-trailing-lines --no-convert-eol
+/ipxe/*:                        --no-fix-header-guards
+/ipxe/*.S:                      --treat-as .c
+/ipxe/*.lds:                    --treat-as .h
+/ipxe/*.gdb:                    --treat-as .sh --dont-set-svn-executable
+/ipxe/*.ipxe:                   --treat-as shell
+/ipxe/*.travis.yml:             --treat-as plaintext --dont-set-svn-keywords
+/ipxe/*Makefile*:               --treat-as Makefile
+/ipxe/COPYING*:                 --treat-as plaintext
+/ipxe/src/util/geniso:          --treat-as shell
+/ipxe/src/util/genliso:         --treat-as shell
+/ipxe/src/util/gensdsk:         --treat-as shell
+/ipxe/src/util/get-pci-ids:     --treat-as shell
+/ipxe/contrib/vm/cow:           --treat-as shell
+/ipxe/contrib/vm/serial-console:            --treat-as perl
+/ipxe/contrib/rom-o-matic/*.php:            --treat-as plaintext
+/ipxe/contrib/vm/bochs-writable-ROM-patch:  --treat-as plaintext
+/ipxe/contrib/vm/serial-console.1:          --treat-as plaintext
+/ipxe/iPxeBiosBin.rom:                      --treat-as binary
+/ipxe/src/doxygen.cfg:                      --treat-as hashtext
+/ipxe/src/doc/build_sys.dox:                --treat-as plaintext
+/ipxe/src/doc/pxe_extensions:               --treat-as plaintext
+/ipxe/src/include/ipxe/efi/LICENCE:         --treat-as plaintext
+
+# iPXE defines it's own PAGE_XXX macros.
+/ipxe/src/arch/arm/include/ipxe/arm_io.h:   --no-page-restrictions
+/ipxe/src/arch/x86/include/ipxe/x86_io.h:   --no-page-restrictions
+/ipxe/src/include/ipxe/virtio-ring.h:       --no-page-restrictions
+/ipxe/src/include/ipxe/hyperv.h:            --no-page-restrictions
+/ipxe/src/include/ipxe/io.h:                --no-page-restrictions
+/ipxe/src/include/ipxe/vmbus.h:             --no-page-restrictions
+/ipxe/src/include/ipxe/xengrant.h:          --no-page-restrictions
+/ipxe/src/include/xen/io/ring.h:            --no-page-restrictions
+/ipxe/src/drivers/net/netvsc.h:             --no-page-restrictions
+/ipxe/src/drivers/net/bnxt/bnxt.h:          --skip-unicode-checks
+/ipxe/vbox/config/local/*.h:                --external-copyright
+
+# Not UTF-8 encoded but contains non-ASCII characters (pico, quotes)
+/ipxe/src/drivers/bus/eisa.c:                   --skip-unicode-checks
+/ipxe/src/drivers/infiniband/MT25408_PRM.h:     --skip-unicode-checks
+/ipxe/src/drivers/net/smc9000.c:                --skip-unicode-checks
+/ipxe/src/drivers/net/smc9000.h:                --skip-unicode-checks

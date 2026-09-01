@@ -1,0 +1,66 @@
+# $Id: Makefile.kmk 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# Common installer stuff.
+#
+
+#
+# Copyright (C) 2006-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+# Include Sub-Makefiles.
+ifndef VBOX_OSE
+ include $(PATH_SUB_CURRENT)/keygen/Makefile.kmk
+endif
+
+# Python glue installer
+ifdef VBOX_WITH_PYTHON
+
+ INSTALLS += VBox-python-glue-vboxapisetup
+ VBox-python-glue-vboxapisetup_INST     = $(INST_SDK)installer/python/vboxapi/
+ VBox-python-glue-vboxapisetup_MODE    := a+r,u+w
+ VBox-python-glue-vboxapisetup_SOURCES := vboxapisetup.py=>setup.py
+
+ INSTALLS += VBox-python-glue-vboxapisetup-stub
+ VBox-python-glue-vboxapisetup-stub_INST     = $(INST_SDK)installer/python/
+ VBox-python-glue-vboxapisetup-stub_MODE    := a+r,u+w
+ VBox-python-glue-vboxapisetup-stub_SOURCES := vboxapisetup-stub.py=>vboxapisetup.py
+
+ #
+ # Automatically lint common installer Python stuff.
+ #
+ if defined(VBOX_WITH_PYLINT) && !defined(VBOX_WITHOUT_AUTO_PYLINT)
+  OTHERS      += $(PATH_TARGET)/pylintInstallerCommon.run
+  OTHER_CLEAN += $(PATH_TARGET)/pylintInstallerCommon.run
+  $(PATH_TARGET)/pylintInstallerCommon.run: \
+  		${PATH_SUB_CURRENT}/vboxapisetup.py ${PATH_SUB_CURRENT}/vboxapisetup-stub.py
+	$(QUIET)$(APPEND) -t "$@"
+ endif
+
+ VBOX_INSTALLER_COMMON_PYTHON_SOURCES := $(wildcard $(PATH_SUB_CURRENT)/*.py)
+
+ $(evalcall def_vbox_installer_common_process_python_sources,FORCE)
+
+endif # VBOX_WITH_PYTHON
+
+include $(FILE_KBUILD_SUB_FOOTER)

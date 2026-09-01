@@ -1,0 +1,43 @@
+﻿<!--
+    VirtualBox Windows Installation Script (WiX)
+-->
+<!--
+    Copyright (C) 2006-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+<?if $(env.VBOX_WITH_NETFLT) = "yes" ?>
+
+    <?if $(env.VBOX_SIGNING_MODE) != "none" ?>
+        <Component Id="cp_NetLwfDriverCat_W10" Guid="0932500d-4d45-4d79-8693-3192528d7cae" Bitness="$(var.Property_Bitness)" Condition="(NETWORKTYPE=&quot;NDIS6&quot;)">
+            <!-- Note: ShortName is required to avoid naming collisions the the MSI file table. -->
+            <File Id="file_VBoxNetLwf_W10.cat" ShortName="NetLwf2.cat" Name="VBoxNetLwf.cat" Source="$(env.VBOX_PATH_ATTESTATION_SIGNED)\VBoxNetLwf.cat" />
+        </Component>
+    <?endif?>
+    <Component Id="cp_NetLwfDriver" Guid="831b909d-f09a-4281-b6b0-99393fa4769d" Bitness="$(var.Property_Bitness)" Condition="(NETWORKTYPE=&quot;NDIS6&quot;)">
+        <File Id="file_VBoxNetLwf.sys" Name="VBoxNetLwf.sys" KeyPath="yes" Source="$(env.VBOX_PATH_ATTESTATION_SIGNED)\VBoxNetLwf.sys" Checksum="yes" />
+        <File Id="file_VBoxNetLwf.inf" Name="VBoxNetLwf.inf" Source="$(env.VBOX_PATH_ATTESTATION_SIGNED)\VBoxNetLwf.inf" />
+    </Component>
+
+<?endif?> <!-- VBOX_WITH_NETFLT -->
+
+</Include>

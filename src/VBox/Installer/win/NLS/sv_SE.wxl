@@ -1,0 +1,639 @@
+﻿<!--
+    Language Definition Include for VirtualBox WiX script.
+-->
+<!--
+    Copyright (C) 2011-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="sv_SE" Codepage="1252">
+    <String Id="LANG" Value="1053" />
+    <String Id="CODEPAGE" Value="1252" />
+    <String Id="LangName" Value="Swedish" />
+
+    <String Id="ButtonText_No" Value="&amp;Nej" />
+    <String Id="ButtonText_Yes" Value="&amp;Ja" />
+    <String Id="ButtonText_Cancel" Value="&amp;Avbryt" />
+    <String Id="ButtonText_Next" Value="&amp;Nästa" />
+    <String Id="ButtonText_Back" Value="&amp;Tillbaka" />
+    <String Id="ButtonText_Browse" Value="Ä&amp;ndra" />
+    <String Id="ButtonText_OK" Value="O&amp;k" />
+    <String Id="ButtonText_Check" Value="&amp;Kontrollera" />
+    <String Id="ButtonText_Install" Value="&amp;Installera" />
+    <String Id="ButtonText_Remove" Value="&amp;Ta bort" />
+    <String Id="ButtonText_Finish" Value="&amp;Slutför" />
+    <String Id="ButtonText_Repair" Value="&amp;Reparera" />
+    <String Id="ButtonText_Return" Value="Å&amp;tergå" />
+    <String Id="ButtonText_Retry" Value="Försök &amp;igen" />
+    <String Id="ButtonText_Ignore" Value="I&amp;gnorera" />
+    <String Id="ButtonText_Exit" Value="A&amp;vsluta" />
+
+    <String Id="InstallModeCustom" Value="Anpassad" />
+    <String Id="Setup" Value="Installationsprogram" />
+
+    <!---->
+
+    <String Id="StartMenu_License" Value="Licens" />
+    <String Id="StartMenu_UserManual" Value="Användarhandbok" />
+
+    <!---->
+
+    <String Id="VB_App" Value="[ProductName] applikation." />
+    <String Id="VB_USBDriver" Value="[ProductName] USB-enhetsdrivrutiner för USB-enhetsstöd." />
+    <String Id="VB_Network" Value="[ProductName] drivrutiner för nätverksenheter för nätverksstöd." />
+    <String Id="VB_NetLwfDriver" Value="[ProductName] drivrutin för NDIS6 bryggat nätverk." />
+    <String Id="VB_NetAdp6Driver" Value="[ProductName] virtual network adapter driver for NDIS6 Host-Only Networking." />
+    <String Id="VB_Python" Value="Python-stöd för VirtualBox." />
+
+    <!---->
+
+    <String Id="UsedByOtherApp" Value="En applikation som använder den nu installerade versionen av VirtualBox har upptäckts. Du måste ta bort denna applikation innan du fortsätter installationen. Se filen dependency.dep i VirtualBox-installationskatalogen för mer information.." />
+    <String Id="NeedAdmin" Value="Du måste ha administratörsrättigheter för att (av)installera [ProductName]! Installationsprogrammet stängs nu.." />
+    <String Id="NeedMSCRT" Value="[ProductName] kräver att Microsoft Visual C++ 2019 Redistributable Package installeras först. Installera och starta om installationen av [ProductName]." />
+    <String Id="WrongOS" Value="[ProductName] kan endast köras på Windows 10 eller senare." />
+    <String Id="Only64Bit" Value="[ProductName] kan endast köras på 64-bitars Windows-system." />
+    <String Id="WrongPlatformArch" Value="Denna version av [ProductName] har utvecklats för en annan plattformsarkitektur och kan därför inte installeras. Installera en version som passar [ProductName]!" />
+    <String Id="NewerVersionDetected" Value="A newer version of VirtualBox is already installed. Please uninstall it first before installing older versions of VirtualBox." />
+    <String Id="InvalidTargetDir" Value="Ogiltig installationskatalog angiven! Använd en annan installationskatalog för att installera [ProductName]. Mer information finns i manualen för [ProductName]." />
+
+    <!---->
+
+    <String Id="CancelDlg_Question" Value="Är du säker på att du vill avbryta installationen av [ProductName]?" />
+
+    <!---->
+
+    <String Id="WelcomeDlg_Header" Value="Välkommen till installationsprogrammet för [ProductName]" />
+    <String Id="WelcomeDlg_Body" Value="Installationsprogrammet installerar [ProductName] på din dator. Klicka på Nästa för att fortsätta eller Avbryt för att avsluta installationsprogrammet.." />
+
+    <!---->
+
+    <String Id="LicenseAgreementDlg_Header" Value="Licensavtal för slutanvändare" />
+    <String Id="LicenseAgreementDlg_Body" Value="Läs följande licensavtal noggrant." />
+    <String Id="LicenseAgreementDlg_Accept" Value="Jag &amp;accepterar villkoren i licensavtalet" />
+    <String Id="LicenseAgreementDlg_Decline" Value="Jag accepterar &amp;inte villkoren i licensavtalet." />
+
+    <!---->
+
+    <String Id="InvalidTargetDirDlg_Header" Value="Ogiltig installationskatalog" />
+    <String Id="InvalidTargetDirDlg_Desc1" Value="Den valda installationskatalogen är ogiltig, eftersom den inte uppfyller säkerhetskraven. Mer information finns i [ProductName]-handboken.." />
+    <String Id="InvalidTargetDirDlg_Desc2" Value="Välj en annan katalog för installationen av [ProductName]." />
+
+    <!---->
+
+    <String Id="CheckSerialDlg_Header" Value="Serienummer" />
+    <String Id="CheckSerialDlg_Body" Value="Ange ditt serienummer i fälten nedan. Du hittar det på etiketten inuti VirtualBox-CD-fodralet." />
+    <String Id="CheckSerialDlg_Footer" Value="När du har angett serienumret trycker du på knappen &quot;Kontrollera&quot; nedan.." />
+
+    <!---->
+
+    <String Id="WrongSerialDlg_Header" Value="Det angivna serienumret är ogiltigt.!" />
+    <String Id="WrongSerialDlg_Desc1" Value="Gå tillbaka och ange serienumret igen." />
+    <String Id="WrongSerialDlg_Desc2" Value="Tänk på att serienumret måste skrivas exakt som det står på etiketten.." />
+
+    <!---->
+
+    <String Id="WarnSaveStatesDlg_Header" Value="Varning:" />
+    <String Id="WarnSaveStatesDlg_Header2" Value="Okompatibla sparade tillstånd!" />
+    <String Id="WarnSaveStatesDlg_Desc" Value="När du uppgraderar [ProductName] kommer alla sparade inställningar från dina befintliga maskiner att sluta fungera! Efter installationen måste du radera dem manuellt." />
+    <String Id="WarnSaveStatesDlg_Proceed" Value="Fortsätta med installationen nu?" />
+
+    <!---->
+
+    <String Id="WarnTAPDevicesDlg_Header" Value="Värdgränssnitt" />
+    <String Id="WarnTAPDevicesDlg_Desc" Value="Om du använde vissa värdgränssnitt för dina maskiner i den tidigare versionen måste du skapa dem manuellt efter installationen." />
+
+    <!---->
+
+    <String Id="NetCfgLocked" Value="Följande program måste stängas innan installationen kan fortsätta: &quot;[2]&quot;" />
+
+    <!---->
+
+    <String Id="CustomizeDlg_Location" Value="Installationsplats:" />
+    <String Id="CustomizeDlg_DiskUsage" Value="Kontrollera diskutrymme" />
+    <String Id="CustomizeDlg_SelFeatures" Value="Välj de funktioner som ska installeras" />
+    <String Id="CustomizeDlg_IconTree" Value="Klicka på ikonerna i trädet nedan för att ändra hur funktionerna ska installeras." />
+    <String Id="CustomizeDlg_CustomSetup" Value="Anpassad konfiguration" />
+    <String Id="CustomizeDlg_SelItemDesc" Value="CustomizeDlgItemDescription-CustomizeDlgItemDescription" />
+    <String Id="CustomizeDlg_SelItemSize" Value="CustomizeDlgItemSize-CustomizeDlgItemSize" />
+    <String Id="CustomizeDlg_SelItemPath" Value="CustomizeDlgLocation-CustomizeDlgLocation" />
+
+    <!---->
+
+    <String Id="Customize2Dlg_Header" Value="Anpassa" />
+    <String Id="Customize2Dlg_Desc" Value="Välj ett eller flera uppstartsalternativ" />
+    <String Id="Customize2Dlg_CreateStartMenuEntries" Value="Lägg till i Start-menyn" />
+    <String Id="Customize2Dlg_CreateDesktopShortcut" Value="Skapa en genväg på skrivbordet" />
+    <String Id="Customize2Dlg_RegisterFileExtensions" Value="Starta som standard när du öppnar .ova- eller .ovf-filer" />
+
+    <!---->
+
+    <String Id="SelectionNetworkTypeDlg_CommonDescription" Value="Välj vilken typ av nätverksdrivrutiner du vill använda:" />
+    <String Id="SelectionNetworkTypeDlg_DescriptionNDIS6" Value="NDIS6-nätverksdrivrutiner.&#xA;Detta är standard för nyare versioner av Windows (Vista och nyare)." />
+    <String Id="SelectionNetworkTypeDlg_RadioButtonNDIS6" Value="Använd NDIS6-nätverksdrivrutiner." />
+
+    <!---->
+
+    <String Id="WarnDisconNetIfacesDlg_Title" Value="Varning:" />
+    <String Id="WarnDisconNetIfacesDlg_Title2" Value="Avbrott i nätverket" />
+    <String Id="WarnDisconNetIfacesDlg_Desc" Value="Under installationen av [ProductName]-nätverk kommer ditt nätverk att kopplas från. Se till att alla åtgärder som kräver nätverksanslutning är slutförda innan du fortsätter." />
+
+    <!---->
+
+    <String Id="WarnPythonDlg_Title" Value="Saknade beroenden" />
+    <String Id="WarnPythonDlg_Title2" Value="Python Core och win32api" />
+    <String Id="WarnPythonDlg_Desc" Value="För att installera Python-bindningarna för [ProductName] måste Python Core-paketet och win32api-bindningarna vara installerade." />
+    <String Id="WarnPythonDlg_Desc2" Value="Du kan installera och konfigurera dessa senare. Anvisningar finns i [ProductName] SDK-programmeringsguide. Alternativt kan du installera dem innan du fortsätter med installationen av Oracle VirtualBox." />
+
+    <!---->
+
+    <String Id="DiskCostDlg_SpaceRequired" Value="Det diskutrymme som krävs för installation av de valda funktionerna." />
+    <String Id="DiskCostDlg_NotEnoughSpace" Value="De markerade volymerna (om sådana finns) har inte tillräckligt med diskutrymme för de funktioner som är markerade. Du kan antingen ta bort några filer från de markerade volymerna, välja att installera färre funktioner på den lokala hårddisken eller välja en annan målhårddisk." />
+    <String Id="DiskCostDlg_SpaceRequirements" Value="Diskutrymmeskrav" />
+    <String Id="DiskCostDlg_VolumeList" Value="{120}{70}{70}{70}{70}" />
+
+    <!---->
+
+    <String Id="BrowseDlg_BrowseDestFolder" Value="Bläddra till målmappen" />
+    <String Id="BrowseDlg_ChangeCurFolder" Value="Ändra aktuell målmapp" />
+    <String Id="BrowseDlg_UpOneLevelTooltip" Value="Upp en nivå" />
+    <String Id="BrowseDlg_CreateNewFolderTooltip" Value="Skapa en ny mapp" />
+    <String Id="BrowseDlg_LookIn" Value="&amp;Titta i:" />
+    <String Id="BrowseDlg_FolderName" Value="&amp;Mappnamn:" />
+
+    <!---->
+
+    <String Id="VerifyReadyDlg_ReadyToBegin" Value="Redo att installera installationstypen ”[InstallMode]”." />
+    <String Id="VerifyReadyDlg_ReadyToInstall" Value="Redo att installera" />
+
+    <!---->
+
+    <String Id="ExitDlg_ClickFinish" Value="Du kan också behöva VirtualBox-tilläggspaket. Mer information finns i VirtualBox-användarhandboken." />
+    <String Id="ExitDlg_InstComplete" Value="[ProductName] har installerats." />
+    <String Id="ExitDlg_StartVBox" Value="Starta [ProductName]?" />
+
+    <!---->
+
+    <String Id="FatalErrorDlg_Title" Value="Installationsprogrammet för [ProductName] avslutades i förtid" />
+    <String Id="FatalErrorDlg_Description1" Value="Starta om datorn och försök igen genom att köra (av)installationen på nytt." />
+    <String Id="FatalErrorDlg_Description2" Value="Alternativt kan du konsultera forumet eller dokumentationen för [ProductName]." />
+    <String Id="FatalErrorDlg_DescLogOpen" Value="Öppna loggfilen" />
+    <String Id="FatalErrorDlg_DescLogPath" Value="Loggfilen skrevs till:" />
+
+    <!---->
+
+    <String Id="FilesInUse_Text" Value="Följande program använder filer som måste uppdateras av denna installation. Stäng dessa program och klicka sedan på &amp;Försök igen för att fortsätta installationen eller Avsluta för att avsluta den." />
+    <String Id="FilesInUse_Description" Value="Vissa filer som måste uppdateras används för närvarande." />
+    <String Id="FilesInUse_Title" Value="Filer som används" />
+
+    <!---->
+
+    <String Id="UserExitDlg_Header" Value="Installationen av [ProductName] avbröts." />
+    <String Id="UserExitDlg_Desc" Value="Installationen av [ProductName] avbröts. Ditt system har inte ändrats. Om du vill installera programmet senare, kör installationen igen." />
+    <String Id="UserExitDlg_Footer" Value="Klicka på knappen Slutför för att stänga installationsprogrammet." />
+
+    <!---->
+
+    <String Id="ProgressDlg_PleaseWait" Value="Installationen tar några minuter." />
+
+    <!---->
+
+    <String Id="ResumeDlg_Header" Value="Återupptar installationen av [ProductName]" />
+    <String Id="ResumeDlg_Desc" Value="Installationsprogrammet kommer att slutföra installationen av [ProductName] på din dator. Klicka på Installera för att fortsätta eller Avbryt för att avsluta installationsprogrammet." />
+
+    <!---->
+
+    <String Id="MaintenanceTypeDlg_Header" Value="Ändra, reparera eller ta bort installation" />
+    <String Id="MaintenanceTypeDlg_SelOption" Value="Välj den åtgärd du vill utföra." />
+    <String Id="MaintenanceTypeDlg_Repair" Value="Re&amp;parera" />
+    <String Id="MaintenanceTypeDlg_RepairText" Value="Reparerar fel i den senaste installationsstatusen – åtgärdar saknade eller skadade filer, genvägar och registerposter." />
+    <String Id="MaintenanceTypeDlg_RepairTooltip" Value="Reparera installation" />
+    <String Id="MaintenanceTypeDlg_RepairProgress1" Value="Reparerar" />
+    <String Id="MaintenanceTypeDlg_RepairProgress2" Value="reparerar" />
+    <String Id="MaintenanceTypeDlg_Remove" Value="&amp;Ta bort" />
+    <String Id="MaintenanceTypeDlg_RemoveText" Value="Tar bort [ProductName] från din dator." />
+    <String Id="MaintenanceTypeDlg_RemoveTooltip" Value="Ta bort installation" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress1" Value="Tar bort" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress2" Value="tar bort" />
+
+    <!---->
+
+    <String Id="MaintenanceWelcomeDlg_Header" Value="Välkommen till installationsprogrammet för [ProductName]" />
+    <String Id="MaintenanceWelcomeDlg_Desc" Value="Installationsprogrammet låter dig reparera din nuvarande installation eller ta bort [ProductName] från din dator. Klicka på Nästa för att fortsätta eller Avbryt för att stänga installationsprogrammet." />
+
+    <!---->
+
+    <String Id="OutOfDiskDlg_InstallationExceeds" Value="Det krävs mer diskutrymme för installationen än vad som finns tillgängligt." />
+    <String Id="OutOfDiskDlg_NotEnoughDiskSpace" Value="De markerade volymerna har inte tillräckligt med diskutrymme för de valda funktionerna. Du kan antingen ta bort några filer från de markerade volymerna, välja att installera färre funktioner på den lokala hårddisken eller välja en annan målhårddisk." />
+    <String Id="OutOfDiskDlg_OutOfDiskSpace" Value="Slut på diskutrymme" />
+
+    <!---->
+
+    <String Id="OutOfRbDiskDlg_InstallationExceeds" Value="Det krävs mer diskutrymme för installationen än vad som finns tillgängligt." />
+    <String Id="OutOfRbDiskDlg_NotEnoughDiskSpace" Value="De markerade volymerna har inte tillräckligt med diskutrymme för de valda funktionerna. Du kan antingen ta bort några filer från de markerade volymerna, välja att installera färre funktioner på den lokala hårddisken eller välja en annan målhårddisk." />
+    <String Id="OutOfRbDiskDlg_OutOfDiskSpace" Value="Slut på diskutrymme" />
+    <String Id="OutOfRbDiskDlg_Desc" Value="Alternativt kan du välja att inaktivera installationsprogrammets återställningsfunktion. Detta gör att installationsprogrammet kan återställa datorn till dess ursprungliga tillstånd om installationen av någon anledning avbryts. Klicka på Ja om du vill ta risken att inaktivera återställningen." />
+
+    <!---->
+
+    <String Id="VerifyRemoveDlg_Header" Value="Ta bort [ProductName]" />
+    <String Id="VerifyRemoveDlg_Desc" Value="Du har valt att ta bort programmet från din dator." />
+    <String Id="VerifyRemoveDlg_ClickRemove" Value="Klicka på Ta bort för att ta bort [ProductName] från din dator. Om du vill granska eller ändra någon av installationsinställningarna klickar du på Tillbaka. Klicka på Avbryt för att stänga guiden." />
+
+    <!---->
+
+    <String Id="VerifyRepairDlg_Header" Value="Reparera [ProductName]" />
+    <String Id="VerifyRepairDlg_ReadyToBegin" Value="Installationsprogrammet är redo att påbörja reparationen av [ProductName]." />
+    <String Id="VerifyRepairDlg_ClickRepair" Value="Klicka på Reparera för att reparera installationen av [ProductName]. Om du vill granska eller ändra någon av installationsinställningarna klickar du på Tillbaka. Klicka på Avbryt för att stänga guiden." />
+
+    <!---->
+
+    <String Id="WaitForCostingDlg_PleaseWait" Value="Vänta medan installationsprogrammet fastställer hur mycket diskutrymme som krävs." />
+
+    <!---->
+
+    <String Id="MsiRMFilesInUse_Text" Value="Följande program använder filer som måste uppdateras av denna installation. Du kan låta installationsprogrammet stänga dem och försöka starta dem igen eller starta om datorn senare." />
+    <String Id="MsiRMFilesInUse_Description" Value="Några filer som måste uppdateras används för närvarande." />
+    <String Id="MsiRMFilesInUse_Title" Value="Filer som används" />
+    <String Id="MsiRMFilesInUse_UseRM" Value="&amp;Stäng programmen och försök starta om dem." />
+    <String Id="MsiRMFilesInUse_DontUseRM" Value="&amp;Stäng inte programmen. En omstart kommer att krävas." />
+
+    <!-- The following strings are internally used by WiX and MSI -->
+    <String Id="Error0" Value="{{Allvarligt fel: }}" />
+    <String Id="Error1" Value="{{Fel [1]. }}" />
+    <String Id="Error2" Value="Varning [1]." />
+    <String Id="Error3" Value="Fel [1]." />
+    <String Id="Error4" Value="Info [1]." />
+    <String Id="Error5" Value="Installationsprogrammet har stött på ett oväntat fel vid installationen av detta paket. Detta kan tyda på ett problem med paketet. Felkoden är [1]. {{Argumenten är: [2], [3], [4]}}" />
+    <String Id="Error6" Value="" />
+    <String Id="Error7" Value="{{Disken är full: }}" />
+    <String Id="Error8" Value="Åtgärd [Time]: [1]. [2]" />
+    <String Id="Error9" Value="[ProductName]" />
+    <String Id="Error10" Value="{[2]}{, [3]}{, [4]}" />
+    <String Id="Error11" Value="Meddelandetyp: [1], Argument: [2]" />
+    <String Id="Error12" Value="=== Loggning startad: [Date]  [Time] ===" />
+    <String Id="Error13" Value="=== Loggning stoppad: [Date]  [Time] ===" />
+    <String Id="Error14" Value="Åtgärd startad [Time]: [1]." />
+    <String Id="Error15" Value="Åtgärd stoppad [Time]: [1]. Return value [2]." />
+    <String Id="Error16" Value="Återstående tid: {[1] minutes }{[2] seconds}" />
+    <String Id="Error17" Value="Minnet är fullt. Stäng andra program innan du försöker igen." />
+    <String Id="Error18" Value="Installationsprogrammet svarar inte längre." />
+    <String Id="Error19" Value="Installationsprogrammet avbröts i förtid." />
+    <String Id="Error20" Value="Vänta medan Windows konfigurerar [ProductName]" />
+    <String Id="Error21" Value="Samlar in nödvändig information..." />
+    <String Id="Error22" Value="Tar bort äldre versioner av det här programmet..." />
+    <String Id="Error23" Value="Förbereder borttagning av äldre versioner av det här programmet..." />
+    <String Id="Error32" Value="Installationen av {[ProductName] }är färdig." />
+    <String Id="Error33" Value="Installationen av {[ProductName] }misslyckades." />
+    <String Id="Error1101" Value="Fel vid läsning från fil: [2]. {{ Systemfel [3].}} Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1301" Value="Det går inte att skapa filen ’[2]’. En katalog med detta namn finns redan. Avbryt installationen och försök installera på en annan plats." />
+    <String Id="Error1302" Value="Sätt i disken: [2]" />
+    <String Id="Error1303" Value="Installationsprogrammet har inte tillräckliga behörigheter för att komma åt den här katalogen: [2]. Installationen kan inte fortsätta. Logga in som administratör eller kontakta systemadministratören." />
+    <String Id="Error1304" Value="Fel vid skrivning till fil: [2]. Kontrollera att du har åtkomst till den katalogen." />
+    <String Id="Error1305" Value="Fel vid läsning från fil [2]. {{ Systemfel [3].}} Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1306" Value="En annan applikation har exklusiv åtkomst till filen ’[2]’. Stäng alla andra applikationer och klicka sedan på Försök igen." />
+    <String Id="Error1307" Value="Det finns inte tillräckligt med diskutrymme för att installera den här filen: [2]. Frigör diskutrymme och klicka på Försök igen, eller klicka på Avbryt för att avsluta." />
+    <String Id="Error1308" Value="Källfil hittades inte: [2]. Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1309" Value="Fel vid läsning från fil: [3]. {{ Systemfel [2].}} Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1310" Value="Fel vid skrivning till fil: [3]. {{ Systemfel [2].}} Kontrollera att du har åtkomst till den katalogen." />
+    <String Id="Error1311" Value="Källfil hittades inte{{(cabinet)}}: [2]. Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1312" Value="Det går inte att skapa katalogen ’[2]’. En fil med detta namn finns redan. Byt namn på eller ta bort filen och klicka på Försök igen, eller klicka på Avbryt för att avsluta." />
+    <String Id="Error1313" Value="Volymen [2] är för närvarande inte tillgänglig. Välj en annan." />
+    <String Id="Error1314" Value="Den angivna sökvägen ’[2]’ är inte tillgänglig." />
+    <String Id="Error1315" Value="Det går inte att skriva till den angivna mappen: [2]." />
+    <String Id="Error1316" Value="Ett nätverksfel uppstod vid försök att läsa från filen: [2]" />
+    <String Id="Error1317" Value="Ett fel uppstod vid försökt att skapa katalogen: [2]" />
+    <String Id="Error1318" Value="Ett nätverksfel uppstod vid försöket att skapa katalogen: [2]" />
+    <String Id="Error1319" Value="Ett nätverksfel uppstod vid försök att öppna källfilsarkivet: [2]" />
+    <String Id="Error1320" Value="Den angivna sökvägen är för lång: [2]" />
+    <String Id="Error1321" Value="Installationsprogrammet har inte tillräckliga behörigheter för att ändra den här filen: [2]." />
+    <String Id="Error1322" Value="En del av mappsökvägen ’[2]’ är ogiltig. Den är antingen tom eller överskrider den längd som systemet tillåter." />
+    <String Id="Error1323" Value="Mappsökvägen ’[2]’ innehåller ord som inte är giltiga i mappsökvägar." />
+    <String Id="Error1324" Value="Mappsökvägen ’[2]’ innehåller ett ogiltigt tecken." />
+    <String Id="Error1325" Value="’[2]’ är inte ett giltigt kort filnamn." />
+    <String Id="Error1326" Value="Fel vid hämtning av filsäkerhet: [3] GetLastString: [2]" />
+    <String Id="Error1327" Value="Ogiltig enhet: [2]" />
+    <String Id="Error1328" Value="Fel vid tillämpning av patch på filen [2]. Den har troligen uppdaterats på annat sätt och kan inte längre ändras med denna patch. Kontakta din patchleverantör för mer information. {{System Error: [3]}}" />
+    <String Id="Error1329" Value="En fil som krävs kan inte installeras eftersom kabinettfilen [2] inte är digitalt signerad. Detta kan tyda på att kabinettfilen är skadad." />
+    <String Id="Error1330" Value="En fil som krävs kan inte installeras eftersom kabinettfilen [2] har en ogiltig digital signatur. Detta kan tyda på att kabinettfilen är skadad.{{ Fel [3] returnerades av WinVerifyTrust.}}" />
+    <String Id="Error1331" Value="Kunde inte kopiera filen [2] korrekt: CRC-fel." />
+    <String Id="Error1332" Value="Kunde inte flytta filen [2] korrekt: CRC-fel." />
+    <String Id="Error1333" Value="Kunde inte patcha filen [2]: CRC-fel." />
+    <String Id="Error1334" Value="Filen ’[2]’ kan inte installeras eftersom filen inte finns i kabinettfilen ’[3]’. Detta kan bero på ett nätverksfel, ett fel vid läsning från CD-ROM-skivan eller ett problem med detta paket." />
+    <String Id="Error1335" Value="Kabinettfilen ’[2]’ som krävs för denna installation är skadad och kan inte användas. Detta kan bero på ett nätverksfel, ett fel vid läsning från CD-ROM-skivan eller ett problem med detta paket." />
+    <String Id="Error1336" Value="Det uppstod ett fel när en tillfällig fil som behövs för att slutföra installationen skapades.{{ Mapp: [3]. Systemfelkod: [2]}}" />
+    <String Id="Error1401" Value="Kunde inte skapa nyckel: [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1402" Value="Kunde inte öppna nyckel: [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1403" Value="Det gick inte att ta bort värdet [2] från nyckel [3]. {{ Systemfel [4].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1404" Value="Kunde inte ta bort nyckel [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till den nyckeln eller kontakta supporten." />
+    <String Id="Error1405" Value="Det gick inte att läsa värdet [2] från nyckel [3]. {{ Systemfel [4].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1406" Value="Det gick inte att skriva värdet [2] till nyckel [3]. {{ Systemfel [4].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1407" Value="Det gick inte att hämta värdenamn för nyckel [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1408" Value="Det gick inte att hämta undernyckelnamn för nyckel [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1409" Value="Det gick inte att läsa säkerhetsinformationen för nyckel [2]. {{ Systemfel [3].}} Kontrollera att du har tillräcklig åtkomst till nyckeln eller kontakta supporten." />
+    <String Id="Error1410" Value="Det gick inte att öka det tillgängliga utrymmet i registret. [2] KB ledigt utrymme i registret krävs för att installera det här programmet." />
+    <String Id="Error1500" Value="En annan installation pågår. Du måste slutföra den installationen innan du fortsätter med den här." />
+    <String Id="Error1501" Value="Fel vid åtkomst till skyddade data. Kontrollera att Windows Installer är korrekt konfigurerat och försök installera igen." />
+    <String Id="Error1502" Value="Användaren ’[2]’ har tidigare påbörjat en installation av produkten ’[3]’. Den användaren måste köra installationen igen innan produkten kan användas. Din nuvarande installation fortsätter nu." />
+    <String Id="Error1503" Value="Användaren ”[2]” har tidigare påbörjat en installation av produkten ”[3]”. Den användaren måste köra installationen igen innan produkten kan användas." />
+    <String Id="Error1601" Value="Diskutrymmet är slut -- Volym: ’[2]’; utrymme som krävs: [3] KB; tillgängligt utrymme: [4] KB. Frigör diskutrymme och försök igen." />
+    <String Id="Error1602" Value="Är du säker på att du vill avbryta?" />
+    <String Id="Error1603" Value="Filen [2][3] används av följande process: Namn: [4], Id: [5], Fönstertitel: ’[6]’. Stäng programmet och försök igen." />
+    <String Id="Error1604" Value="Produkten ”[2]” är redan installerad, vilket förhindrar installation av den här produkten. De två produkterna är inte kompatibla." />
+    <String Id="Error1605" Value="Det finns inte tillräckligt med diskutrymme på volymen ’[2]’ för att fortsätta installationen med återställning aktiverad. [3] KB krävs, men endast [4] KB är tillgängligt. Klicka på Ignorera för att fortsätta installationen utan att spara återställningsinformationen, klicka på Försök igen för att söka efter tillgängligt utrymme igen eller klicka på Avbryt för att avbryta installationen." />
+    <String Id="Error1606" Value="Det gick inte att komma åt nätverksplatsen [2]." />
+    <String Id="Error1607" Value="Följande program måste stängas innan installationen fortsätter:" />
+    <String Id="Error1608" Value="Det gick inte att hitta några tidigare installerade kompatibla produkter på datorn för installation av den här produkten." />
+    <String Id="Error1609" Value="Ett fel uppstod vid tillämpningen av säkerhetsinställningarna. [2] är inte en giltig användare eller grupp. Det kan vara ett problem med paketet eller ett problem med anslutningen till en domänkontrollant i nätverket. Kontrollera nätverksanslutningen och klicka på Försök igen eller Avbryt för att avsluta installationen. {{Kan inte hitta användarens SID, systemfel [3]}}" />
+    <String Id="Error1701" Value="Nyckeln [2] är ogiltig. Kontrollera att du har angett rätt nyckel." />
+    <String Id="Error1702" Value="Installationsprogrammet måste starta om systemet innan konfigurationen av [2] kan fortsätta. Klicka på Ja för att starta om nu eller Nej om du planerar att starta om manuellt senare." />
+    <String Id="Error1703" Value="Du måste starta om systemet för att konfigurationsändringarna i [2] ska träda i kraft. Klicka på Ja för att starta om nu eller Nej om du planerar att starta om manuellt senare." />
+    <String Id="Error1704" Value="En installation för [2] är för närvarande avbruten. Du måste ångra de ändringar som gjordes av den installationen för att kunna fortsätta. Vill du ångra dessa ändringar?" />
+    <String Id="Error1705" Value="En tidigare installation av denna produkt pågår. Du måste ångra de ändringar som gjorts av den installationen för att kunna fortsätta. Vill du ångra dessa ändringar?" />
+    <String Id="Error1706" Value="Ett installationspaket för produkten [2] kan inte hittas. Försök installera igen med en giltig kopia av installationspaketet ’[3]’." />
+    <String Id="Error1707" Value="Installationen slutförd." />
+    <String Id="Error1708" Value="Installationen misslyckades." />
+    <String Id="Error1709" Value="Produkt: [2] -- [3]" />
+    <String Id="Error1710" Value="Du kan antingen återställa datorn till dess tidigare tillstånd eller fortsätta installationen senare. Vill du återställa?" />
+    <String Id="Error1711" Value="Ett fel uppstod vid skrivning av installationsinformation till disken. Kontrollera att det finns tillräckligt med diskutrymme och klicka på Försök igen eller Avbryt för att avsluta installationen." />
+    <String Id="Error1712" Value="En eller flera av de filer som krävs för att återställa datorn till dess tidigare tillstånd kunde inte hittas. Återställning är inte möjlig." />
+    <String Id="Error1713" Value="[2] kan inte installera en av de nödvändiga produkterna. Kontakta din tekniska support. {{Systemsträng: [3].}}" />
+    <String Id="Error1714" Value="Den äldre versionen av [2] kan inte tas bort. Kontakta din tekniska support. {{Systemsträng [3].}}" />
+    <String Id="Error1715" Value="Installerade [2]" />
+    <String Id="Error1716" Value="Konfigurerade [2]" />
+    <String Id="Error1717" Value="Tog bort [2]" />
+    <String Id="Error1718" Value="Filen [2] har avvisats på grund av policyn för digital signatur." />
+    <String Id="Error1719" Value="Windows Installer-tjänsten kunde inte nås. Detta kan inträffa om du kör Windows i felsäkert läge eller om Windows Installer inte är korrekt installerat. Kontakta supporten för hjälp." />
+    <String Id="Error1720" Value="Det finns ett problem med detta Windows Installer-paket. Ett skript som krävs för att installationen ska kunna slutföras kunde inte köras. Kontakta supportpersonal eller paketleverantören. {{Anpassad åtgärd [2] skriptfel [3], [4]: [5] Rad [6], Kolumn [7], [8] }}" />
+    <String Id="Error1721" Value="Det finns ett problem med detta Windows Installer-paket. Ett program som krävs för att installationen ska kunna slutföras kunde inte köras. Kontakta supportpersonal eller paketleverantören. {{Åtgärd: [2], plats: [3], kommando: [4] }}" />
+    <String Id="Error1722" Value="Det finns ett problem med det här Windows Installer-paketet. Ett program som kördes som en del av installationen slutfördes inte som förväntat. Kontakta supportpersonal eller paketleverantören. {{Åtgärd [2], plats: [3], kommando: [4] }}" />
+    <String Id="Error1723" Value="Det finns ett problem med det här Windows Installer-paketet. En DLL som krävs för att installationen ska kunna slutföras kunde inte köras. Kontakta supportpersonal eller paketleverantören. {{Åtgärd [2], post: [3], bibliotek: [4] }}" />
+    <String Id="Error1724" Value="Borttagningen har slutförts." />
+    <String Id="Error1725" Value="Borttagningen misslyckades." />
+    <String Id="Error1726" Value="Annonseringen har slutförts." />
+    <String Id="Error1727" Value="Annonseringen misslyckades." />
+    <String Id="Error1728" Value="Konfigurationen har slutförts." />
+    <String Id="Error1729" Value="Konfigurationen misslyckades." />
+    <String Id="Error1730" Value="Du måste vara administratör för att kunna ta bort det här programmet. För att ta bort det här programmet kan du logga in som administratör eller kontakta din tekniska support för hjälp." />
+    <String Id="Error1801" Value="Sökvägen [2] är ogiltig. Ange en giltig sökväg." />
+    <String Id="Error1802" Value="Minnet är fullt. Stäng andra program innan du försöker igen." />
+    <String Id="Error1803" Value="Det finns ingen disk i enhet [2]. Sätt i en disk och klicka på Försök igen, eller klicka på Avbryt för att återgå till den tidigare valda volymen." />
+    <String Id="Error1804" Value="Det finns ingen disk i enhet [2]. Sätt i en disk och klicka på Försök igen, eller klicka på Avbryt för att återgå till bläddringsdialogrutan och välja en annan volym." />
+    <String Id="Error1805" Value="Mappen [2] finns inte. Ange sökvägen till en befintlig mapp." />
+    <String Id="Error1806" Value="Du har inte tillräckliga behörigheter för att läsa den här mappen." />
+    <String Id="Error1807" Value="En giltig målmapp för installationen kunde inte hittas." />
+    <String Id="Error1901" Value="Fel vid försök att läsa från källinstallationsdatabasen: [2]." />
+    <String Id="Error1902" Value="Schemaläggning av omstart: Filen [2] döps om till [3]. Omstart krävs för att slutföra åtgärden." />
+    <String Id="Error1903" Value="Schemaläggning av omstart: Radering av filen [2]. Omstart krävs för att slutföra åtgärden." />
+    <String Id="Error1904" Value="Modulen [2] kunde inte registreras. HRESULT [3]. Kontakta supportpersonal." />
+    <String Id="Error1905" Value="Modulen [2] kunde inte avregistreras. HRESULT [3]. Kontakta supportpersonal." />
+    <String Id="Error1906" Value="Det gick inte att mellanlagra paketet [2]. Fel: [3]. Kontakta supporten." />
+    <String Id="Error1907" Value="Det gick inte att registrera teckensnittet [2]. Kontrollera att du har behörighet att installera teckensnitt och att systemet stöder detta teckensnitt." />
+    <String Id="Error1908" Value="Det gick inte att avregistrera teckensnittet [2]. Kontrollera att du har behörighet att ta bort teckensnitt." />
+    <String Id="Error1909" Value="Kunde inte skapa genvägen [2]. Kontrollera att målmappen finns och att du har åtkomst till den." />
+    <String Id="Error1910" Value="Kunde inte ta bort genvägen [2]. Kontrollera att genvägsfilen finns och att du har åtkomst till den." />
+    <String Id="Error1911" Value="Det gick inte att registrera typbiblioteket för filen [2]. Kontakta supporten." />
+    <String Id="Error1912" Value="Det gick inte att avregistrera typbiblioteket för filen [2]. Kontakta supporten." />
+    <String Id="Error1913" Value="Det gick inte att uppdatera ini-filen [2][3]. Kontrollera att filen finns och att du har åtkomst till den." />
+    <String Id="Error1914" Value="Det gick inte att schemalägga filen [2] för att ersätta filen [3] vid omstart. Kontrollera att du har behörighet att skriva till fil [3]." />
+    <String Id="Error1915" Value="Fel vid borttagning av ODBC-drivrutinshanteraren, ODBC-fel [2]: [3]. Kontakta supportpersonal." />
+    <String Id="Error1916" Value="Fel vid installation av ODBC-drivrutinshanteraren, ODBC-fel [2]: [3]. Kontakta supportpersonal." />
+    <String Id="Error1917" Value="Fel vid borttagning av ODBC-drivrutin: [4], ODBC-fel [2]: [3]. Kontrollera att du har tillräckliga behörigheter för att ta bort ODBC-drivrutiner." />
+    <String Id="Error1918" Value="Fel vid installation av ODBC-drivrutin: [4], ODBC-fel [2]: [3]. Kontrollera att filen [4] finns och att du har åtkomst till den." />
+    <String Id="Error1919" Value="Fel vid konfigurering av ODBC-datakälla: [4], ODBC-fel [2]: [3]. Kontrollera att filen [4] finns och att du har åtkomst till den." />
+    <String Id="Error1920" Value="Tjänsten ’[2]’ ([3]) kunde inte startas. Kontrollera att du har tillräckliga behörigheter för att starta systemtjänster." />
+    <String Id="Error1921" Value="Tjänsten ’[2]’ ([3]) kunde inte stoppas. Kontrollera att du har tillräckliga behörigheter för att stoppa systemtjänster." />
+    <String Id="Error1922" Value="Tjänsten ’[2]’ ([3]) kunde inte tas bort. Kontrollera att du har tillräckliga behörigheter för att ta bort systemtjänster." />
+    <String Id="Error1923" Value="Tjänsten ’[2]’ ([3]) kunde inte installeras. Kontrollera att du har tillräckliga behörigheter för att installera systemtjänster." />
+    <String Id="Error1924" Value="Det gick inte att uppdatera miljövariabeln ’[2]’. Kontrollera att du har tillräckliga behörigheter för att ändra miljövariabler." />
+    <String Id="Error1925" Value="Du har inte tillräckliga behörigheter för att slutföra installationen för alla användare av datorn. Logga in som administratör och försök sedan installera igen." />
+    <String Id="Error1926" Value="Det gick inte att ställa in filsäkerhet för filen ’[3]’. Fel: [2]. Kontrollera att du har tillräckliga behörigheter för att ändra säkerhetsbehörigheterna för den här filen." />
+    <String Id="Error1927" Value="Komponenttjänster (COM+ 1.0) är inte installerade på den här datorn. Den här installationen kräver Komponenttjänster för att kunna slutföras. Komponenttjänster finns tillgängliga i Windows 2000." />
+    <String Id="Error1928" Value="Fel vid registrering av COM+-applikation. Kontakta supportpersonal för mer information." />
+    <String Id="Error1929" Value="Fel vid avregistrering av COM+-applikation. Kontakta supportpersonal för mer information." />
+    <String Id="Error1930" Value="Beskrivningen för tjänsten ’[2]’ ([3]) kunde inte ändras." />
+    <String Id="Error1931" Value="Windows Installer-tjänsten kan inte uppdatera systemfilen [2] eftersom filen är skyddad av Windows. Du kan behöva uppdatera operativsystemet för att programmet ska fungera korrekt. {{Paketversion: [3], OS-skyddad version: [4]}}" />
+    <String Id="Error1932" Value="Windows Installer-tjänsten kan inte uppdatera den skyddade Windows-filen [2]. {{Paketversion: [3], OS-skyddad version: [4], SFP-fel: [5]}}" />
+    <String Id="Error1933" Value="Windows Installer-tjänsten kan inte uppdatera en eller flera skyddade Windows-filer. {{SFP String: [2]. Lista över skyddade filer:\r\n[3]}}" />
+    <String Id="Error1934" Value="Användarinstallationer är inaktiverade via policy på maskinen." />
+    <String Id="Error1935" Value="Ett fel uppstod under installationen av monteringskomponenten [2]. HRESULT: [3]. {{monteringsgränssnitt: [4], funktion: [5], monteringsnamn: [6]}}" />
+
+    <!-- Own / special errors -->
+    <String Id="Error25001" Value="Programmet &quot;[2]&quot; måste stängas för att installationen ska kunna fortsätta." />
+
+    <String Id="ProgressTextInstallValidate" Value="Validerar installationen" />
+    <String Id="ProgressTextInstallFiles" Value="Kopierar nya filer" />
+    <String Id="ProgressTextInstallFilesTemplate" Value="Fil: [1],  Katalog: [9],  Storlek: [6]" />
+    <String Id="ProgressTextInstallAdminPackage" Value="Kopiera nätverksinstallationsfiler" />
+    <String Id="ProgressTextInstallAdminPackageTemplate" Value="Fil: [1], Katalog: [9], Storlek: [6]" />
+    <String Id="ProgressTextFileCost" Value="Beräkning av utrymmesbehov" />
+    <String Id="ProgressTextCostInitialize" Value="Beräkning av utrymmesbehov" />
+    <String Id="ProgressTextCostFinalize" Value="Beräkning av utrymmesbehov" />
+    <String Id="ProgressTextCreateShortcuts" Value="Skapar genvägar" />
+    <String Id="ProgressTextCreateShortcutsTemplate" Value="Genväg: [1]" />
+    <String Id="ProgressTextPublishComponents" Value="Publicerar kvalificerade komponenter" />
+    <String Id="ProgressTextPublishComponentsTemplate" Value="Komponent-id: [1], Kvalificerare: [2]" />
+    <String Id="ProgressTextPublishFeatures" Value="Publicerar produktfunktioner" />
+    <String Id="ProgressTextPublishFeaturesTemplate" Value="Funktion: [1]" />
+    <String Id="ProgressTextPublishProduct" Value="Publicerar produktinformation" />
+    <String Id="ProgressTextRegisterClassInfo" Value="Registrera klasservrar" />
+    <String Id="ProgressTextRegisterClassInfoTemplate" Value="Klass-id: [1]" />
+    <String Id="ProgressTextRegisterExtensionInfo" Value="Registrerar filändelser" />
+    <String Id="ProgressTextRegisterExtensionInfoTemplate" Value="Filändelse: [1]" />
+    <String Id="ProgressTextRegisterMIMEInfo" Value="Registrerar MIME-info" />
+    <String Id="ProgressTextRegisterMIMEInfoTemplate" Value="MIME-innehållstyp: [1], Filändelse: [2]" />
+    <String Id="ProgressTextRegisterProgIdInfo" Value="Registrerar programidentifierare" />
+    <String Id="ProgressTextRegisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextAllocateRegistrySpace" Value="Allokerar registerutrymme" />
+    <String Id="ProgressTextAllocateRegistrySpaceTemplate" Value="Ledigt utrymme: [1]" />
+    <String Id="ProgressTextAppSearch" Value="Söker efter installerade program" />
+    <String Id="ProgressTextAppSearchTemplate" Value="Egenskap: [1], Signatur: [2]" />
+    <String Id="ProgressTextBindImage" Value="Binder körbara filer" />
+    <String Id="ProgressTextBindImageTemplate" Value="Fil: [1]" />
+    <String Id="ProgressTextCCPSearch" Value="Söker efter kvalificerade produkter" />
+    <String Id="ProgressTextCreateFolders" Value="Skapar mappar" />
+    <String Id="ProgressTextCreateFoldersTemplate" Value="Mapp: [1]" />
+    <String Id="ProgressTextDeleteServices" Value="Tar bort tjänster" />
+    <String Id="ProgressTextDeleteServicesTemplate" Value="Tjänst: [1]" />
+    <String Id="ProgressTextDuplicateFiles" Value="Skapa dubbletter av filer" />
+    <String Id="ProgressTextDuplicateFilesTemplate" Value="Fil: [1],  Katalog: [9],  Storlek: [6]" />
+    <String Id="ProgressTextFindRelatedProducts" Value="Söker efter relaterade applikationer" />
+    <String Id="ProgressTextFindRelatedProductsTemplate" Value="Hittade applikation: [1]" />
+    <String Id="ProgressTextInstallODBC" Value="Installerar ODBC-komponenter" />
+    <String Id="ProgressTextInstallServices" Value="Installerar nya tjänster" />
+    <String Id="ProgressTextInstallServicesTemplate" Value="Tjänst: [2]" />
+    <String Id="ProgressTextLaunchConditions" Value="Utvärderar startförhållanden" />
+    <String Id="ProgressTextMigrateFeatureStates" Value="Migrerar funktionsstatus från relaterade applikationer" />
+    <String Id="ProgressTextMigrateFeatureStatesTemplate" Value="Applikation: [1]" />
+    <String Id="ProgressTextMoveFiles" Value="Flyttar filer" />
+    <String Id="ProgressTextMoveFilesTemplate" Value="Fil: [1],  Katalog: [9],  Storlek: [6]" />
+    <String Id="ProgressTextPatchFiles" Value="Patchar filer" />
+    <String Id="ProgressTextPatchFilesTemplate" Value="Fil: [1],  Katalog: [2],  Storlek: [3]" />
+    <String Id="ProgressTextProcessComponents" Value="Uppdaterar komponentregistrering" />
+    <String Id="ProgressTextRegisterComPlus" Value="Registrerar COM+-applikationer och komponenter" />
+    <String Id="ProgressTextRegisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2], Användare: [3], RSN: [4]}}" />
+    <String Id="ProgressTextRegisterFonts" Value="Registrerar teckensnitt" />
+    <String Id="ProgressTextRegisterFontsTemplate" Value="Teckensnitt: [1]" />
+    <String Id="ProgressTextRegisterProduct" Value="Registrerar produkt" />
+    <String Id="ProgressTextRegisterProductTemplate" Value="[1]" />
+    <String Id="ProgressTextRegisterTypeLibraries" Value="Registrerar typbibliotek" />
+    <String Id="ProgressTextRegisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextRegisterUser" Value="Registrerar användare" />
+    <String Id="ProgressTextRegisterUserTemplate" Value="[1]" />
+    <String Id="ProgressTextRemoveDuplicateFiles" Value="Tar bort dubblett av filer" />
+    <String Id="ProgressTextRemoveDuplicateFilesTemplate" Value="Fil: [1], Katalog: [9]" />
+    <String Id="ProgressTextRemoveEnvironmentStrings" Value="Uppdaterar miljösträngar" />
+    <String Id="ProgressTextRemoveEnvironmentStringsTemplate" Value="Namn: [1], Värde: [2], Åtgärd [3]" />
+    <String Id="ProgressTextRemoveExistingProducts" Value="Tar bort applikationer" />
+    <String Id="ProgressTextRemoveExistingProductsTemplate" Value="Applikation: [1], Kommandorad: [2]" />
+    <String Id="ProgressTextRemoveFiles" Value="Tar bort filer" />
+    <String Id="ProgressTextRemoveFilesTemplate" Value="Fil: [1], Katalog: [9]" />
+    <String Id="ProgressTextRemoveFolders" Value="Tar bort mappar" />
+    <String Id="ProgressTextRemoveFoldersTemplate" Value="Mapp: [1]" />
+    <String Id="ProgressTextRemoveIniValues" Value="Tar bort INI-filposter" />
+    <String Id="ProgressTextRemoveIniValuesTemplate" Value="Fil: [1],  Sektion: [2],  Nyckel: [3], Värde: [4]" />
+    <String Id="ProgressTextRemoveODBC" Value="Tar bort ODBC-komponenter" />
+    <String Id="ProgressTextRemoveRegistryValues" Value="Tar bort systemregistervärden" />
+    <String Id="ProgressTextRemoveRegistryValuesTemplate" Value="Nyckel: [1], Namn: [2]" />
+    <String Id="ProgressTextRemoveShortcuts" Value="Tar bort genvägar" />
+    <String Id="ProgressTextRemoveShortcutsTemplate" Value="Genväg: [1]" />
+    <String Id="ProgressTextRMCCPSearch" Value="Söker efter kvalificerade produkter" />
+    <String Id="ProgressTextSelfRegModules" Value="Registrerar moduler" />
+    <String Id="ProgressTextSelfRegModulesTemplate" Value="Fil: [1], Mapp: [2]" />
+    <String Id="ProgressTextSelfUnregModules" Value="Avregistrerar moduler" />
+    <String Id="ProgressTextSelfUnregModulesTemplate" Value="Fil: [1], Mapp: [2]" />
+    <String Id="ProgressTextSetODBCFolders" Value="Initialiserar ODBC-kataloger" />
+    <String Id="ProgressTextStartServices" Value="Startar tjänster" />
+    <String Id="ProgressTextStartServicesTemplate" Value="Tjänst: [1]" />
+    <String Id="ProgressTextStopServices" Value="Stoppar tjänster" />
+    <String Id="ProgressTextStopServicesTemplate" Value="Tjänst: [1]" />
+    <String Id="ProgressTextUnpublishComponents" Value="Avpublicerar kvalificerade komponenter" />
+    <String Id="ProgressTextUnpublishComponentsTemplate" Value="Komponent-id: [1], Kvalificerare: [2]" />
+    <String Id="ProgressTextUnpublishFeatures" Value="Avpublicerar produktfunktioner" />
+    <String Id="ProgressTextUnpublishFeaturesTemplate" Value="Funktion: [1]" />
+    <String Id="ProgressTextUnregisterClassInfo" Value="Avregistrera klasservrar" />
+    <String Id="ProgressTextUnregisterClassInfoTemplate" Value="Klass-id: [1]" />
+    <String Id="ProgressTextUnregisterComPlus" Value="Avregistrerar COM+-applikationer och komponenter" />
+    <String Id="ProgressTextUnregisterComPlusTemplate" Value="AppId: [1]{{, AppType: [2]}}" />
+    <String Id="ProgressTextUnregisterExtensionInfo" Value="Avregistrerar utökningsservrar" />
+    <String Id="ProgressTextUnregisterExtensionInfoTemplate" Value="Utökning: [1]" />
+    <String Id="ProgressTextUnregisterFonts" Value="Avregistrerar teckensnitt" />
+    <String Id="ProgressTextUnregisterFontsTemplate" Value="Teckensnitt: [1]" />
+    <String Id="ProgressTextUnregisterMIMEInfo" Value="Avregistrerar MIME-info" />
+    <String Id="ProgressTextUnregisterMIMEInfoTemplate" Value="MIME-innehållstyp: [1], Filändelse: [2]" />
+    <String Id="ProgressTextUnregisterProgIdInfo" Value="Avregistrerar programidentifierare" />
+    <String Id="ProgressTextUnregisterProgIdInfoTemplate" Value="ProgId: [1]" />
+    <String Id="ProgressTextUnregisterTypeLibraries" Value="Avregistrerar typbibliotek" />
+    <String Id="ProgressTextUnregisterTypeLibrariesTemplate" Value="LibID: [1]" />
+    <String Id="ProgressTextWriteEnvironmentStrings" Value="Uppdaterar miljösträngar" />
+    <String Id="ProgressTextWriteEnvironmentStringsTemplate" Value="Namn: [1], Värde: [2], Åtgärd [3]" />
+    <String Id="ProgressTextWriteIniValues" Value="Skriver INI-filvärden" />
+    <String Id="ProgressTextWriteIniValuesTemplate" Value="Fil: [1],  Sektion: [2],  Nyckel: [3], Värde: [4]" />
+    <String Id="ProgressTextWriteRegistryValues" Value="Skriver systemregistervärden" />
+    <String Id="ProgressTextWriteRegistryValuesTemplate" Value="Nyckel: [1], Namn: [2], Värde: [3]" />
+    <String Id="ProgressTextAdvertise" Value="Annonserar applikation" />
+    <String Id="ProgressTextGenerateScript" Value="Genererar skriptoperationer för åtgärd:" />
+    <String Id="ProgressTextGenerateScriptTemplate" Value="[1]" />
+    <String Id="ProgressTextInstallSFPCatalogFile" Value="Installerar systemkatalog" />
+    <String Id="ProgressTextInstallSFPCatalogFileTemplate" Value="Fil: [1],  Beroenden: [2]" />
+    <String Id="ProgressTextMsiPublishAssemblies" Value="Publicerar monteringsinformation" />
+    <String Id="ProgressTextMsiPublishAssembliesTemplate" Value="Applikationskontext:[1], Monteringsnamn:[2]" />
+    <String Id="ProgressTextMsiUnpublishAssemblies" Value="Avpublicerar monteringsinformation" />
+    <String Id="ProgressTextMsiUnpublishAssembliesTemplate" Value="Applikationskontext:[1], Monteringsnamn:[2]" />
+    <String Id="ProgressTextRollback" Value="Rullar tillbaka åtgärd:" />
+    <String Id="ProgressTextRollbackTemplate" Value="[1]" />
+    <String Id="ProgressTextRollbackCleanup" Value="Tar bort säkerhetskopierade filer" />
+    <String Id="ProgressTextRollbackCleanupTemplate" Value="Fil: [1]" />
+    <String Id="ProgressTextUnmoveFiles" Value="Tar bort flyttade filer" />
+    <String Id="ProgressTextUnmoveFilesTemplate" Value="Fil: [1], Katalog: [9]" />
+    <String Id="ProgressTextUnpublishProduct" Value="Avpublicerar produktinformation" />
+
+    <String Id="ProgressTextCheckTargetDir" Value="Kontrollerar målkatalog ..." />
+
+    <String Id="ProgressTextSupDrvInt" Value="Installerar stöddrivrutin ..." />
+    <String Id="ProgressTextSupDrvStart" Value="Startar stöddrivrutin ..." />
+    <String Id="ProgressTextSupDrvUninst" Value="Avinstallerar stöddrivrutin ..." />
+
+    <String Id="ProgressTextUSBDevDrvInst" Value="Installerar USB-enhetsdrivrutin ..." />
+    <String Id="ProgressTextUSBDevDrvUninst" Value="Avinstallerar USB-enhetsdrivrutin ..." />
+    <String Id="ProgressTextUSBMonDrvInst" Value="Installerar USB-övervakningsdrivrutin ..." />
+    <String Id="ProgressTextUSBMonDrvStart" Value="Startar USB-övervakningsdrivrutin ..." />
+    <String Id="ProgressTextUSBMonDrvUninst" Value="Avinstallerar USB-övervakningsdrivrutin ..." />
+
+    <String Id="ProgressTextNetAdp6Create" Value="Skapar nätverksadapter ..." />
+    <String Id="ProgressTextNetAdp6Remove" Value="Tar bort nätverksadapter ..." />
+    <String Id="ProgressTextNetAdp6Update" Value="Uppdaterar nätverksadapter ..." />
+    <String Id="ProgressTextNetAdp6Uninst" Value="Avinstallerar nätverksadapter ..." />
+
+    <String Id="ProgressTextNetLwfInst" Value="Installerar nätverksfilter ..." />
+    <String Id="ProgressTextNetLwfRollbackInst" Value="Återställer installationen av nätverksfilter ..." />
+    <String Id="ProgressTextNetLwfUninst" Value="Avinstallerar nätverksfilter ..." />
+    <String Id="ProgressTextNetLwfRollbackUninst" Value="Återställer avinstallationen av nätverksfilter ..." />
+
+    <String Id="UITextbytes" Value="byte" />
+    <String Id="UITextGB" Value="GB" />
+    <String Id="UITextKB" Value="KB" />
+    <String Id="UITextMB" Value="MB" />
+    <String Id="UITextMenuAbsent" Value="Installera inte" />
+    <String Id="UITextMenuAdvertise" Value="Funktionen installeras vid behov" />
+    <String Id="UITextMenuAllCD" Value="Hela funktionen kommer att installeras för att köras från CD." />
+    <String Id="UITextMenuAllLocal" Value="Hela funktionen kommer att installeras på den lokala hårddisken" />
+    <String Id="UITextMenuAllNetwork" Value="Hela funktionen kommer att installeras för att köras från nätverket" />
+    <String Id="UITextMenuCD" Value="Kommer att installeras för att köras från CD" />
+    <String Id="UITextMenuLocal" Value="Kommer att installeras på lokal hårddisk" />
+    <String Id="UITextMenuNetwork" Value="Kommer att installeras för att köras från nätverket" />
+    <String Id="UITextScriptInProgress" Value="Samlar in nödvändig information..." />
+    <String Id="UITextSelAbsentAbsent" Value="Denna funktion förblir avinstallerad" />
+    <String Id="UITextSelAbsentAdvertise" Value="Denna funktion kommer att installeras när den behövs" />
+    <String Id="UITextSelAbsentCD" Value="Denna funktion kommer att installeras för att köras från CD" />
+    <String Id="UITextSelAbsentLocal" Value="Denna funktion kommer att installeras på den lokala hårddisken" />
+    <String Id="UITextSelAbsentNetwork" Value="Denna funktion kommer att installeras för att köras från nätverket" />
+    <String Id="UITextSelAdvertiseAbsent" Value="Denna funktion kommer att bli otillgänglig" />
+    <String Id="UITextSelAdvertiseAdvertise" Value="Installeras vid behov" />
+    <String Id="UITextSelAdvertiseCD" Value="Denna funktion kommer att kunna köras från CD" />
+    <String Id="UITextSelAdvertiseLocal" Value="Denna funktion kommer att installeras på din lokala hårddisk" />
+    <String Id="UITextSelAdvertiseNetwork" Value="Denna funktion kommer att vara tillgänglig för körning från nätverket" />
+    <String Id="UITextSelCDAbsent" Value="Denna funktion kommer att avinstalleras helt och hållet, och du kommer inte att kunna köra den från CD-skivan" />
+    <String Id="UITextSelCDAdvertise" Value="Denna funktion kommer att ändras från att köras från CD-skiva till att installeras när det behövs" />
+    <String Id="UITextSelCDCD" Value="Denna funktion kommer fortsatt att köras från CD" />
+    <String Id="UITextSelCDLocal" Value="Denna funktion kommer att ändras från att köras från CD-skiva till att installeras på den lokala hårddisken" />
+    <String Id="UITextSelChildCostNeg" Value="Denna funktion frigör [1] på din hårddisk." />
+    <String Id="UITextSelChildCostPos" Value="Denna funktion kräver [1] på din hårddisk." />
+    <String Id="UITextSelCostPending" Value="Kompilerar kostnad för denna funktion..." />
+    <String Id="UITextSelLocalAbsent" Value="Denna funktion kommer att tas bort helt" />
+    <String Id="UITextSelLocalAdvertise" Value="Denna funktion kommer att tas bort från din lokala hårddisk, men kommer att installeras när den behövs" />
+    <String Id="UITextSelLocalCD" Value="Denna funktion kommer att tas bort från din lokala hårddisk, men kommer fortfarande att vara tillgänglig för körning från CD" />
+    <String Id="UITextSelLocalLocal" Value="Denna funktion kommer att finnas kvar på din lokala hårddisk" />
+    <String Id="UITextSelLocalNetwork" Value="Denna funktion kommer att tas bort från din lokala hårddisk, men kommer fortfarande att vara tillgänglig för körning från nätverket" />
+    <String Id="UITextSelNetworkAbsent" Value="Denna funktion kommer att avinstalleras helt och hållet, du kommer inte att kunna köra den från nätverket" />
+    <String Id="UITextSelNetworkAdvertise" Value="Denna funktion kommer att ändras från att köras från nätverksstatus till att installeras när den behövs" />
+    <String Id="UITextSelNetworkLocal" Value="Denna funktion kommer att ändras från att köras från nätverket till att installeras på den lokala hårddisken" />
+    <String Id="UITextSelNetworkNetwork" Value="Denna funktion kommer fortsatt att köras från nätverket" />
+    <String Id="UITextSelParentCostNegNeg" Value="Denna funktion frigör [1] på din hårddisk. Den har [2] av [3] underfunktioner valda. Underfunktionerna frigör [4] på din hårddisk." />
+    <String Id="UITextSelParentCostNegPos" Value="Denna funktion frigör [1] på din hårddisk. Den har [2] av [3] underfunktioner valda. Underfunktionerna kräver [4] på din hårddisk." />
+    <String Id="UITextSelParentCostPosNeg" Value="Denna funktion kräver [1] på din hårddisk. Den har [2] av [3] underfunktioner valda. Underfunktionerna frigör [4] på din hårddisk." />
+    <String Id="UITextSelParentCostPosPos" Value="Denna funktion kräver [1] på din hårddisk. Den har [2] av [3] underfunktioner valda. Underfunktionerna kräver [4] på din hårddisk." />
+    <String Id="UITextTimeRemaining" Value="Återstående tid: {[1] minuter }{[2] sekunder}" />
+    <String Id="UITextVolumeCostAvailable" Value="Tillgängligt" />
+    <String Id="UITextVolumeCostDifference" Value="Skillnad" />
+    <String Id="UITextVolumeCostRequired" Value="Nödvändigt" />
+    <String Id="UITextVolumeCostSize" Value="Diskstorlek" />
+    <String Id="UITextVolumeCostVolume" Value="Volym" />
+
+</WixLocalization>

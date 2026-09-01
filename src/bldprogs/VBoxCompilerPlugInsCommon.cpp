@@ -1,4 +1,4 @@
-/* $Id: VBoxCompilerPlugInsCommon.cpp $ */
+/* $Id: VBoxCompilerPlugInsCommon.cpp 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * VBoxCompilerPlugInsCommon - Code common to the compiler plug-ins.
  */

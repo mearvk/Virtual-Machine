@@ -1,0 +1,95 @@
+# $Id: Makefile.kmk 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# Sub-Makefile for the Guest Control Host Service testcases.
+#
+
+#
+# Copyright (C) 2010-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+if defined(VBOX_WITH_TESTCASES) && !defined(VBOX_ONLY_ADDITIONS) && !defined(VBOX_ONLY_SDK)
+
+ #
+ # Testcase which mocks HGCM to also test the VbglR3-side of Guest Control.
+ #
+ # Goal is to use and test as much guest side code as possible as a self-contained
+ # binary on the host here.
+ #
+ # Note: No #ifdef TESTCASE hacks or similar allowed, has to run
+ #       without #ifdef modifications to the core code!
+ #
+ PROGRAMS += tstGuestControlMockHGCM
+
+ tstGuestControlMockHGCM_TEMPLATE = VBoxR3TstExe
+ tstGuestControlMockHGCM_DEFS     = VBOX_WITH_HGCM VBOX_WITH_GUEST_CONTROL
+ tstGuestControlMockHGCM_SOURCES  = \
+ 	tstGuestControlMockHGCM.cpp \
+ 	../VBoxGuestControlSvc.cpp \
+ 	../../testcase/TstHGCMMock.cpp \
+ 	$(PATH_ROOT)/src/VBox/Additions/common/VBoxGuest/lib/VBoxGuestR3LibGuestCtrl.cpp \
+ 	$(PATH_ROOT)/src/VBox/HostServices/common/message.cpp
+ tstGuestControlMockHGCM_LIBS     = $(LIB_RUNTIME)
+ tstGuestControlMockHGCM_CLEAN    = $(tstGuestControlMockHGCM_0_OUTDIR)/tstGuestControlMockHGCM.run
+
+ if 0 # Enable this if you want automatic runs after compilation.
+  $$(tstGuestControlMockHGCM_0_OUTDIR)/tstGuestControlMockHGCM.run: $$(tstGuestControlMockHGCM_1_STAGE_TARGET)
+	export VBOX_LOG_DEST=nofile; $(tstGuestControlMockHGCM_1_STAGE_TARGET) quiet
+	$(QUIET)$(APPEND) -t "$@" "done"
+  OTHERS += $(tstGuestControlMockHGCM_0_OUTDIR)/tstGuestControlMockHGCM.run
+ endif
+
+
+ # Set this in LocalConfig.kmk if you are working on the guest property
+ # service to automatically run the testcase at build time.
+ #    OTHERS += $(tstGuestControlSvc_0_OUTDIR)/tstGuestControlSvc.run
+ #
+
+ PROGRAMS += tstGuestControlSvc
+ TESTING  += $(tstGuestControlSvc_0_OUTDIR)/tstGuestControlSvc.run
+ tstGuestControlSvc_TEMPLATE = VBoxR3TstExe
+ # The second define here is to ensure that the testcase will run fast,
+ # without waiting for any thread synchronisation.
+ tstGuestControlSvc_DEFS     = VBOX_WITH_HGCM VBOX_GUEST_CONTROL_TEST_NOTHREAD
+ tstGuestControlSvc_SOURCES  = \
+ 	../VBoxGuestControlSvc.cpp \
+ 	tstGuestControlSvc.cpp
+ tstGuestControlSvc_LIBS     = $(LIB_RUNTIME)
+
+ $$(tstGuestControlSvc_0_OUTDIR)/tstGuestControlSvc.run: $$(tstGuestControlSvc_1_STAGE_TARGET)
+	export VBOX_LOG_DEST=nofile; $(tstGuestControlSvc_1_STAGE_TARGET) quiet
+	$(QUIET)$(APPEND) -t "$@" "done"
+
+endif
+
+#
+# List of above testcases that will be included in the ValKit.
+#
+ifdef VBOX_WITH_VALIDATIONKIT_UNITTESTS_PACKING
+ if1of ($(KBUILD_TARGET), linux solaris win)
+  VALKIT_UNITTESTS_WHITELIST_GUEST_ADDITIONS += \
+  	tstGuestControlMockHGCM
+ endif
+endif # VBOX_WITH_VALIDATIONKIT_UNITTESTS_PACKING
+
+include $(FILE_KBUILD_SUB_FOOTER)

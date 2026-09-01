@@ -1,0 +1,110 @@
+/* $Id: UITools.h 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
+/** @file
+ * VBox Qt GUI - UITools class declaration.
+ */
+
+/*
+ * Copyright (C) 2012-2025 Oracle and/or its affiliates.
+ *
+ * This file is part of VirtualBox base platform packages, as
+ * available from https://www.virtualbox.org.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation, in version 3 of the
+ * License.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, see <https://www.gnu.org/licenses>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
+#ifndef FEQT_INCLUDED_SRC_manager_tools_UITools_h
+#define FEQT_INCLUDED_SRC_manager_tools_UITools_h
+#ifndef RT_WITHOUT_PRAGMA_ONCE
+# pragma once
+#endif
+
+/* Qt includes: */
+#include <QWidget>
+
+/* GUI icludes: */
+#include "UIExtraDataDefs.h"
+
+/* Forward declarations: */
+class QVBoxLayout;
+class UIToolsModel;
+class UIToolsView;
+
+/** QWidget extension used as VM Tools-pane. */
+class UITools : public QWidget
+{
+    Q_OBJECT;
+
+signals:
+
+    /** @name General stuff.
+      * @{ */
+        /** Notifies listeners about selection changed.
+          * @param  enmType  Brings current tool type. */
+        void sigSelectionChanged(UIToolType enmType);
+    /** @} */
+
+public:
+
+    /** Constructs Tools-pane passing @a pParent to the base-class.
+      * @param  enmClass  Brings the tool class. */
+    UITools(QWidget *pParent, UIToolClass enmClass);
+    /** Destructs Tools-pane. */
+    virtual ~UITools();
+
+    /** @name General stuff.
+      * @{ */
+        /** Defines current tools @a enmType. */
+        void setToolsType(UIToolType enmType);
+        /** Returns current tools type. */
+        UIToolType toolsType() const;
+
+        /** Defines whether tool items @a fEnabled. */
+        void setItemsEnabled(bool fEnabled);
+        /** Returns whether tool items enabled. */
+        bool isItemsEnabled() const;
+
+        /** Defines restricted tool @a types. */
+        void setRestrictedToolTypes(const QList<UIToolType> &types);
+    /** @} */
+
+private:
+
+    /** @name Prepare/Cleanup cascade.
+      * @{ */
+        /** Prepares all. */
+        void prepare();
+        /** Cleanups all. */
+        void cleanup();
+    /** @} */
+
+    /** @name General stuff.
+      * @{ */
+        /** Holds the passed tool class. */
+        const UIToolClass  m_enmClass;
+
+        /** Holds the layout alignment (based on tool class). */
+        const Qt::Alignment  m_enmAlignment;
+
+        /** Holds the main layout instance. */
+        QVBoxLayout  *m_pMainLayout;
+        /** Holds the Tools-model instance. */
+        UIToolsModel *m_pToolsModel;
+        /** Holds the Tools-view instance. */
+        UIToolsView  *m_pToolsView;
+    /** @} */
+};
+
+#endif /* !FEQT_INCLUDED_SRC_manager_tools_UITools_h */
