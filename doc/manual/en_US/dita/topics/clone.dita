@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="clone">
+  <title>Cloning a Virtual Machine</title>
+  
+  <body>
+    <p>You can create a full copy or a linked copy of an existing VM. This copy is called a <i>clone</i>. You might use a cloned VM to experiment with a VM configuration, to test different guest OS levels, or to back up a VM.</p>
+    <p>To clone a VM:</p>
+    <ol id="ol_ulp_zct_bcc">
+      <li>
+        <p>In <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>, click <uicontrol>Machines</uicontrol>. Ensure the VM you want to clone is not running.</p>
+      </li>
+      <li>
+        <p>Right-click the VM name in the <uicontrol>Machines</uicontrol> list, and choose <b outputclass="bold">Clone...</b>.</p>
+      </li>
+      <li>Enter the following details for the clone.<ul id="ul_rkb_nct_bcc">
+          <li><b outputclass="bold">Name:</b> A name for the cloned machine. </li>
+          <li><b outputclass="bold">Path:</b> Choose a location for the cloned virtual machine, otherwise <ph
+              conkeyref="vbox-conkeyref-phrases/product-name"/> uses the default machines folder. </li>
+          <li><b outputclass="bold">MAC Address Policy:</b> Specifies whether to retain network card MAC addresses when
+            cloning the VM.<p>The <b outputclass="bold">Generate New MAC Addresses For All Network Adapters</b> value
+              assigns a new MAC address to each network card during cloning. This is the default setting. This is the
+              best option when both the source VM and the cloned VM must operate on the same network. Other values
+              enable you to retain the existing MAC addresses in the cloned VM.</p></li>
+          <li><b outputclass="bold">Keep Disk Names:</b> Retains the disk image names when cloning the VM.</li>
+          <li><b outputclass="bold">Keep Hardware UUIDs:</b> Retains the hardware universally unique identifiers (UUIDs)
+            when cloning the VM. </li></ul></li>
+      <li>Click <b outputclass="bold">Next</b>. The <b outputclass="bold">Clone Type</b> page is displayed.</li>
+      <li>The <b outputclass="bold">Clone Type</b> option specifies whether to create a clone that is linked to the
+        source VM or to create a fully independent clone:<ul id="ul_i1y_qn5_bcc">
+          <li><b outputclass="bold">Full Clone:</b> Copies all dependent disk images to the new VM folder. A full clone
+            can operate fully without the source VM. </li>
+          <li><b outputclass="bold">Linked Clone:</b> Creates new differencing disk images based on the source VM disk
+            images. If you select the current state of the source VM as the clone point, <ph
+              conkeyref="vbox-conkeyref-phrases/product-name"/> creates a new snapshot. </li>
+        </ul></li>
+    <li>Click <b outputclass="bold">Next</b>. If your VM has snapshots and you chose Full Clone, use the <b
+          outputclass="bold">Snapshots</b> page to select the parts of the snapshot tree to clone with the VM.<ul
+          id="ul_igj_t45_bcc">
+          <li><b outputclass="bold">Current Machine State:</b> Clones the current state of the VM. Snapshots are not
+            included. </li>
+          <li><b outputclass="bold">Everything:</b> Clones the current machine state and all its snapshots.</li>
+        </ul></li>
+
+    <li><p>Click <b outputclass="bold">Finish</b> to start the clone operation. </p></li></ol>
+    <p>The duration of the clone operation depends on the size and number of attached disk images. In addition, the
+      clone operation saves all the differencing disk images of a snapshot. </p>
+    <p>You can also use the <userinput>VBoxManage clonevm</userinput> command to clone a VM. See <xref href="../cli_topics/vboxmanage-clonevm.dita"/>.</p>
+  </body>
+  
+</topic>

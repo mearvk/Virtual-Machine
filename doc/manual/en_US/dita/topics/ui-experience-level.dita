@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="gui-experience-level">
+  <title>Experience Levels for VirtualBox Manager</title>
+  <body>
+    <p>When you use <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/> to configure preferences, and settings for virtual machines, you can select an <i>experience level</i> for the user interface. The following experience levels are available:</p> 
+    <ul>
+      <li>
+        <p><uicontrol>Basic</uicontrol>. Only a limited number of settings and tools are shown. Workflows are used to display settings and configuration options. This is the default setting for new installations.</p>
+        <p>This level is suitable for a first time user of <ph conkeyref="vbox-conkeyref-phrases/product-name"/>.</p>
+      </li>
+      <li>
+        <p><uicontrol>Expert</uicontrol>. All available settings and tools are shown.</p>
+        <p>Single pages show all settings and configuration options. This is the default setting for upgrades when a user already has at least one saved VM.</p>
+        <p>This level is suitable for an experienced user who needs more control of virtual machine settings.</p>
+      </li>
+    </ul>
+    <p>Experience levels apply, and can be set, in the following places in <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>:</p>   
+    <ul>
+      <li><p><uicontrol>Home</uicontrol> (new installations only)</p>
+      </li>
+      <li><p><uicontrol>Preferences</uicontrol></p>
+      </li>
+      <li><p><uicontrol>Settings</uicontrol> for a virtual machine</p>
+   </li>
+    </ul>
+   <p>Wherever you set it, the preference applies throughout <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>.</p> 
+    <section id="gui-experience-level-select">
+      <title>Selecting the Experience Level</title>
+      <ol>
+        <li>In the File menu, choose <b>Preferences</b>.</li>
+      <li><p>Click <b>Basic</b> or <b>Expert</b> to select the required experience level.</p>
+        <p>
+          <xref href="images/experience-levels.png" format="png" platform="htmlhelp"> 
+            <image href="images/experience-levels.png" placement="break" align="center">
+              <alt>Icon for setting the experience level. Click to enable Basic or Expert mode.</alt>
+            </image>
+          </xref>
+          <image platform="ohc" href="images/experience-levels.png" placement="break" align="center">
+            <alt>Icon for setting the experience level. Click to enable Basic or Expert mode.</alt>
+          </image>
+        </p>
+      <p>The number of available settings and tools changes depending on the selected experience level.</p></li>
+      </ol>
+    </section>
+  </body>
+</topic>

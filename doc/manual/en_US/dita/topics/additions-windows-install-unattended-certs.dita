@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="additions-windows-install-unattended-certs">
+  <title>Installing Code Signing Certificates</title>
+  
+  <body>
+    <p>To avoid popups when performing an unattended installation of the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> Guest Additions, the code signing certificates used to sign the drivers needs to be installed in the correct certificate stores on the guest operating system. If you do not do this, the installation will prompt you before the installation of each driver.</p>
+    <p>The certificates are stored for you if installing Guest Additions as part of the Windows unattended installation when creating a new VM. If you are automating the installation of Guest Additions yourself, you first need to install the code signing certificates on the VM.</p>
+    <p>Use the <filepath>VBoxCertUtil.exe</filepath> utility from the <filepath>cert</filepath> folder on the Guest Additions installation CD.</p>
+    <note>
+      <p>On some legacy Windows versions, such as Windows 2000 and Windows XP, the user intervention popups mentioned above are always displayed, even after importing the Oracle certificates.</p>
+    </note>
+    <ol>
+      <li>
+        <p>Log in as Administrator on the guest.</p>
+      </li>
+      <li>
+        <p>Mount the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> Guest Additions ISO.</p>
+      </li>
+      <li>
+        <p>Open a command line window on the guest and change to the <filepath>cert</filepath> folder on the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> Guest Additions CD.</p>
+      </li>
+      <li>
+        <p>Run the following command:</p>
+        <pre xml:space="preserve">VBoxCertUtil.exe add-trusted-publisher vbox*.cer --root vbox*.cer</pre>
+        <p>This command installs the certificates to the certificate store. When installing the same certificate more than once, an appropriate error will be displayed.</p>
+      </li>
+    </ol>
+  </body>
+  
+</topic>

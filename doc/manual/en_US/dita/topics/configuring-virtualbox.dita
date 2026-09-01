@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="configuring_virtualbox">
+    <title>Configuring <ph conkeyref="vbox-conkeyref-phrases/product-name"/></title>
+    <body>
+        <p>Before creating, adding or importing any Virtual Machines, configure <ph conkeyref="vbox-conkeyref-phrases/product-name"/> for your host.</p>
+        <ul>
+            <li>
+                <p>Install any extension packs you require, see <xref href="install-ext-pack.dita"/>.</p>
+                <p>Extension packs provide extra functionality to the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> base package. The <ph conkeyref="vbox-conkeyref-phrases/vbox-ext"/> includes VirtualBox Remote DesktopProtocol (VRDP) support, disk image encryption using AES, and cloud integration features. For more information, see <xref href="vbox-components.dita"/>.</p>
+            </li>
+            <li>
+                <p><xref href="preferences.dita"/>. These are settings that apply to <ph conkeyref="vbox-conkeyref-phrases/product-name"/> rather than individual VMs.</p>
+            </li>
+            <li>
+                <p>If the default NAT network is not sufficient for your needs, set up virtual networks. See <xref href="config-network.dita"/>.</p>
+            </li>
+        </ul>
+    </body>
+</topic>

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="install-win-uninstall">
+  <title>Uninstallation</title>
+  
+  <body>
+    <p>As <ph conkeyref="vbox-conkeyref-phrases/product-name"/> uses the standard Microsoft Windows installer, <ph
+        conkeyref="vbox-conkeyref-phrases/product-name"/> can be safely uninstalled at any time. Click the program entry
+      in the <b outputclass="bold">Add/Remove Programs</b> list in the Windows Control Panel. </p>
+  </body>
+  
+</topic>

@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="install-linux-prereq">
+  <title>Prerequisites</title>
+  
+  <body>
+    <p>For the various versions of Linux that are supported as host operating systems, see <xref href="installation-packages.dita"/>.</p>
+    <p>You may need to install the following package on your Linux system before starting the installation. Some systems will do this for you automatically when you install <ph conkeyref="vbox-conkeyref-phrases/product-name"/>. </p>
+    <ul>
+      <li>
+        <p>Qt 6.5.3 or later.</p>
+      </li>
+    </ul>
+    <note>
+      <p>Qt is only required if you want to run the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> graphical user interfaces. In particular, <userinput>VirtualBox</userinput>, the graphical VirtualBox Manager, requires Qt. If you only want to run <userinput>VBoxHeadless</userinput>, Qt is not required. </p>
+    </note>
+  </body>
+  
+</topic>

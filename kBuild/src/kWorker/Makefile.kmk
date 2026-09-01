@@ -1,0 +1,238 @@
+# $Id: Makefile.kmk 3549 2022-01-29 02:41:36Z knut.osmundsen@oracle.com $
+## @file
+# Sub-makefile for kWorker.
+#
+
+#
+# Copyright (c) 2016 knut st. osmundsen <bird-kBuild-spamx@anduin.net>
+#
+# This file is part of kBuild.
+#
+# kBuild is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# kBuild is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with kBuild.  If not, see <http://www.gnu.org/licenses/>
+#
+#
+
+
+SUB_DEPTH = ../..
+include $(PATH_KBUILD)/subheader.kmk
+
+
+PROGRAMS += kWorker
+kWorker_TEMPLATE = BIN-STATIC-THREADED
+kWorker_DEFS := KWORKER
+kWorker_DEFS.debug = K_STRICT
+kWorker_DEFS.release = NASSERT
+ifeq ($(USERNAME),bird)
+kWorker_CFLAGS = -W4 -wd4127 -wd4100 -wd4214 -wd4201 -wd4204
+endif
+kWorker_SOURCES = \
+	kWorker.c \
+       ../kmk/kmkbuiltin/kDepObj.c \
+       ../kmk/kmkbuiltin/err.c
+kWorker_INCS = \
+	../kmk/ \
+	../kmk/kmkbuiltin
+kWorker_LIBS = \
+	$(kStuff_1_TARGET) \
+	$(kWorkerLib_1_TARGET)
+include $(KBUILD_PATH)/sdks/WINDDK71.kmk
+kWorker_LIBS.win = \
+	$(TEMPLATE_BIN-STATIC-THREADED_LIBS) \
+	$(PATH_SDK_WINDDK71_LIB_WNET)/ntdll.lib \
+	$(PATH_SDK_WINDDK71_LIB_WNET)/psapi.lib
+kWorker_LDFLAGS.win = \
+	/DYNAMICBASE:NO /FIXED
+kWorker_LDFLAGS.win.x86   = /BASE:0x00010000
+kWorker_LDFLAGS.win.amd64 = /BASE:0x0000000420000000 /STACK:16777216,262144
+
+#kWorker_LDFLAGS.win.x86 = \
+#	/SAFESEH:NO - doesn't help anyone.
+
+
+#
+# Stuff from ../libs.  Need to rebuilt it with static CRT.
+#
+LIBRARIES += kWorkerLib
+kWorkerLib_TEMPLATE = LIB-STATIC-THREADED
+kWorkerLib_DEFPATH = ../lib # Need fix from r2837.
+kWorkerLib_DEFPATH := $(PATH_SUB_CURRENT)/../lib
+kWorkerLib_DEFS := KWORKER
+kWorkerLib_SOURCES = \
+	crc32.c \
+	md5.c \
+       kbuild_version.c \
+       kDep.c
+kWorkerLib_SOURCES.win = \
+	nt_fullpath.c \
+	nt_fullpath_cached.c \
+	quoted_spawn.c \
+       nt/nthlpcore.c \
+       nt/nthlpfs.c \
+       nt/ntdir.c \
+       nt/ntstat.c \
+       nt/ntunlink.c \
+       nt/kFsCache.c \
+       win_get_processor_group_active_mask.c \
+       quote_argv.c \
+	get_codepage.c \
+	is_console.c \
+	maybe_con_write.c \
+	maybe_con_fwrite.c \
+	msc_buffered_printf.c
+kbuild_version.c_DEFS = KBUILD_SVN_REV=$(KBUILD_SVN_REV)
+
+#
+# kStuff library.
+#
+LIBRARIES += kStuff
+kStuff_TEMPLATE = LIB-STATIC-THREADED
+kStuff_DEFS.debug = K_STRICT
+kStuff_INCS = kStuff/include
+kStuff_DEFPATH = $(PATH_ROOT)/src/lib
+
+# kLdr
+kStuff_SOURCES += \
+	kStuff/kLdr/kLdr.c \
+	kStuff/kLdr/kLdrDyld.c \
+	kStuff/kLdr/kLdrDyldFind.c \
+	kStuff/kLdr/kLdrDyldMod.c \
+	kStuff/kLdr/kLdrDyldOS.c \
+	kStuff/kLdr/kLdrDyLdSem.c \
+	kStuff/kLdr/kLdrMod.c \
+	kStuff/kLdr/kLdrModLX.c \
+	kStuff/kLdr/kLdrModMachO.c \
+	kStuff/kLdr/kLdrModNative.c \
+	kStuff/kLdr/kLdrModPE.c
+kLdr_SOURCES.os2 += \
+	kStuff/kLdr/kLdr-os2.c \
+	kStuff/kLdr/kLdrA-os2.asm
+kLdr_SOURCES.win += \
+	kStuff/kLdr/kLdr-win.c
+
+# kRdr
+kStuff_SOURCES += \
+	kStuff/kRdr/kRdr.cpp \
+	kStuff/kRdr/kRdrFile.cpp \
+	kStuff/kRdr/kRdrBuffered.cpp
+
+# kCpu
+kStuff_SOURCES += \
+	kStuff/kCpu/kCpuCompare.c \
+	kStuff/kCpu/kCpuGetArchAndCpu.c
+
+# kHlp (CRT)
+kStuff_SOURCES += \
+	kStuff/kHlp/Generic/kHlpMemPComp.c \
+	kStuff/kHlp/Generic/kHlpMemICompAscii.c \
+	kStuff/kHlp/Generic/kHlpStrPCat.c \
+	kStuff/kHlp/Generic/kHlpStrNPCat.c \
+	kStuff/kHlp/Generic/kHlpStrPComp.c \
+	kStuff/kHlp/Generic/kHlpStrNPComp.c \
+	kStuff/kHlp/Generic/kHlpStrICompAscii.c \
+	kStuff/kHlp/Generic/kHlpStrIPCompAscii.c \
+	kStuff/kHlp/Generic/kHlpStrNICompAscii.c \
+	kStuff/kHlp/Generic/kHlpStrNIPCompAscii.c \
+	kStuff/kHlp/Generic/kHlpStrPCopy.c \
+	kStuff/kHlp/Generic/kHlpStrNLen.c \
+	kStuff/kHlp/Generic/kHlpInt2Ascii.c \
+	\
+	kStuff/kHlp/Generic/kHlpGetEnvUZ.c \
+	\
+	kStuff/kHlp/Generic/kHlpGetExt.c \
+	kStuff/kHlp/Generic/kHlpGetFilename.c \
+	kStuff/kHlp/Generic/kHlpIsFilenameOnly.c \
+	\
+	kStuff/kHlp/Generic/kHlpPage.c \
+	\
+	kStuff/kHlp/CRT/kHlpCRTAlloc.cpp \
+	kStuff/kHlp/CRT/kHlpCRTEnv.cpp \
+	kStuff/kHlp/CRT/kHlpCRTString.cpp
+kStuff_SOURCES.darwin += \
+	kStuff/kHlp/Bare/kHlpSys-darwin.c
+
+
+#
+# A couple of dummy DLLs we use for grabbing LDR TLS entries.
+#
+DLLS += kWorkerTls1K kWorkerTls1K01 kWorkerTls1K02 kWorkerTls1K03 kWorkerTls1K04 kWorkerTls1K05 kWorkerTls1K06 kWorkerTls1K07 \
+      kWorkerTls1K08 kWorkerTls1K09 kWorkerTls1K10 kWorkerTls1K11 kWorkerTls1K12 kWorkerTls1K13 kWorkerTls1K14 kWorkerTls1K15
+kWorkerTls1K_TEMPLATE   = BIN-STATIC-THREADED
+kWorkerTls1K_DEFS       = TLS_SIZE=1024
+kWorkerTls1K_SOURCES    = kWorkerTlsXxxK.c
+kWorkerTls1K_LDFLAGS    = /Entry:DummyDllEntry
+
+kWorkerTls1K01_EXTENDS = kWorkerTls1K
+kWorkerTls1K02_EXTENDS = kWorkerTls1K
+kWorkerTls1K03_EXTENDS = kWorkerTls1K
+kWorkerTls1K04_EXTENDS = kWorkerTls1K
+kWorkerTls1K05_EXTENDS = kWorkerTls1K
+kWorkerTls1K06_EXTENDS = kWorkerTls1K
+kWorkerTls1K07_EXTENDS = kWorkerTls1K
+kWorkerTls1K08_EXTENDS = kWorkerTls1K
+kWorkerTls1K09_EXTENDS = kWorkerTls1K
+kWorkerTls1K10_EXTENDS = kWorkerTls1K
+kWorkerTls1K11_EXTENDS = kWorkerTls1K
+kWorkerTls1K12_EXTENDS = kWorkerTls1K
+kWorkerTls1K13_EXTENDS = kWorkerTls1K
+kWorkerTls1K14_EXTENDS = kWorkerTls1K
+kWorkerTls1K15_EXTENDS = kWorkerTls1K
+
+
+DLLS += kWorkerTls64K kWorkerTls64K01 kWorkerTls64K02 kWorkerTls64K03 kWorkerTls64K04 kWorkerTls64K05 kWorkerTls64K06 kWorkerTls64K07
+kWorkerTls64K_TEMPLATE  = BIN-STATIC-THREADED
+kWorkerTls64K_DEFS      = TLS_SIZE=65536
+kWorkerTls64K_SOURCES   = kWorkerTlsXxxK.c
+kWorkerTls64K_LDFLAGS   = /Entry:DummyDllEntry
+
+kWorkerTls64K01_EXTENDS = kWorkerTls64K
+kWorkerTls64K02_EXTENDS = kWorkerTls64K
+kWorkerTls64K03_EXTENDS = kWorkerTls64K
+kWorkerTls64K04_EXTENDS = kWorkerTls64K
+kWorkerTls64K05_EXTENDS = kWorkerTls64K
+kWorkerTls64K06_EXTENDS = kWorkerTls64K
+kWorkerTls64K07_EXTENDS = kWorkerTls64K
+
+
+DLLS += kWorkerTls128K kWorkerTls128K01 kWorkerTls128K02 kWorkerTls128K03 kWorkerTls128K04 kWorkerTls128K05 kWorkerTls128K06 kWorkerTls128K07
+kWorkerTls128K_TEMPLATE  = BIN-STATIC-THREADED
+kWorkerTls128K_DEFS      = TLS_SIZE=131072
+kWorkerTls128K_SOURCES   = kWorkerTlsXxxK.c
+kWorkerTls128K_LDFLAGS   = /Entry:DummyDllEntry
+
+kWorkerTls128K01_EXTENDS = kWorkerTls128K
+kWorkerTls128K02_EXTENDS = kWorkerTls128K
+kWorkerTls128K03_EXTENDS = kWorkerTls128K
+kWorkerTls128K04_EXTENDS = kWorkerTls128K
+kWorkerTls128K05_EXTENDS = kWorkerTls128K
+kWorkerTls128K06_EXTENDS = kWorkerTls128K
+kWorkerTls128K07_EXTENDS = kWorkerTls128K
+
+
+DLLS += kWorkerTls512K kWorkerTls512K01 kWorkerTls512K02 kWorkerTls512K03 kWorkerTls512K04 kWorkerTls512K05 kWorkerTls512K06 kWorkerTls512K07
+kWorkerTls512K_TEMPLATE = BIN-STATIC-THREADED
+kWorkerTls512K_DEFS     = TLS_SIZE=524288
+kWorkerTls512K_SOURCES  = kWorkerTlsXxxK.c
+kWorkerTls512K_LDFLAGS  = /Entry:DummyDllEntry
+
+kWorkerTls512K01_EXTENDS = kWorkerTls512K
+kWorkerTls512K02_EXTENDS = kWorkerTls512K
+kWorkerTls512K03_EXTENDS = kWorkerTls512K
+kWorkerTls512K04_EXTENDS = kWorkerTls512K
+kWorkerTls512K05_EXTENDS = kWorkerTls512K
+kWorkerTls512K06_EXTENDS = kWorkerTls512K
+kWorkerTls512K07_EXTENDS = kWorkerTls512K
+
+
+include $(KBUILD_PATH)/subfooter.kmk
+

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="security-secure-install-overview">
+  <title>Installation Overview</title>
+  
+  <body>
+    <p>
+        The <ph conkeyref="vbox-conkeyref-phrases/product-name"/> base package should be downloaded only from a
+        trusted source, for instance the official website
+        <ph>http://www.virtualbox.org</ph>. The integrity of the
+        package should be verified with the provided SHA256 checksum
+        which can be found on the official website.
+      </p>
+    <p> General <ph conkeyref="vbox-conkeyref-phrases/product-name"/> installation instructions for the supported hosts can be found in <xref href="installation.dita"/>. </p>
+    <p>
+        On Windows hosts, the installer can be used to disable USB
+        support, support for bridged networking, support for host-only
+        networking and the Python language binding. See
+        <xref href="installation_windows.dita">Installing on Windows Hosts</xref>. All these features are
+        enabled by default but disabling some of them could be
+        appropriate if the corresponding functionality is not required
+        by any virtual machine. The Python language bindings are only
+        required if the <ph conkeyref="vbox-conkeyref-phrases/product-name"/> API is to be used by external
+        Python applications. In particular USB support and support for
+        the two networking modes require the installation of Windows
+        kernel drivers on the host. Therefore disabling those selected
+        features can not only be used to restrict the user to certain
+        functionality but also to minimize the surface provided to a
+        potential attacker.
+      </p>
+    <p>
+        The general case is to install the complete <ph conkeyref="vbox-conkeyref-phrases/product-name"/>
+        package. The installation must be done with system privileges.
+        All <ph conkeyref="vbox-conkeyref-phrases/product-name"/> binaries should be executed as a regular user
+        and never as a privileged user.
+      </p>
+    <p> The <ph conkeyref="vbox-conkeyref-phrases/vbox-ext"/> provides additional features and must be downloaded and installed separately, see <xref href="install-ext-pack.dita"/>. As for the base package, the SHA256 checksum of the extension pack should be verified. As the installation requires system privileges, <ph conkeyref="vbox-conkeyref-phrases/product-name"/> will ask for the system password during the installation of the extension pack. </p>
+  </body>
+  
+</topic>

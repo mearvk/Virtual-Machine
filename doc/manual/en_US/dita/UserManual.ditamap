@@ -1,0 +1,653 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE bookmap PUBLIC "-//OASIS//DTD DITA BookMap//EN" "bookmap.dtd">
+<!-- The bookmap ID is imperative and matched the Jarvis GUID required to build and pretty much do anything -->
+<bookmap id="EN-VBOX-7-2-USER" xml:lang="en-US">
+   <booktitle>
+    <booklibrary>Oracle VirtualBox</booklibrary>
+    <mainbooktitle>User Guide for Release 7.2</mainbooktitle>
+   </booktitle>
+   <bookmeta>
+      <publisherinformation>
+         <published>
+            <completed>
+          <month>August</month>
+          <year>2025</year>
+        </completed>
+      </published>
+    </publisherinformation>
+
+      <bookrights>
+         <copyrfirst>
+        <year>2025</year>
+      </copyrfirst>
+      <bookowner>
+        <organization>Oracle and/or its affiliates. All rights reserved.</organization>
+      </bookowner>
+    </bookrights>
+  </bookmeta>
+
+   <!-- Chunking should be set with chunk="to-content" in each chapter.  -->
+   <frontmatter>
+       <mapref href="conkeyrefs.ditamap" format="ditamap" toc="no" processing-role="resource-only"/>
+       <booklists>
+          <toc/>
+          <figurelist/>
+          <tablelist/>
+    </booklists>
+  </frontmatter>
+  <chapter href="topics/Introduction.dita" chunk="to-content">
+    <topicref href="topics/vbox-components.dita"/>
+    <topicref href="topics/features-overview.dita"/>
+    <topicref href="topics/guest-os.dita">
+         <topicref href="topics/host-guest-matrix.dita"/>
+      <topicref href="topics/guest-os-x86-64.dita"/>
+      <topicref href="topics/guest-os-Arm.dita"/>
+      <topicref href="topics/intro-64bitguests.dita"/>
+         </topicref>
+      </chapter>
+      <chapter href="topics/installation.dita" chunk="to-content">
+    <topicref href="topics/installation-packages.dita">
+      <topicref href="topics/hostcpurequirements.dita"/>
+      <topicref href="topics/arm-host-limitations.dita"/>
+    </topicref>
+         <topicref href="topics/installation_windows.dita">
+            <topicref href="topics/install-win-prereq.dita"/>
+            <topicref href="topics/install-win-installdir-req.dita"/>
+            <topicref href="topics/install-win-performing.dita"/>
+            <topicref href="topics/install-win-uninstall.dita"/>
+            <topicref href="topics/install-win-unattended.dita"/>
+            <topicref href="topics/install-win-public-props.dita"/>
+         </topicref>
+         <topicref href="topics/installation-mac.dita">
+            <topicref href="topics/install-mac-performing.dita"/>
+            <topicref href="topics/install-mac-uninstall.dita"/>
+            <topicref href="topics/install-mac-unattended.dita"/>
+         </topicref>
+         <topicref href="topics/install-linux-host.dita">
+            <topicref href="topics/install-linux-prereq.dita"/>
+            <topicref href="topics/externalkernelmodules.dita">
+               <topicref href="topics/kernel-modules-efi-secure-boot.dita"/>
+            </topicref>
+            <topicref href="topics/install-linux-performing.dita">
+               <topicref href="topics/install-linux-debian-ubuntu.dita"/>
+               <topicref href="topics/install-linux-alt-installer.dita"/>
+               <topicref href="topics/install-linux-manual.dita"/>
+               <topicref href="topics/install-linux-update-uninstall.dita"/>
+               <topicref href="topics/install-linux-debian-automatic.dita"/>
+               <topicref href="topics/install-linux-rpm-automatic.dita"/>
+               <topicref href="topics/linux_install_opts.dita"/>
+            </topicref>
+            <topicref href="topics/install-linux-vboxusers.dita"/>
+            <topicref href="topics/startingvboxonlinux.dita"/>
+         </topicref>
+         <topicref href="topics/install-solaris-host.dita">
+            <topicref href="topics/install-solaris-performing.dita"/>
+            <topicref href="topics/install-solaris-vboxuser.dita"/>
+            <topicref href="topics/install-solaris-starting.dita"/>
+            <topicref href="topics/uninstall-solaris-host.dita"/>
+            <topicref href="topics/install-solaris-unattended.dita"/>
+            <topicref href="topics/solaris-zones.dita"/>
+         </topicref>
+    <topicref href="topics/intro-starting.dita"/>
+  </chapter>
+  <chapter href="topics/configuring-virtualbox.dita" chunk="to-content">
+    <topicref href="topics/extensions.dita">
+      <topicref href="topics/install-ext-pack.dita"/>
+      <topicref href="topics/uninstall-ext-pack.dita"/>
+    </topicref>
+    <topicref href="topics/preferences.dita"/>
+    <topicref href="topics/ui-experience-level.dita"/>
+      </chapter>
+  <chapter href="topics/create-vm.dita" chunk="to-content">
+    <topicref href="topics/create-vm-name-os.dita"/>
+    <topicref href="topics/create-vm-unattended-install.dita"/>
+    <topicref href="topics/create-vm-hardware.dita"/>
+            <topicref href="topics/unattended-guest-install-example.dita"/>
+  </chapter>
+  <chapter href="topics/working-with-vms.dita" chunk="to-content">
+    <topicref href="topics/intro-running.dita">
+      <topicref href="topics/intro-starting-vm-first-time.dita"/>
+      <topicref href="topics/vm-status-bar.dita"/>
+      <topicref href="topics/keyb_mouse_normal.dita"/>
+      <topicref href="topics/specialcharacters.dita"/>
+      <topicref href="topics/soft-keyb.dita">
+        <topicref href="topics/soft-keyb-using.dita"/>
+        <topicref href="topics/soft-keyb-custom.dita"/>
+      </topicref>
+      <topicref href="topics/intro-removable-media-changing.dita"/>
+      <topicref href="topics/intro-resize-window.dita"/>
+      <topicref href="topics/pausing-a-virtual-machine.dita"/>
+      <topicref href="topics/resetting-a-vm.dita"/>
+      <topicref href="topics/intro-save-machine-state.dita"/>
+    </topicref>
+    <topicref href="topics/add-vm.dita"/>
+    <topicref href="topics/ovf.dita">
+      <topicref href="topics/ovf-about.dita"/>
+      <topicref href="topics/ovf-import-appliance.dita"/>
+      <topicref href="topics/ovf-export-appliance.dita"/>
+    </topicref>
+    <topicref href="topics/intro-removing.dita"/>
+    <topicref href="topics/clone.dita"/>
+    <topicref href="topics/managing-vms.dita">
+      <topicref href="topics/configbasics.dita"/>
+      <topicref href="topics/gui-vmgroups.dita"/>
+    </topicref>
+    <topicref href="topics/snapshots.dita">
+      <topicref href="topics/snapshots-take-restore-delete.dita"/>
+      <topicref href="topics/snapshots-contents.dita"/>
+    </topicref>
+         <topicref href="topics/emul-hardware.dita"/>
+    <topicref href="topics/gimproviders.dita"/>
+    <topicref href="topics/nestedpaging.dita"/>
+         <topicref href="topics/settings-window.dita"/>
+         <topicref href="topics/generalsettings.dita">
+            <topicref href="topics/settings-basic.dita"/>
+            <topicref href="topics/settings-general-advanced.dita"/>
+            <topicref href="topics/settings-description.dita"/>
+            <topicref href="topics/settings-disk-encryption.dita"/>
+         </topicref>
+         <topicref href="topics/settings-system.dita">
+            <topicref href="topics/settings-motherboard.dita"/>
+            <topicref href="topics/settings-processor.dita"/>
+            <topicref href="topics/settings-acceleration.dita"/>
+         </topicref>
+         <topicref href="topics/settings-display.dita">
+            <topicref href="topics/settings-screen.dita"/>
+            <topicref href="topics/settings-remote-display.dita"/>
+            <topicref href="topics/settings-capture.dita"/>
+         </topicref>
+         <topicref href="topics/settings-storage.dita"/>
+         <topicref href="topics/settings-audio.dita"/>
+         <topicref href="topics/settings-network.dita"/>
+         <topicref href="topics/serialports.dita"/>
+         <topicref href="topics/usb-support.dita">
+            <topicref href="topics/settings-usb.dita"/>
+            <topicref href="topics/usb-implementation-notes.dita"/>
+         </topicref>
+         <topicref href="topics/shared-folders.dita"/>
+         <topicref href="topics/user-interface.dita"/>
+         <topicref href="topics/efi.dita">
+            <topicref href="topics/efividmode.dita"/>
+            <topicref href="topics/efibootargs.dita"/>
+         </topicref>
+    <topicref href="topics/vm-info.dita">
+      <topicref href="topics/vm-activity-overview.dita"/>
+      <topicref href="topics/vm-activity-session-information.dita"/>
+      <topicref href="topics/log-viewer.dita"/>
+    </topicref>
+  </chapter>
+  <chapter href="topics/cloud-integration.dita" chunk="to-content">
+    <topicref href="topics/cloud-integration-steps.dita"/>
+    <topicref href="topics/cloud-create-api-keypair.dita"/>
+    <topicref href="topics/cloud-upload-public-key.dita"/>
+    <topicref href="topics/cloud-create-cloud-profile.dita"/>
+    <topicref href="topics/cloud-using-cloud-profile-manager.dita">
+      <topicref href="topics/cloud-profile-creating.dita"/>
+      <topicref href="topics/cloud-profile-importing.dita"/>
+    </topicref>
+    <topicref href="topics/cloud-vbox-oci-tasks.dita"/>
+    <topicref href="topics/cloud-vm.dita">
+      <topicref href="topics/cloud-vm-oci-group.dita"/>
+      <topicref href="topics/cloud-vm-new.dita"/>
+      <topicref href="topics/cloud-vm-add.dita"/>
+      <topicref href="topics/cloud-vm-clone.dita"/>
+      <topicref href="topics/cloud-vm-settings.dita"/>
+      <topicref href="topics/cloud-vm-control.dita"/>
+      <topicref href="topics/cloud-vm-monitor.dita"/>
+      <topicref href="topics/cloud-vm-remove.dita"/>
+      <topicref href="topics/cloud-vm-instance-console.dita"/>
+    </topicref>
+    <topicref href="topics/cloud-export-oci.dita">
+      <topicref href="topics/cloud-export-oci-prepare-vm.dita"/>
+    </topicref>
+    <topicref href="topics/cloud-import-oci.dita">
+      <topicref href="topics/import-instance-sequence.dita"/>
+    </topicref>
+    <topicref href="topics/cloud-using-cloud-networks.dita"/>
+    <topicref href="topics/cloud-using-cli.dita"/>
+      </chapter>
+      <chapter href="topics/guestadditions.dita" chunk="to-content">
+         <topicref href="topics/guestadd-intro.dita"/>
+         <topicref href="topics/guestadd-install.dita">
+            <topicref href="topics/additions-windows.dita">
+               <topicref href="topics/mountingadditionsiso.dita"/>
+               <topicref href="topics/additions-windows-updating.dita"/>
+               <topicref href="topics/additions-windows-install-unattended-certs.dita"/>
+        <topicref href="topics/sysprep.dita"/>
+               <topicref href="topics/windows-guest-file-extraction.dita"/>
+            </topicref>
+            <topicref href="topics/additions-linux.dita">
+               <topicref href="topics/additions-linux-install.dita"/>
+        <topicref href="topics/linux-guest-manual-setup.dita"/>
+        <topicref href="topics/vboxdrmclient.dita"/>
+               <topicref href="topics/additions-linux-updating.dita"/>
+               <topicref href="topics/additions-linux-uninstall.dita"/>
+            </topicref>
+            <topicref href="topics/additions-solaris.dita">
+               <topicref href="topics/additions-solaris-install.dita"/>
+               <topicref href="topics/additions-solaris-uninstall.dita"/>
+               <topicref href="topics/additions-solaris-updating.dita"/>
+            </topicref>
+            <topicref href="topics/additions-os2.dita"/>
+         </topicref>
+         <topicref href="topics/sharedfolders.dita">
+            <topicref href="topics/sf_mount_manual.dita"/>
+            <topicref href="topics/sf_mount_auto.dita"/>
+         </topicref>
+    <topicref href="topics/guestadd-clipboard.dita"/>
+         <topicref href="topics/guestadd-dnd.dita">
+            <topicref href="topics/guestadd-dnd-formats.dita"/>
+         </topicref>
+    <topicref href="topics/guestadd-video.dita"/>
+         <topicref href="topics/seamlesswindows.dita"/>
+         <topicref href="topics/guestadd-guestprops.dita">
+            <topicref href="topics/guestadd-guestprops-waits.dita"/>
+         </topicref>
+         <topicref href="topics/guestadd-gc-file-manager.dita">
+            <topicref href="topics/guestadd-gc-file-manager-using.dita"/>
+         </topicref>
+         <topicref href="topics/guestadd-guestcontrol.dita"/>
+         <topicref href="topics/guestadd-memory-usage.dita">
+            <topicref href="topics/guestadd-balloon.dita"/>
+            <topicref href="topics/guestadd-pagefusion.dita"/>
+         </topicref>
+         <topicref href="topics/guestadd-resizing.dita">
+      <topicref href="topics/guestadd-resizing-linux.dita"/>
+    </topicref>
+  </chapter>
+      <chapter href="topics/storage.dita" chunk="to-content">
+         <topicref href="topics/harddiskcontrollers.dita"/>
+         <topicref href="topics/vdidetails.dita"/>
+         <topicref href="topics/virtual-media-manager.dita">
+            <topicref href="topics/create-virtual-hard-disk-image.dita"/>
+            <topicref href="topics/create-optical-disk-image.dita"/>
+            <topicref href="topics/create-floppy-disk-image.dita"/>
+         </topicref>
+         <topicref href="topics/hdimagewrites.dita"/>
+         <topicref href="topics/diffimages.dita"/>
+         <topicref href="topics/cloningvdis.dita"/>
+         <topicref href="topics/iocaching.dita"/>
+         <topicref href="topics/storage-bandwidth-limit.dita"/>
+         <topicref href="topics/storage-cds.dita"/>
+         <topicref href="topics/storage-iscsi.dita"/>
+         <topicref href="topics/vboximg-mount.dita">
+            <topicref href="topics/vboximg-mount-display.dita"/>
+            <topicref href="topics/vboximg-mount-steps.dita"/>
+         </topicref>
+      </chapter>
+      <chapter href="topics/networkingdetails.dita" chunk="to-content">
+    <topicref href="topics/config-network.dita">
+      <topicref href="topics/create-network.dita"/>
+      <topicref href="topics/remove-network.dita"/>
+      <topicref href="topics/edit-network.dita"/>
+    </topicref>
+         <topicref href="topics/nichardware.dita"/>
+         <topicref href="topics/networkingmodes.dita"/>
+         <topicref href="topics/network_nat.dita">
+            <topicref href="topics/natforward.dita"/>
+            <topicref href="topics/nat-tftp.dita"/>
+            <topicref href="topics/nat-limitations.dita"/>
+         </topicref>
+         <topicref href="topics/network_nat_service.dita"/>
+    <topicref href="topics/changenat.dita">
+      <topicref href="topics/nat-address-config.dita"/>
+      <topicref href="topics/nat-adv-tftp.dita"/>
+      <topicref href="topics/nat-adv-dns.dita"/>
+      <topicref href="topics/nat_host_resolver_proxy.dita">
+        <topicref href="topics/nat_host_resolver_name_intercepting.dita"/>
+      </topicref>
+      <topicref href="topics/nat-adv-alias.dita"/>
+    </topicref>
+         <topicref href="topics/network_bridged.dita"/>
+         <topicref href="topics/network_internal.dita"/>
+         <topicref href="topics/network_hostonly.dita"/>
+         <topicref href="topics/network_udp_tunnel.dita"/>
+         <topicref href="topics/network_vde.dita"/>
+         <topicref href="topics/network_cloud.dita"/>
+         <topicref href="topics/network_bandwidth_limit.dita"/>
+         <topicref href="topics/network_performance.dita"/>
+      </chapter>
+
+   <chapter href="topics/remotevm.dita" chunk="to-content">
+      <topicref href="topics/vrde.dita">
+         <topicref href="topics/rdp-viewers.dita"/>
+      <topicref href="topics/headless-mode.dita"/>
+         <topicref href="topics/headless-vm-steps.dita"/>
+      <topicref href="topics/separate-mode.dita"/>
+         <topicref href="topics/usb-over-rdp.dita"/>
+         <topicref href="topics/vbox-auth.dita"/>
+         <topicref href="topics/vrde-crypt.dita"/>
+         <topicref href="topics/vrde-multiconnection.dita"/>
+         <topicref href="topics/vrde-multimonitor.dita"/>
+         <topicref href="topics/vrde-videochannel.dita"/>
+         <topicref href="topics/vrde-customization.dita"/>
+      </topicref>
+      <topicref href="topics/teleporting.dita"/>
+      <topicref format="ditamap" href="cli_topics/man_VBoxHeadless.ditamap"/>
+   </chapter>
+
+   <chapter href="topics/AdvancedTopics.dita" chunk="to-content">
+      <topicref href="topics/autologon.dita">
+         <topicref href="topics/autologon_win.dita"/>
+         <topicref href="topics/autologon_unix.dita">
+            <topicref href="topics/autologon_unix_lightdm.dita"/>
+         </topicref>
+      </topicref>
+      <topicref href="topics/cpuhotplug.dita"/>
+      <topicref href="topics/webcam-passthrough.dita">
+         <topicref href="topics/webcam-using-guest.dita"/>
+         <topicref href="topics/webcam-win-hosts.dita"/>
+         <topicref href="topics/webcam-mac-hosts.dita"/>
+         <topicref href="topics/webcam-linux-hosts.dita"/>
+      </topicref>
+      <topicref href="topics/adv-display-config.dita">
+         <topicref href="topics/customvesa.dita"/>
+         <topicref href="topics/max-resolution-guests.dita"/>
+      </topicref>
+      <topicref href="topics/adv-storage-config.dita">
+         <topicref href="topics/rawdisk.dita">
+            <topicref href="topics/rawdisk-access-entire-physical-disk.dita"/>
+            <topicref href="topics/rawdisk-access-disk-partitions.dita"/>
+         </topicref>
+         <topicref href="topics/changevpd.dita"/>
+      </topicref>
+      <topicref href="topics/changenat.dita">
+         <topicref href="topics/nat-address-config.dita"/>
+         <topicref href="topics/nat-adv-tftp.dita"/>
+         <topicref href="topics/nat-adv-dns.dita"/>
+         <topicref href="topics/nat_host_resolver_proxy.dita">
+            <topicref href="topics/nat_host_resolver_name_intercepting.dita"/>
+         </topicref>
+         <topicref href="topics/nat-adv-alias.dita"/>
+      </topicref>
+      <topicref href="topics/changedmi.dita"/>
+      <topicref href="topics/changeacpicust.dita"/>
+      <topicref href="topics/fine-tune-timers.dita">
+         <topicref href="topics/changetscmode.dita"/>
+         <topicref href="topics/warpguest.dita"/>
+         <topicref href="topics/changetimesync.dita"/>
+         <topicref href="topics/disabletimesync.dita"/>
+      </topicref>
+      <topicref href="topics/vboxbowsolaris11.dita"/>
+      <topicref href="topics/vboxbowvnictemplates.dita"/>
+      <topicref href="topics/addhostonlysolaris.dita"/>
+      <topicref href="topics/solariscodedumper.dita"/>
+      <topicref href="topics/vboxandsolzvmm.dita"/>
+      <topicref href="topics/guitweaks.dita">
+         <topicref href="topics/customize-vm-manager.dita"/>
+         <topicref href="topics/customize-vm-selector.dita"/>
+         <topicref href="topics/config-vm-selector-menu.dita"/>
+         <topicref href="topics/config-vm-window-menu.dita"/>
+         <topicref href="topics/config-vm-window-status-bar.dita"/>
+         <topicref href="topics/config-vm-window-visual-modes.dita"/>
+         <topicref href="topics/host-key-customize.dita"/>
+         <topicref href="topics/terminate-vm-action.dita"/>
+         <topicref href="topics/terminate-vm-default-action.dita"/>
+         <topicref href="topics/guru-meditation-action.dita"/>
+         <topicref href="topics/mouse-capture.dita"/>
+         <topicref href="topics/legacy-fullscreen-mode.dita"/>
+         <topicref href="topics/restrict-network-attachments.dita"/>
+      </topicref>
+      <topicref href="topics/vboxwebsrv-daemon.dita">
+         <topicref href="topics/vboxwebsrv-linux.dita"/>
+         <topicref href="topics/vboxwebsrv-solaris.dita"/>
+         <topicref href="topics/vboxwebsrv-osx.dita"/>
+      </topicref>
+      <topicref href="topics/vboxwatchdog.dita">
+         <topicref href="topics/vboxwatchdog-ballonctrl.dita"/>
+         <topicref href="topics/vboxwatchdog-hostisln.dita"/>
+         <topicref href="topics/vboxwatchdog-moreinfo.dita"/>
+         <topicref href="topics/vboxwatchdog-linux.dita"/>
+         <topicref href="topics/vboxwatchdog-solaris.dita"/>
+      </topicref>
+      <topicref href="topics/otherextpacks.dita"/>
+      <topicref href="topics/autostart.dita">
+         <topicref href="topics/autostart-linux.dita"/>
+         <topicref href="topics/autostart-solaris.dita"/>
+         <topicref href="topics/autostart-osx.dita"/>
+         <topicref href="topics/autostart-windows.dita"/>
+      </topicref>
+      <topicref href="topics/vmencryption.dita">
+         <topicref href="topics/vmencryption-limitations.dita"/>
+         <topicref href="topics/vmencryption-encryption.dita"/>
+         <topicref href="topics/vmencryption-addpassword.dita"/>
+         <topicref href="topics/vmencryption-decryption.dita"/>
+      </topicref>
+      <topicref href="topics/vboxexpertstoragemgmt.dita"/>
+      <topicref href="topics/hostpowertweaks.dita"/>
+      <topicref href="topics/sse412passthrough.dita"/>
+      <topicref href="topics/hidledssync.dita"/>
+      <topicref href="topics/usbtrafficcapturing.dita"/>
+      <topicref href="topics/heartbeatservice.dita"/>
+      <topicref href="topics/diskencryption.dita">
+         <topicref href="topics/diskencryption-limitations.dita"/>
+         <topicref href="topics/diskencryption-encryption.dita"/>
+         <topicref href="topics/diskencryption-startvm.dita"/>
+         <topicref href="topics/diskencryption-decryption.dita"/>
+      </topicref>
+      <topicref href="topics/gimdebug.dita">
+         <topicref href="topics/gimdebughyperv.dita">
+            <topicref href="topics/gimdebughyperv-windows-setup.dita"/>
+         </topicref>
+      </topicref>
+      <topicref href="topics/usbip.dita">
+         <topicref href="topics/usbip-setup-server.dita"/>
+         <topicref href="topics/usbip-security.dita"/>
+      </topicref>
+      <topicref href="topics/hyperv-support.dita"/>
+      <topicref href="topics/nested-virt.dita"/>
+    <topicref href="topics/vboxsvc-session-0.dita"/>
+      <topicref format="ditamap" href="cli_topics/user_isomakercmd-man.ditamap"/>
+   </chapter>
+  <chapter href="topics/customizing-vbox.dita" chunk="to-content">
+    <topicref href="topics/VirtualBoxAPI.dita"/>
+  </chapter>
+  <chapter href="topics/Troubleshooting.dita" chunk="to-content">
+      <topicref href="topics/vboxconfigdata.dita">
+         <topicref href="topics/vboxconfigdata-machine-folder.dita"/>
+         <topicref href="topics/vboxconfigdata-global.dita"/>
+         <topicref href="topics/vboxconfigdata-summary-locations.dita"/>
+         <topicref href="topics/vboxconfigdata-XML-files.dita"/>
+      </topicref>
+    <topicref href="topics/ts_host-processes.dita"/>
+    <topicref href="topics/ts_guest-processes.dita"/>
+         <topicref href="topics/ts_categorize-isolate.dita"/>
+    <topicref href="topics/collect-debug-info.dita">
+         <topicref href="topics/ts_vboxbugreport.dita"/>
+         <topicref href="topics/ts_debugger.dita"/>
+         <topicref href="topics/ts_guest-core-format.dita"/>
+    </topicref>
+    <topicref href="topics/ts_legacy-os.dita">
+      <topicref href="topics/additions-linux-graphics-mouse.dita"/>
+      <topicref href="topics/ts_boot-issues-ide.dita"/>
+      <topicref href="topics/ts_win2k-guest-install.dita"/>
+      <topicref href="topics/ts_win31-ram-limitations.dita"/>
+      <topicref href="topics/ts_win-vista-guest-networking.dita"/>
+      <topicref href="topics/ts_win7-guest-usb3-support.dita"/>
+      <topicref href="topics/ts_win-guest-bluescreen.dita"/>
+      <topicref href="topics/ts_config-periodic-flush.dita"/>
+      <topicref href="topics/ts_linux-buggy.dita"/>
+      <topicref href="topics/ts_crash_startup_kernel_issue.dita"/>
+      <topicref href="topics/ts_linux-guest-high-cpu.dita"/>
+      <topicref href="topics/ts_solaris-10-guest-slow-boot-smp.dita"/>
+      <topicref href="topics/ts_solaris-no-e1000-bm.dita"/>
+      </topicref>
+    <topicref href="topics/known-issues.dita">
+      <topicref href="topics/ts_general.dita">
+         <topicref href="topics/ts_ide-sata-flush.dita"/>
+         <topicref href="topics/ts_host-freq-boost.dita"/>
+         <topicref href="topics/ts_host-freq-scaling.dita"/>
+         <topicref href="topics/ts_win-cpu-usage-rept.dita"/>
+         <topicref href="topics/ts_host-powermgmt.dita"/>
+        <topicref href="topics/ts_guest-smp-limitations.dita"/>
+        <topicref href="topics/ts_virtual-disk-compacting.dita"/>
+        <topicref href="topics/ts_scale-mode.dita"/>
+        <topicref href="topics/guestadd-dnd-limitations.dita"/>
+        <topicref href="topics/ts_ich9.dita"/>
+      </topicref>
+      <topicref href="topics/ts_win-guests.dita">
+         <topicref href="topics/ts_win-guest-bluescreen-record-info.dita"/>
+         <topicref href="topics/ts_win-guest-high-cpu.dita"/>
+         <topicref href="topics/ts_win-guest-shared-folders-access-delay.dita"/>
+         <topicref href="topics/ts_win98-guest-usb-tablet-coordinates.dita"/>
+         <topicref href="topics/ts_win-guest-active-dir-domain.dita"/>
+        <topicref href="topics/ts_slow-transmission-win-xp-guests.dita"/>
+      </topicref>
+      <topicref href="topics/ts_lin-x11-guests.dita">
+        <topicref href="topics/ts_rebuild-modules-guest.dita"/>
+        <topicref href="topics/guestadd-resizing-linux-limitations.dita"/>
+      </topicref>
+      <topicref href="topics/ts_se_linux_prevents_guest_control.dita"/>
+      <topicref href="topics/ts_arm-guests.dita">
+        <topicref href="topics/ts_saved-states.dita"/>
+      </topicref>
+      <topicref href="topics/ts_win-hosts.dita">
+         <topicref href="topics/ts_win-host-cd-dvd-changes.dita"/>
+        <topicref href="topics/vboxsvc-session-0-known-issues.dita"/>
+         <topicref href="topics/ts_win-host-rdp-client.dita"/>
+         <topicref href="topics/ts_win-host-iscsi.dita"/>
+         <topicref href="topics/ts_win-host-bridged-network-adapters.dita"/>
+         <topicref href="topics/ts_win-host-host-only-network-adapters.dita"/>
+        <topicref href="topics/ts_hyperv.dita"/>
+      </topicref>
+      <topicref href="topics/ts_lin-hosts.dita">
+        <topicref href="topics/ts_rebuild-modules-host.dita"/>
+         <topicref href="topics/ts_linux-kernelmodule-fails-to-load.dita"/>
+         <topicref href="topics/ts_linux-host-cd-dvd-not-found.dita"/>
+         <topicref href="topics/ts_linux-host-ide-messages.dita"/>
+         <topicref href="topics/ts_linux-host-vboxsvc.dita"/>
+         <topicref href="topics/ts_usb-linux.dita"/>
+         <topicref href="topics/ts_linux-host-grsec.dita"/>
+         <topicref href="topics/ts_linux-host-malloc.dita"/>
+      </topicref>
+      <topicref href="topics/ts_sol-hosts.dita">
+         <topicref href="topics/ts_sol-host-zfs.dita"/>
+      </topicref>
+      <topicref href="topics/ts_macos-hosts.dita">
+        <topicref href="topics/ts_int-net.dita"/>
+        <topicref href="topics/ts_macos-limitations.dita"/>
+      </topicref>
+      </topicref>
+   </chapter>
+
+   <chapter href="topics/Security.dita" chunk="to-content">
+      <topicref href="topics/security-general.dita"/>
+      <topicref href="topics/security-secure-install.dita">
+         <topicref href="topics/security-secure-install-overview.dita"/>
+         <topicref href="topics/security-secure-install-postinstall.dita"/>
+      </topicref>
+      <topicref href="topics/security-features.dita">
+         <topicref href="topics/security-model.dita"/>
+         <topicref href="topics/secure-config-vms.dita">
+            <topicref href="topics/security-networking.dita"/>
+        <topicref href="topics/security-of-remote-vms.dita"/>
+            <topicref href="topics/security-vrdp-auth.dita"/>
+            <topicref href="topics/security_clipboard.dita"/>
+            <topicref href="topics/security-shared-folders.dita"/>
+            <topicref href="topics/security-cd-dvd-passthrough.dita"/>
+            <topicref href="topics/security-usb-passthrough.dita"/>
+         </topicref>
+         <topicref href="topics/auth-config-using.dita"/>
+         <topicref href="topics/pot-insecure.dita"/>
+         <topicref href="topics/security-encryption.dita"/>
+      </topicref>
+      <topicref href="topics/security-recommendations.dita">
+         <topicref href="topics/sec-rec-cve-2018-3646.dita">
+            <topicref href="topics/disable-nested-paging-mitigation.dita"/>
+            <topicref href="topics/flush-level1-data-cache-mitigation.dita"/>
+         </topicref>
+         <topicref href="topics/sec-rec-cve-2018-12126-et-al.dita">
+            <topicref href="topics/buffer-overwriting-mitigation.dita"/>
+         </topicref>
+      </topicref>
+   </chapter>
+
+  <!-- VBoxManage Refentry command topics -->
+  <chapter href="topics/vboxmanage.dita" chunk="to-content">
+    <topicref href="topics/vboxmanage-intro.dita"/>
+    <!-- Commands Overview -->
+    <topicref href="cli_topics/vboxmanage-cmd-overview.dita"/>
+    <!-- The remainder of the topics in this chapter are generated from docbook XML files.-->
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-common.ditamap"/>
+    <!-- Note! We sort these alphabetical unless someone can define a
+                 maintainable ordering (previously it seemed to be total
+                 random and included several duplicates). -->
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-adoptstate.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-bandwidthctl.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-checkmediumpwd.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-clonemedium.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-clonevm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-closemedium.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-cloud.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-cloudprofile.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-controlvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-convertfromraw.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-createmedium.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-createvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-debugvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-dhcpserver.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-discardstate.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-encryptmedium.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-encryptvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-export.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-extpack.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-getextradata.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-guestcontrol.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-guestproperty.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-hostonlyif.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-hostonlynet.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-import.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-list.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-mediumio.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-mediumproperty.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-metrics.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-modifymedium.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-modifynvram.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-modifyvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-movevm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-natnetwork.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-objtracker.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-registervm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-setextradata.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-setproperty.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-sharedfolder.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-showmediuminfo.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-showvminfo.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-signova.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-snapshot.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-startvm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-storageattach.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-storagectl.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-unattended.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-unregistervm.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-updatecheck.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-usbdevsource.ditamap"/>
+    <topicref format="ditamap" href="cli_topics/man_VBoxManage-usbfilter.ditamap"/>
+    <!-- End sorted manpage topics. -->
+    <topicref format="ditamap" href="cli_topics/man_vboximg-mount.ditamap"/>
+  </chapter>
+  <chapter href="topics/reference.dita" chunk="to-content">
+    <topicref href="topics/ExperimentalFeatures.dita">
+      <topicref href="topics/windows-arm-hosts-exp.dita"/>
+      <topicref href="topics/macosxguests.dita"/>
+      <topicref href="topics/cd-passthrough.dita"/>
+      <topicref href="topics/pcspeaker_passthrough.dita"/>
+      <topicref href="topics/virtio-scsi.dita"/>
+      <topicref href="topics/iscsi-intnet.dita"/>
+    </topicref>
+    <topicref href="topics/privacy.dita"/>
+   </chapter>
+
+   <!-- Change Log -->
+   <chapter href="topics/ChangeLog.dita" chunk="to-content">
+      <!-- This map file and all the topics it is referencing is generated from user_ChangeLogImpl.xml. -->
+      <topicref format="ditamap" href="topics/changelog-versions.ditamap"/>
+      <topicref href="topics/changelog-older.dita"/>
+   </chapter>
+
+   <!-- Third Party Licenses-->
+   <chapter href="licensing/licensing_chapter.dita" chunk="to-content">
+      <topicref format="ditamap" href="licensing/licensing.ditamap"/>
+   </chapter>
+
+</bookmap>

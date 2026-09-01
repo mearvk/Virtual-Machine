@@ -1,0 +1,111 @@
+# $Id: Makefile.kmk 3682 2025-08-12 23:34:19Z knut.osmundsen@oracle.com $
+## @file
+# Sub-makefile for various libraries and stuff.
+#
+
+#
+# Copyright (c) 2006-2016 knut st. osmundsen <bird-kBuild-spamx@anduin.net>
+#
+# This file is part of kBuild.
+#
+# kBuild is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# kBuild is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with kBuild.  If not, see <http://www.gnu.org/licenses/>
+#
+#
+
+SUB_DEPTH = ../..
+include $(KBUILD_PATH)/subheader.kmk
+
+LIBRARIES += kDep
+kDep_TEMPLATE = LIB
+kDep_DEFS.win += NEED_ISBLANK=1 __WIN32__=1
+kDep_SOURCES = kDep.c
+kDep_NOINST = 1
+
+LIBRARIES += kUtil
+kUtil_TEMPLATE = LIB
+kUtil_DEFS.win = __WIN__
+kUtil_SOURCES = \
+	crc32.c \
+	md5.c \
+	maybe_con_write.c \
+	maybe_con_fwrite.c \
+	is_console.c \
+       dos2unix.c \
+	kbuild_version.c \
+	version_compare.c
+kUtil_SOURCES.win = \
+	get_codepage.c \
+	msc_buffered_printf.c \
+	win_get_processor_group_active_mask.c \
+	nt_fullpath.c \
+	nt_fullpath_cached.c \
+	quote_argv.c \
+	quoted_spawn.c \
+       nt/nthlpcore.c \
+       nt/nthlpfs.c \
+       nt/ntdir.c \
+       nt/ntmkdirat.c \
+       nt/ntopenat.c \
+       nt/ntstat.c \
+       nt/ntunlink.c \
+       nt/ntutimes.c \
+       nt/nt_child_inject_standard_handles.c \
+       nt/fts-nt.c \
+       nt/kFsCache.c \
+       kStuff/kHlp/CRT/kHlpCRTString.cpp \
+       kStuff/kHlp/CRT/kHlpCRTAlloc.cpp
+kUtil_SOURCES.solaris = \
+	restartable-syscall-wrappers.c
+#kUtil_SOURCES.linux = \
+#	restartable-syscall-wrappers.c
+kUtil_NOINST = 1
+
+kbuild_version.c_DEFS = KBUILD_SVN_REV=$(KBUILD_SVN_REV)
+
+LIBRARIES.win += kWinStartup
+kWinStartup_TEMPLATE = LIB
+kWinStartup_SOURCES = startuphacks-win.c
+kWinStartup_NOINST = 1
+
+PROGRAMS += wrapper
+wrapper_TEMPLATE = BIN
+wrapper_SOURCES = wrapper.c
+wrapper_NOINST = 1
+
+PROGRAMS.win += tstNtStat
+tstNtStat_TEMPLATE = BIN
+tstNtStat_SOURCES = nt/tstNtStat.c
+tstNtStat_LIBS = $(LIB_KUTIL)
+tstNtStat_NOINST = 1
+
+PROGRAMS.win += tstNtFts
+tstNtFts_TEMPLATE = BIN
+tstNtFts_SOURCES = nt/tstNtFts.c nt/fts-nt.c
+tstNtFts_LIBS = $(LIB_KUTIL)
+tstNtFts_NOINST = 1
+
+PROGRAMS.win += tstkFsCache
+tstkFsCache_TEMPLATE = BIN
+tstkFsCache_SOURCES = nt/tstkFsCache.c
+tstkFsCache_LIBS = $(LIB_KUTIL)
+tstkFsCache_NOINST = 1
+
+PROGRAMS += tstVersionCompare
+tstVersionCompare_TEMPLATE = BIN
+tstVersionCompare_SOURCES = version_compare.c
+tstVersionCompare_DEFS = TEST
+tstVersionCompare_NOINST = 1
+
+include $(FILE_KBUILD_SUB_FOOTER)
+

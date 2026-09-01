@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="guestadd-gc-file-manager-using">
+  <title>Transferring Files</title>
+  
+  <body>
+    <p>To use the Guest Control File Manager to transfer files, follow these steps. </p>
+    <ol>
+      <li>Ensure you have the username and password for an account on the guest system, with appropriate permissions on
+        the files you need to access.</li>
+      <li>
+        <p>Open the Guest Control File Manager. Do either of the following: </p>
+        <ul>
+          <li>
+            <p>
+                In the guest VM, select
+                <b outputclass="bold">Machine</b>,
+                <b outputclass="bold">File Manager</b>.
+              </p>
+          </li>
+          <li>
+            <p> In <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>, <uicontrol>Machines</uicontrol> list, click the machine name, and then select <b outputclass="bold">File Manager</b>.</p>
+          </li>
+        </ul>
+        <p>The <b>Host File System</b> pane shows the files on the host system. </p>
+      </li>
+      <li>
+        <p>In the <b>Guest File System</b> pane, enter the <b>User Name</b> and <b>Password</b> for the user you want to
+          log in as. </p>
+        <p>Click <b outputclass="bold">Open Session</b>. </p>
+        <p>The VM file system appears in the <b>Guest File System</b> pane. </p>
+      </li>
+      <li>
+        <p>To transfer from the VM to the host, select the file(s) and click <b>Copy From Guest to Host</b>. </p>
+        <p>To transfer from the host to the VM, select the file(s) and click <b>Copy From Host to Guest</b>.</p>
+      </li>
+      <li>Check the progress of the transfer in the <b>Operations</b> pane.</li>
+      <li>
+        <p>Click <b outputclass="bold">Close</b> to end the guest session and the Guest Control File Manager. </p>
+      </li>
+    </ol>
+  </body>
+  
+</topic>

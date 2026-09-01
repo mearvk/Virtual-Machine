@@ -1,0 +1,52 @@
+# $Id: Makefile.kmk 3650 2024-11-03 02:42:43Z knut.osmundsen@oracle.com $
+## @file
+# Sub-makefile for the source directory.
+#
+
+#
+# Copyright (c) 2004-2010 knut st. osmundsen <bird-kBuild-spamx@anduin.net>
+#
+# This file is part of kBuild.
+#
+# kBuild is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# kBuild is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with kBuild.  If not, see <http://www.gnu.org/licenses/>
+#
+#
+
+SUB_DEPTH = ..
+include $(KBUILD_PATH)/subheader.kmk
+
+include $(PATH_SUB_CURRENT)/lib/Makefile.kmk
+if1of ($(KBUILD_TARGET), win)
+ include $(PATH_SUB_CURRENT)/sed/Makefile.kmk
+else
+ include $(PATH_SUB_CURRENT)/oldsed/Makefile.kmk
+endif
+include $(PATH_SUB_CURRENT)/kmk/Makefile.kmk
+include $(PATH_SUB_CURRENT)/kash/Makefile.kmk
+include $(PATH_SUB_CURRENT)/kDepPre/Makefile.kmk
+include $(PATH_SUB_CURRENT)/kObjCache/Makefile.kmk
+include $(PATH_SUB_CURRENT)/misc/Makefile.kmk
+ifeq ($(KBUILD_TARGET),win)
+ include $(PATH_SUB_CURRENT)/kLibTweaker/Makefile.kmk
+ include $(PATH_SUB_CURRENT)/kDeDup/Makefile.kmk
+ if1of ($(KBUILD_TARGET_ARCH), x86 amd64)
+  include $(PATH_SUB_CURRENT)/kWorker/Makefile.kmk
+ endif
+endif
+if1of ($(KBUILD_TARGET), win)
+ include $(PATH_SUB_CURRENT)/grep/Makefile.kmk
+endif
+
+include $(FILE_KBUILD_SUB_FOOTER)
+

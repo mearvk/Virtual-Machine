@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="guestadd-resizing-linux">
+  <title>X11/XWayland Desktop Environments</title>
+  
+  <body>
+    <p> The Guest Additions provide services for controlling the guest system's monitor topology. Monitor topology means the resolution of each virtual monitor and its state (disabled/enabled). The resolution of a virtual monitor can be modified on the VM by using the <b outputclass="bold">View</b> menu, or from the host side by resizing the window that hosts the virtual monitor, or the <userinput>VBoxManage controlvm <varname>vmname</varname> setscreenlayout</userinput> command. See <xref href="../cli_topics/vboxmanage-controlvm-setscreenlayout.dita"/>. Screens enabled must be contiguous or the command will have no effect.</p>
+    <p>On guest operating systems with X11/XWayland desktops this is put into effect by any of the following services:</p>
+    <pre xml:space="preserve">VBoxClient --vmsvga</pre>
+    <pre xml:space="preserve">VBoxClient --vmsvga-session</pre>
+    <pre xml:space="preserve">VBoxDRMClient</pre>
+    <p>On X11/XWayland desktops the resizing service is started during desktop session initialization, that is desktop login. On X11 desktops <codeph>VBoxClient --vmsvga</codeph> handles screen topology through the RandR extension. On XWayland clients <codeph>VBoxDRMClient</codeph> is used. The decision is made automatically at each desktop session start.</p>
+    <p>On 32-bit guest operating systems <userinput>VBoxDRMClient</userinput> is always used, in order to work around bugs.</p>
+  </body>
+</topic>

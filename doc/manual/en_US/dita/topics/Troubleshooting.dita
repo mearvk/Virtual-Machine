@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="Troubleshooting">
+  <title>Troubleshooting</title>
+  
+  <body>
+    <p>Understand how to find VirtualBox files and processes, how to collect debugging information, and identify and address common issues that can occur while working with <ph conkeyref="vbox-conkeyref-phrases/product-name"/>.</p>
+  </body>
+</topic>

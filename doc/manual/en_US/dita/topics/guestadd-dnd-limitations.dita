@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="guestadd-dnd-limitations">
+  <title>Drag Limitations</title>
+  
+  <body>
+    <dl>
+      <dlentry>
+        <dt>Details</dt>
+        <dd>
+          <p>On Linux hosts and guests, programs can query for dragged data while the drag operation is still in progress. For example, on LXDE using the PCManFM file manager. This feature does not work with <ph conkeyref="vbox-conkeyref-phrases/product-name"/>.</p>
+        </dd>
+      </dlentry>
+      <dlentry>
+        <dt>Workaround</dt>
+        <dd>
+          <p>A different file manager, such as Nautilus, can be used to force programs to wait until a drag operation is complete before querying the data. </p>
+        </dd>
+      </dlentry>
+    </dl>
+  </body>
+  
+</topic>

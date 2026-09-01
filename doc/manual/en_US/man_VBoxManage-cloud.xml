@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    manpage, user manual, usage: VBoxManage cloud
+-->
+<!--
+    Copyright (C) 2018-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd"[
+<!ENTITY % all.entities SYSTEM "all-entities.ent">
+%all.entities;
+]>
+<refentry id="vboxmanage-cloud" lang="en">
+  <refentryinfo>
+    <pubdate>$Date: 2025-11-14 17:43:28 +0100 (Fri, 14 Nov 2025) $</pubdate>
+    <title>VBoxManage cloud</title>
+  </refentryinfo>
+
+  <refmeta>
+    <refentrytitle>VBoxManage-cloud</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class="manual">&product-name;</refmiscinfo>
+  </refmeta>
+
+  <refnamediv>
+    <refname>VBoxManage-cloud</refname>
+    <refpurpose>Manage the cloud entities</refpurpose>
+    <refclass>&product-name;</refclass>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <!-- Cloud list -->
+    <!-- The 'id' is mandatory and must start with 'synopsis-'. -->
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-list-instances">
+      <command>VBoxManage cloud</command>
+        <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+        <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+        <sbr/>
+        <arg choice="plain">list instances</arg>
+        <arg>--state=<replaceable>string</replaceable></arg>
+        <arg>--compartment-id=<replaceable>string</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-list-images">
+      <command>VBoxManage cloud</command>
+      <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+      <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+      <sbr/>
+      <arg choice="plain">list images</arg>
+      <arg choice="req">--compartment-id=<replaceable>string</replaceable></arg>
+      <arg>--state=<replaceable>string</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-list-vnicattachments">
+      <command>VBoxManage cloud</command>
+      <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+      <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+      <sbr/>
+      <arg choice="plain">list vnicattachments</arg>
+      <arg choice="req">--compartment-id=<replaceable>string</replaceable></arg>
+      <arg rep="repeat">--filter=<group choice="plain">
+          <arg choice="plain">instanceId</arg>
+          <arg choice="plain">vnicId</arg>
+          <arg choice="plain">availabilityDomain</arg>
+          </group>=<replaceable>value</replaceable></arg>
+    </cmdsynopsis>
+
+    <!-- Cloud instance commands -->
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-create" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance create</arg>
+       <arg choice="req">--domain-name=<replaceable>name</replaceable></arg>
+       <group choice="req">
+           <arg choice="plain">--image-id=<replaceable>id</replaceable></arg>
+           <arg choice="plain">--boot-volume-id=<replaceable>id</replaceable></arg>
+       </group>
+       <arg choice="req">--display-name=<replaceable>name</replaceable></arg>
+       <arg choice="req">--shape=<replaceable>type</replaceable></arg>
+       <arg choice="req">--subnet=<replaceable>id</replaceable></arg>
+       <arg>--boot-disk-size=<replaceable>size in GB</replaceable></arg>
+       <arg>--publicip=<group choice="plain"><arg choice="plain">true</arg><arg choice="plain">false</arg></group></arg>
+       <arg>--privateip=<replaceable>IP address</replaceable></arg>
+       <arg rep="repeat">--public-ssh-key=<replaceable>key string</replaceable></arg>
+       <arg>--launch-mode=<group choice="plain">
+           <arg choice="plain">NATIVE</arg>
+           <arg choice="plain">EMULATED</arg>
+           <arg choice="plain">PARAVIRTUALIZED</arg>
+         </group></arg>
+       <arg>--cloud-init-script-path=<replaceable>path to a script</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-info" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance info</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-terminate" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance terminate</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-start" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance start</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-pause" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance pause</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-reset" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance reset</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-clone" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance clone</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+       <arg>--clone-name=<replaceable>name for a clone instance</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-metriclist" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance metriclist</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+     </cmdsynopsis>
+     <cmdsynopsis id="synopsis-vboxmanage-cloud-instance-metricdata" sepchar=" ">
+       <command moreinfo="none">VBoxManage cloud</command>
+       <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+       <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+       <sbr/>
+       <arg choice="plain">instance metricdata</arg>
+       <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+       <arg choice="req">--metric-name=<replaceable>metric name</replaceable></arg>
+       <arg choice="req">--metric-points=<replaceable>number of history metric points</replaceable></arg>
+     </cmdsynopsis>
+
+     <!-- Cloud image commands -->
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-image-create" sepchar=" "> <!-- The 'id' is mandatory and must start with 'synopsis-'. -->
+        <command>VBoxManage cloud</command>
+          <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+          <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+          <sbr/>
+          <arg choice="plain">image create</arg>
+          <arg choice="req">--display-name=<replaceable>name</replaceable></arg>
+          <arg>--bucket-name=<replaceable>name</replaceable></arg>
+          <arg>--object-name=<replaceable>name</replaceable></arg>
+          <arg>--instance-id=<replaceable>unique id</replaceable></arg>
+      </cmdsynopsis>
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-image-info" sepchar=" ">
+        <command>VBoxManage cloud</command>
+        <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+        <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+        <sbr/>
+        <arg choice="plain">image info</arg>
+        <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+      </cmdsynopsis>
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-image-delete" sepchar=" ">
+        <command>VBoxManage cloud</command>
+        <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+        <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+        <sbr/>
+        <arg choice="plain">image delete</arg>
+        <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+      </cmdsynopsis>
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-image-import" sepchar=" ">
+        <command>VBoxManage cloud</command>
+        <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+        <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+        <sbr/>
+        <arg choice="plain">image import</arg>
+        <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+        <arg>--bucket-name=<replaceable>name</replaceable></arg>
+        <arg>--object-name=<replaceable>name</replaceable></arg>
+      </cmdsynopsis>
+      <cmdsynopsis id="synopsis-vboxmanage-cloud-image-export" sepchar=" ">
+        <command>VBoxManage cloud</command>
+        <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+        <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+        <sbr/>
+        <arg choice="plain">image export</arg>
+        <arg choice="req">--id=<replaceable>unique id</replaceable></arg>
+        <arg choice="req">--display-name=<replaceable>name</replaceable></arg>
+        <arg>--bucket-name=<replaceable>name</replaceable></arg>
+        <arg>--object-name=<replaceable>name</replaceable></arg>
+      </cmdsynopsis>
+
+      <!-- Cloud network commands -->
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-network-setup"> <!-- The 'id' is mandatory and must start with 'synopsis-'. -->
+      <command>VBoxManage cloud</command>
+      <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+      <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+      <sbr/>
+      <arg choice="plain">network setup</arg>
+      <arg>--gateway-os-name=<replaceable>string</replaceable></arg>
+      <arg>--gateway-os-version=<replaceable>string</replaceable></arg>
+      <arg>--gateway-shape=<replaceable>string</replaceable></arg>
+      <arg>--tunnel-network-name=<replaceable>string</replaceable></arg>
+      <arg>--tunnel-network-range=<replaceable>string</replaceable></arg>
+      <arg>--proxy=<replaceable>string</replaceable></arg>
+      <arg>--compartment-id=<replaceable>string</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-network-create">
+      <command>VBoxManage cloud</command>
+      <arg choice="req">--provider=<replaceable>name</replaceable></arg>
+      <arg choice="req">--profile=<replaceable>name</replaceable></arg>
+      <sbr/>
+      <arg choice="plain">network create</arg>
+      <arg choice="req">--name=<replaceable>string</replaceable></arg>
+      <arg choice="req">--network-id=<replaceable>string</replaceable></arg>
+      <group>
+        <arg choice="plain">--enable</arg>
+        <arg choice="plain">--disable</arg>
+      </group>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-network-update">
+      <command>VBoxManage cloud network update</command>
+      <arg choice="req">--name=<replaceable>string</replaceable></arg>
+      <arg>--network-id=<replaceable>string</replaceable></arg>
+      <group>
+        <arg choice="plain">--enable</arg>
+        <arg choice="plain">--disable</arg>
+      </group>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-network-delete">
+      <command>VBoxManage cloud network delete</command>
+      <arg choice="req">--name=<replaceable>string</replaceable></arg>
+    </cmdsynopsis>
+    <cmdsynopsis id="synopsis-vboxmanage-cloud-network-info">
+      <command>VBoxManage cloud network info</command>
+      <arg choice="req">--name=<replaceable>string</replaceable></arg>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id="vboxmanage-cloud-image-description">
+    <title>Description</title>
+
+    <!-- Cloud commands common options  -->
+    <refsect2 id="vboxmanage-cloud-common-options">
+      <title>Common options</title>
+      <remark role="help-scope" condition="GLOBAL"/>
+      <para>The word <literal>cloud</literal> is an umbrella term for all commands related to
+        intercommunication with the Cloud.  The following common options must be placed after
+        the <literal>cloud</literal> argument and before the following sub-commands:</para>
+      <variablelist>
+        <varlistentry>
+          <term>--provider=<replaceable>name</replaceable></term>
+          <listitem><para>Short cloud provider name.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>--profile=<replaceable>name</replaceable></term>
+          <listitem><para>Cloud profile name. </para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <!-- Cloud list commands -->
+    <refsect2 id="vboxmanage-cloud-list-instances">
+      <title>cloud list instances</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Displays a list of the cloud instances for a specified compartment.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>--state=<replaceable>running|paused|terminated</replaceable></term>
+          <listitem>
+            <para>The state of cloud instance. The possible states are <literal>running</literal>,
+              <literal>paused</literal>, and <literal>terminated</literal>.
+              If a state isn't provided a list of instances with all possible states is returned.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--compartment-id</option></term>
+          <listitem>
+            <para>A compartment is the logical container used to organize and isolate cloud resources.
+              Different cloud providers may use different names for this entity.
+            </para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-list-images">
+      <title>cloud list images</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Displays the list of the images for a specified compartment.
+      </para>
+      <variablelist>
+        <varlistentry>
+            <term>--state=<replaceable>available|disabled|deleted</replaceable></term>
+          <listitem>
+            <para>The state of the cloud image. The possible states are <literal>available</literal>,
+              <literal>disabled</literal> and <literal>deleted</literal>.
+              If a state isn't provided a list of images with all possible states is returned.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--compartment-id</option></term>
+            <listitem>
+              <para>A compartment is the logical container used to organize and isolate cloud resources.
+                Different cloud providers may use different names for this entity.
+              </para>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-list-vnicattachments">
+      <title>cloud list vnic attachments</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Displays the list of the vnic attachments for a specified compartment.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>--filter={instanceId|vnicId|domainName}=<replaceable>string</replaceable></term>
+          <listitem>
+            <para>Filters are used to narrow down the set of Vnic attachments of interest.
+              This parameter can be specified multiple times.
+              The possible filter types are <literal>instanceId</literal>, <literal>vnicId</literal>,
+              or <literal>availabilityDomain</literal>.
+            </para>
+            <para>Filters have a syntax of <emphasis role="bold">type=[value]</emphasis> as seen
+              in the following examples:
+            </para>
+            <itemizedlist>
+              <listitem><para>instanceId=ocid1.instance.oc1.iad.anuwcl...js6</para></listitem>
+              <listitem><para>vnicId=ocid1.vnic.oc1.iad.abuwcl...jsm</para></listitem>
+              <listitem><para>domainName=ergw:US-ASHBURN-AD-2</para></listitem>
+            </itemizedlist>
+            <para>
+              If a filter isn't provided the entire list of vnic attachments for a specified
+              compartment is returned.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--compartment-id</option></term>
+            <listitem>
+              <para>A compartment is the logical container used to organize and isolate cloud resources.
+                Different cloud providers may use different names for this entity.
+              </para>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <!-- Cloud instance commands -->
+    <refsect2 id="vboxmanage-cloud-instance-create">
+      <title>cloud instance create</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Creates new instance in the Cloud.
+        There are two standard ways to create an instance in the Cloud:
+      </para>
+      <orderedlist>
+        <listitem><para>Create an instance from an existing custom image.</para></listitem>
+        <listitem><para>Create an instance from an existing bootable volume. This
+          bootable volume shouldn't be attached to any instance.</para></listitem>
+      </orderedlist>
+      <para>
+        The first approach requires the following two options: <literal>image-id</literal>,
+        <literal>boot-disk-size</literal>.
+        The second approach requires the following option: <literal>boot-volume-id</literal>.
+      </para>
+      <para>
+        The following options are common to both cases:
+          <literal>display-name</literal>, <literal>launch-mode</literal>,
+          <literal>subnet-id</literal>, <literal>publicIP</literal>, <literal>privateIP</literal>, <literal>shape</literal>, <literal>domain</literal>.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--domain-name</option></term><listitem><para>Cloud domain where the new instance is to be created.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--image-id</option></term><listitem><para>Unique identifier which fully identifies a custom image in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--boot-volume-id</option></term><listitem><para>Unique identifier which fully identifies a boot volume in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--display-name</option></term><listitem><para>Name for the new instance in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--shape</option></term><listitem><para>The shape of the instance which defines the number of CPUs and memory (RAM).</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--subnet</option></term><listitem><para>Unique identifier which fully identifies an existing subnet in the Cloud which will be used by the instance.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--boot-disk-size</option></term><listitem><para>The size of the bootable image in GB. Default is 50GB.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--publicip</option></term><listitem><para>Public IP address for the created instance.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--privateip</option></term><listitem><para>Private IP address for the created instance.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--public-ssh-key</option></term>
+            <listitem>
+              <para>Public SSH key to use to connect to the instance via SSH.
+                This parameter may be repeated if using more than one key:
+                <literal>--public-ssh-key=firstSSHKey --public-ssh-key=secondSSHKey</literal>.
+              </para>
+            </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--launch-mode</option></term><listitem><para>Supported values are EMULATED, NATIVE, and PARAVIRTUALIZED. </para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--cloud-init-script-path</option></term><listitem><para>Absolute path to the cloud-init script.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-info">
+      <title>cloud instance info</title>
+      <para>
+        Display information about a cloud instance with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-terminate">
+      <title>cloud instance termination</title>
+      <para>
+        Delete a cloud instance with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-start">
+      <title>cloud instance start</title>
+      <para>
+        Start a cloud instance with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-pause">
+      <title>cloud instance pause</title>
+      <para>
+        Pause a cloud instance with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-reset">
+      <title>cloud instance reset</title>
+      <para>
+        Force reset a cloud instance with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-clone">
+      <title>cloud instance clone</title>
+      <para>
+        Clone a cloud instance with the specified ID. Only works for the instances accessible through &product-name;,
+        i.e., not every instance in the cloud may be cloned.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--clone-name</option></term><listitem><para>Name for the clone instance</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-metriclist">
+      <title>available list of metrics for cloud instances</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Displays the list of the available metrics for the instance.
+        The returned names must be used with the command
+        <command>VBoxManage cloud instance metricdata</command>.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-instance-metricdata">
+      <title>Displays cloud instance metric data</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Displays the metric data with the resolution of 1 minute for the requested cloud instances.
+        The timestamps are returned in the format described in RFC2822.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term><option>--metric-name</option></term><listitem><para>Metric name</para></listitem>
+        </varlistentry>
+        <varlistentry>
+            <term><option>--metric-points</option></term>
+            <listitem>
+                <para>
+                  Metric points begin at the current time, which has a value of one, and continue
+                  into the past with the values increasing.  If only the most recent metric point
+                  is desired supply the value <literal>1</literal>. If the most recent value and
+                  the preceding value are desired then supply a value of <literal>2</literal>.
+                </para>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <!-- Cloud image commands -->
+    <refsect2 id="vboxmanage-cloud-image-create">
+      <title>cloud image create</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Creates new image in the Cloud.
+        There are two standard ways to create an image in the Cloud:
+      </para>
+      <orderedlist>
+        <listitem><para>Create an image from an object in the Cloud Storage.</para></listitem>
+        <listitem><para>Create an image from an existing cloud instance.</para></listitem>
+      </orderedlist>
+      <para>
+        For the first approach the following three options are required:
+        <literal>bucket-name</literal>, <literal>object-name</literal>, and <literal>display-name</literal>.
+      </para>
+      <para>
+        For the second approach the following two options are required:
+        <literal>instance-id</literal>, <literal>display-name</literal>
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--display-name</option></term><listitem><para>Name for new image in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--bucket-name</option></term><listitem><para>The name of the Cloud bucket where the image (object) is located..</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--object-name</option></term><listitem><para>Name of object in the bucket.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--instance-id</option></term><listitem><para>Unique identifier which fully identifies the instance in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-image-info">
+      <title>cloud image info</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Display information about a cloud image with a specified ID.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the image in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-image-delete">
+      <title>cloud image delete</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Delete an image with a specified ID from the Cloud.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the image in the Cloud.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-image-import">
+      <title>cloud image import</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Import an image with the specified ID from the Cloud to a local host.
+        The result is an object in the local "temp" folder on the local host.
+        There are two possible approaches when importing from the Cloud:
+      </para>
+      <orderedlist>
+          <listitem><para>Create an object from an image in the Cloud Storage.</para></listitem>
+          <listitem><para>Download the object to the local host.</para></listitem>
+      </orderedlist>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier which fully identifies the image in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--bucket-name</option></term><listitem><para>The name of the Cloud bucket where the object will be created.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--object-name</option></term>
+            <listitem>
+              <para>
+                Name of the created object in the bucket or the name of the downloaded object.
+                If no <option>--object-name</option> option is supplied a default image name is used.
+              </para>
+            </listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-image-export">
+      <title>cloud image export</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Export an existing VBox image with the specified uuid from a local host to the Cloud.
+        The result is new image in the Cloud.
+        There are two possible approaches when exporting to the Cloud:
+      </para>
+      <orderedlist>
+          <listitem><para>Upload a VBox image to the Cloud Storage.</para></listitem>
+          <listitem><para>Create an image from the uploaded object.</para></listitem>
+      </orderedlist>
+      <variablelist>
+        <varlistentry>
+          <term><option>--id</option></term><listitem><para>Unique identifier of the image in &product-name;.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--display-name</option></term><listitem><para>The name of the new image in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--bucket-name</option></term><listitem><para>The name of the Cloud bucket where the image (object) will be uploaded.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--object-name</option></term><listitem><para>Name of the object in the bucket.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+
+    <!-- Cloud network commands -->
+    <refsect2 id="vboxmanage-cloud-network-setup">
+      <title>cloud network setup</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Set up a cloud network environment for the specified cloud profile.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--gateway-os-name</option></term><listitem><para>The name of OS to use for the cloud gateway.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--gateway-os-version</option></term><listitem><para>The version of the OS to use for the cloud gateway.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--gateway-shape</option></term><listitem><para>The instance shape to use for the cloud gateway. </para></listitem>
+        </varlistentry>
+        <varlistentry>
+        <term><option>--tunnel-network-name</option></term><listitem><para>The name of the VCN/subnet to use for tunneling.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--tunnel-network-range</option></term><listitem><para>The IP address range to use for tunneling. </para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--proxy</option></term><listitem><para>The proxy URL to be used in a local gateway installation.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--compartment-id</option></term><listitem><para>The compartment to create the tunnel network in.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-network-create">
+      <title>cloud network create</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Create a new cloud network descriptor associated with an existing cloud subnet.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--name</option></term><listitem><para>The name to assign to the cloud network descriptor.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--network-id</option></term><listitem><para>The unique identifier of an existing subnet in the cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--enable</option>, --disable</term>
+          <listitem><para>Whether to enable the network descriptor or disable it.  If not specified,
+            the network will be enabled.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-network-update">
+      <title>cloud network update</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Modify an existing cloud network descriptor.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--name</option></term><listitem><para>The name of an existing cloud network descriptor.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--network-id</option></term><listitem><para>The unique identifier of an existing subnet in the Cloud.</para></listitem>
+        </varlistentry>
+        <varlistentry>
+          <term><option>--enable</option>, --disable</term>
+          <listitem><para>Whether to enable the network descriptor or disable it.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-network-delete">
+      <title>cloud network delete</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Delete an existing cloud network descriptor.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--name</option></term><listitem><para>The name of an existing cloud network descriptor.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+    <refsect2 id="vboxmanage-cloud-network-info">
+      <title>cloud network info</title>
+      <remark role="help-copy-synopsis"/>
+      <para>
+        Display information about a cloud network descriptor.
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term><option>--name</option></term><listitem><para>The name of an existing cloud network descriptor.</para></listitem>
+        </varlistentry>
+      </variablelist>
+    </refsect2>
+
+  </refsect1>
+
+</refentry>
+

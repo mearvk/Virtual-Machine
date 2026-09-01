@@ -1,0 +1,945 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2006-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<!--
+Release change log structure
+
+Each release has a matching log of changes which were made for that and
+earlier releases. Earlier releases means anything with a lower number (e.g.
+5.0.18 is lower than 5.1.2) which was released before this one. The log is
+kept in the file doc/manual/user_ChangeLogImpl.xml. Anything worth mentioning,
+particularly new features and fixed bugs, with a trac bug number if possible,
+should be added to the top of the change log (that is, the section for the
+upcoming release) for the branch in which it first appears - stable or
+development - before the next release. If you back-port it to older branches
+please add an entry there too. When a new major release is made, change log
+sections for earlier releases are merged in.
+
+Change log sections are split into two groups: major new features (normally
+only for dot zero releases) and fixes. In addition, the entries in each group
+are ordered as follows:
+
+    VMM-related entries (most important)
+    GUI-related entries (most visible for users)
+    Device-related entries
+    VBoxManage/API/Main-related entries
+    Host-related entries
+    Guest-related entries
+    BIOS/EFI/ACPI-related entries
+
+Please do further ordering as seems appropriate by importance and visibility for
+users, e.g. audio before serial ports and generally Windows before Linux.  Please
+also try to describe the user impact, not the technical details, and only use
+technical terms if no non-technical ones are clear enough.
+
+Rules for adding a changelog entry to make them look more uniform:
+
+    1. Begin the entry with an UPPERCASE letter, e.g. "Foo: Fixed" vs. "Foo: fixed"
+    2. Use the past form of something, e.g. "Fixed ..." vs. "Fix ..."
+    3. No dot (.) after the entry, e.g. "<para>Foo: Bar</para>" vs. "<para>Foo: Bar.</para>"
+    4. Use TWO (2) spaces for indentation
+    5. Use line breaks when hitting column 80
+
+    Full example:
+
+      <listitem>
+        <para>Foo: Fixed something really important, really really long line
+          with lots more text not fitting into 80 columns</para>
+      </listitem>
+-->
+<chapter>
+
+<!-- HACK ALERT! Seems we must have a single top level element for xi:include to work.
+                           So, we use chapter and xpointer="xpointer(/chapter/)" with xi:include. -->
+  <sect1>
+
+    <title>Version X.Y.Z (date tbd)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Fixed Windows 11 on ARM guests crashing with a blue screen
+          after restoring from a saved state</para>
+      </listitem>
+
+      <listitem>
+        <para>Shared Clipboard: Fixed the first character being removed from
+          filenames when copying files located directly in a filesystem
+          root</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.16 (2026-08-18)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>GUI: Updated Catalan translations</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed OVF import warning visibility</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Added graceful handling of inaccessible VMs</para>
+      </listitem>
+
+      <listitem>
+        <para>Graphics: VMSVGA 3D performance improvements</para>
+      </listitem>
+
+      <listitem>
+        <para>Video Recording: Fixed a hang when stopping recording after a
+          large number of display updates</para>
+      </listitem>
+
+      <listitem>
+        <para>Host: OpenSSL 4.0 build fixes (github:gh-794)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Support for FRED (github:gh-784)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Improvements in shared clipboard handling in Wayland</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest: Fixed support for RHEL 9.8 kernels ​(github:gh-732, ​github:gh-771)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.14 (2026-07-21)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Avoided querying/setting xcr0 for CPUs without xsave feature
+          when using Windows Hyper-V as the virtualization engine</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows installer: Added support for detecting the Visual C++ runtime via
+          the servicing infrastructure (github:gh-723)</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows Host: Fixed clipboard handling of Unicode formats
+          (github:gh-677)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Added initial support for kernel 7.2</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest: Fixed support for updated RHEL 9.8 and 9.9 kernels</para>
+      </listitem>
+
+      <listitem>
+        <para>UEFI: Fixed possible bug check and reboot of Windows 11 when
+          updating Secure Boot DBX entries</para>
+      </listitem>
+
+      <listitem>
+        <para>BIOS: Simplified build prerequisites, NASM 2.16 or later is now
+          usable for everything (github:gh-520)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.12 (2026-06-30)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>Windows Guest: Added DX11 performance improvements and fixes</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Fixed kernel panic (github:gh-711, github:gh-712)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Fixed various NASM build issues (github:gh-520)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.10 (2026-06-16)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Fixed issue when CentOS 10 VM was not booting due to the
+          message "Fatal glibc error: CPU does not support x86-64-v3" (github:gh-642)</para>
+      </listitem>
+
+      <listitem>
+        <para>Devices/EFI: Fixed booting issue when ARM VM had less than 1024 MiB of RAM assigned (github:gh-679)</para>
+      </listitem>
+
+      <listitem>
+        <para>USB: Fixed issue when it was not possible to attach USB device to
+          headless VM on Apple Silicon/macOS 26.4.1 (github:gh-631)</para>
+      </listitem>
+
+      <listitem>
+        <para>Storage: Fixed issue when VIRTIO-SCSI device was not recognized as
+          SSD device by guest system (github:gh-634)</para>
+      </listitem>
+
+      <listitem>
+        <para>Network: Fixed issue in E1000 emulation code which triggered debug
+          log creation (github:gh-645)</para>
+      </listitem>
+
+      <listitem>
+        <para>Network: Fixed issue in E1000 emulation code which prevented OS/2 guest
+          from booting (github:gh-683)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Fixed issue when VMs could not be started due to
+          kernel oops (github:gh-639)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Fixed issue when kernel modules were
+          failing to build with openSUSE 16.0 kernel</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Added initial support for kernel 7.1</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Added extra fixes for RHEL 9.8 kernel (github:gh-676)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Added possibility to build source code using NASM instead of YASM as
+          the assembler (github:gh-520)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Added initial support for Extended Data Control Protocol
+          for clipboard sharing with Plasma on Wayland guests (github:gh-33)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Added extra fixes for preventing vboxvideo kernel module
+          build with kernel version 7.0 and newer (github:gh-655)</para>
+      </listitem>
+
+      <listitem>
+        <para>OS/2 Guest Additions: Fixed issue when Shared Folders automount and clipboard
+          sharing stopped working (github:gh-551)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.8 (2026-04-21)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Fixed issue which caused a Guru Meditation with VERR_IEM_IPE_4 if the guest
+          was trying to execute the wrong hypercall instruction but injected a UD exception
+          instead (github:gh-616)</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT Network: Fixed issue when internal DNS server could not be reached</para>
+      </listitem>
+
+      <listitem>
+        <para>Graphics: Fixed issue when mouse cursor did not change shape by context
+          in Ubuntu 25.10 / Wayland (github:gh-464)</para>
+      </listitem>
+
+      <listitem>
+        <para>Main: Fixed crash on FreeBSD 16.0 shutdown with multiple devices
+          attached to LSI Logic SAS controller (github:gh-538)</para>
+      </listitem>
+
+      <listitem>
+        <para>IPRT: Merged Github pull request 503 (fix: infinite loop in vsscanf whitespace processing).
+          github-merge-author: lachlanharrisdev</para>
+      </listitem>
+
+      <listitem>
+        <para>Unattended: General improvements</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Added initial support for kernels 6.19 and 7.0 (github:gh-467, github:gh-623)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Added support for guest time accounting (github:gh-2)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Introduced additional fixes for RHEL 10.1 and 10.2 kernels (github:gh-455)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Added support for UEK9 kernel on Oracle Linux 9</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host and Guest: Added improvements to make 'rcvboxdrv/rcvboxadd setup' and installation process faster</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Deprecated vboxvideo kernel module for kernels 7.0 and newer; please consider
+          using VMSVGA graphics or vboxvideo module which comes with Linux kernel or provided by your Linux
+          distribution if guest running kernel 7.0+; vboxvideo will still be available for older kernels</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when clipboard sharing was not possible in combination of Wayland
+          guest and Windows host (github:gh-33)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when last character was not pasted into Windows
+          host clipboard when copying from Wayland guest (bug:22339)</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows Guest: Fixed issue when Windows 11 guest experienced
+          BSOD - DRIVER_OVERRAN_STACK_BUFFER (github:gh-590)</para>
+      </listitem>
+
+      <listitem>
+        <para>UEFI: Fixed errors with secure boot certificate updates and Windows 11 guests (github:gh-133)</para>
+      </listitem>
+
+      <listitem>
+        <para>DMI: Fixed issue when 0.0 value was provided for the BIOS release and BIOS firmware
+          version numbers so Windows did not populate the registry keys under HKLM\HARDWARE\System\BIOS which
+          some components rely on (bug:21943)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.6 (2026-01-20)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Fixed issue when VM process was crashing during RHEL5 guest boot</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when VMX nested-guest VM-entry was checking the wrong
+          VM-execution control bit in the virtual VMCS (github:gh-313)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when VM was crashing on start after recent
+          Windows update (KB5066793) (github:gh-360)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when guest process was crashing inside Windows
+          guest on AMD system (github:gh-400)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when VM process was crashing on Windows host (github:gh-426,
+          github:gh-407, github:gh-404, github:gh-369, github:gh-238, github:gh-207,
+          github:gh-187, github:gh-178)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed Guru Meditation issue on VM start on Windows host (github:gh-346)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when VM was failing to shut down on Windows 11 ARM
+          host (github:gh-416)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when booting Red Hat 6.1 i386 was failing on AMD Zen4
+          Windows 11 Pro host (github:gh-466)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Added fixes for full-screen support in multi-monitor
+          case (github:gh-197, github:gh-243)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed issue when downloading update files was
+          failing (github:gh-327, github:gh-372)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed issue when list of VMs was not properly displayed in
+          Resource Manager tab (github:gh-364)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed issue when with switching between light/dark modes
+          on macOS host (github:gh-457)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed issue when storage controller type list was displayed
+          incorrectly (github:gh-413)</para>
+      </listitem>
+
+      <listitem>
+        <para>DevACPI: Fixed issue with file path key names for Dsdt/Ssdt (github:gh-381)</para>
+      </listitem>
+
+      <listitem>
+        <para>DevACPI: Added change to make OemTabId configurable using AcpiOemTabId
+          option (github:gh-383)</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT: Fixed issue with high CPU usage when VM was using NAT (github:gh-356)</para>
+      </listitem>
+
+      <listitem>
+        <para>RDP: The VRDP server was moved to the open source base package</para>
+      </listitem>
+
+      <listitem>
+        <para>SmartCard: The USB smartcard emulation was moved to the open source base package</para>
+      </listitem>
+
+      <listitem>
+        <para>VM encryption: The disk and VM encryption feature was moved to the open source base package</para>
+      </listitem>
+
+      <listitem>
+        <para>VBoxManage: Fixed issue when VBoxManage was not displaying interface
+          name for FreeBSD guests (github:gh-403)</para>
+      </listitem>
+
+      <listitem>
+        <para>VBoxManage: Fixed issue when VM could not be started from command line
+          in some circumstances (github:gh-418)</para>
+      </listitem>
+
+      <listitem>
+        <para>Main: Improved filename check for drag-and-drop operations (github:gh-68)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Fixed issue when vboxautostart-service did not start
+          corresponding VMs on system boot (github:gh-309)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Host: Fixed issue when VM was not able to start if host was
+          running realtime kernel configuration (github:gh-332)</para>
+      </listitem>
+
+      <listitem>
+        <para>Guest Additions: Fixed installation on Windows XP 64-bit guests (github:gh-142)</para>
+      </listitem>
+
+      <listitem>
+        <para>Guest Additions: Fixed issue when guest process was crashing due to
+          low memory in the system (github:gh-410)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed build issue for kernels 2.5.52 and older</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when VBoxService was not started
+          due to abandoned pid file</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when user session services were
+          not started on old Linux distributions</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed check if kernel modules were loaded
+          for old Linux distributions</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when Guest Additions processes
+          were left running on system reboot or shutdown (github:gh-311)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Added additional fixes for RHEL 9.8, 10.1 and 10.2 kernels</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Added initial support for kernel 6.19 (github:gh-467)</para>
+      </listitem>
+
+      <listitem>
+        <para>BIOS: Fixed issue with booting VM using IPXE (github:gh-417)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.4 (2025-10-21)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>GUI: Fixed VirtualBox VM Manager crash when host was resuming
+          from sleep (github:gh-121, github:gh-170)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Updated native language support for Traditional Chinese, Greek,
+          Swedish, Hungarian and Indonesian translations</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT: Fixed issue when multiple port forwarding rules
+          affected NAT functionality (github:gh-232)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux host and guest: Introduced initial support for kernel 6.18</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Introduced additional fixes for RHEL 9.6
+          and 9.7 kernels (github:gh-12)</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows Guest Additions: Introduced additional fixes for issue
+          when installation was failing in Windows XP SP2 guest (github:gh-142)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.2 (2025-09-10)</title>
+
+    <para>This is a maintenance release. The following items were fixed or
+      added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>VMM: Fixed issue when VM was not able to start on Windows Arm
+          host (issue github:gh-8)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed VBox Manager crash when some VM has a lot of snapshots
+          (issue github:gh-119)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed issue when error notifications could not be displayed
+          on snapshot deletion (issue github:gh-75)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed VBox Manager crash while attempting to show error notifications too early
+          (issues github:gh-135 and github:gh-171)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed VBox Manager crash while removing all VMs from VM list</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed VBox Manager freeze on Linux hosts at startup or while attempting to
+          add a VM (issues github:gh-70 and github:gh-168)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed VBox Manager layout bug with too strict size constraints
+          (issue github:gh-87)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Updated VBox VM network status-bar indicator tooltip (IP address) on guest additions
+          change (issue github:gh-179)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Added possibility for Windows 11 host to use legacy light/dark themes from Windows 10
+          (issues github:gh-137 and github:gh-151)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Forcing xdgdesktopportal platform theme on Linux when org.freedesktop.portal.Desktop DBus
+          service is available (issues github:gh-138 and github:gh-150)</para>
+      </listitem>
+
+      <listitem>
+        <para>Network (NAT, DNS): Fixed potential issue where a nameserver in the 127/8 network
+          could have been passed to the guest (issue github:gh-136)</para>
+      </listitem>
+
+      <listitem>
+        <para>Network: Added a new experimental type of e1000 adapter (82583V). It requires the ICH9
+          chipset, since MSIs are not supported by PIIX3</para>
+      </listitem>
+
+      <listitem>
+        <para>USB: Fixed passing through USB devices exposed over USB/IP (issue github:gh-192)</para>
+      </listitem>
+
+      <listitem>
+        <para>USB Webcam: The virtual USB webcam is now part of the open source base package</para>
+      </listitem>
+
+      <listitem>
+        <para>Arm host: Improved high CPU usage for idling VMs (issue github:gh-34)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux host: Use KVM APIs on kernel 6.16.0 and newer for acquiring/releasing VT-x
+          (issue github:gh-81, github:gh-139 and github:gh-141)</para>
+      </listitem>
+
+      <listitem>
+        <para>macOS host: Fixed internal networking, including NAT networks on macOS
+          (7.2.0 regression; issue github:gh-140)</para>
+      </listitem>
+
+      <listitem>
+        <para>macOS host: Fixed VM crash on Arm host on VM start (issue github:gh-101)</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when VBoxClient was reporting it's
+          unable to load shared libraries on start (issue github:gh-165)</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows Guest Additions: Fixed issue when installation was failing on
+          Windows XP SP2 64-bit (issue github:gh-142)</para>
+      </listitem>
+
+      <listitem>
+        <para>EFI: Fixed TPM device not working with certain guests (issue github:gh-143)</para>
+      </listitem>
+
+    </itemizedlist>
+  </sect1>
+
+  <sect1>
+
+    <title>Version 7.2.0 (2025-08-14)</title>
+
+    <para>This is a major update. The following new features were added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>GUI: Moved global and VM tools from hamburger menus to
+          global tools taskbar (vertically on the left) and the VM tools
+          tabs (horizontally above the right hand panel) to make them
+          easier to reach</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows/Arm host: Arm virtualization of VMs added, in
+          the unified Windows installer package</para>
+      </listitem>
+
+      <listitem>
+        <para>Arm host: Virtualization of Windows 11/Arm VMs</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux host: Video decoding acceleration when 3D is enabled</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows/Arm guest: Guest additions for new OS type Windows
+          11/Arm</para>
+      </listitem>
+
+      <listitem>
+        <para>macOS Arm host: Experimental 3D acceleration support using DXMT, removing
+          the previous non working solution using DXVK on top of MoltenVK.
+          3D acceleration is not supported on macOS hosts using Intel CPUs anymore.</para>
+      </listitem>
+
+      <listitem>
+        <para>Storage: The NVMe storage controller emulation is now part of the
+          open source base package</para>
+      </listitem>
+
+    </itemizedlist>
+
+    <para>In addition, the following items were fixed or added:</para>
+
+    <itemizedlist>
+
+      <listitem>
+        <para>Arm VMs: Note that the saved state of Arm VMs from
+          VirtualBox 7.1 is <emphasis role="bold">incompatible</emphasis> with VirtualBox 7.2, so
+          please shut down such VMs in saved state before upgrading
+          to 7.2 (snapshots with associated saved state created with 7.1
+          will no longer work with 7.2)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Improved x86_64 and Arm CPU feature reporting when using
+          Windows Hyper-V as the virtualization engine</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Added xsave/xrestor instruction handling when using
+          Windows/x86_64 Hyper-V as the virtualization engine, offering the
+          x86_64-v3 instruction set extensions (including AVX and AVX2) on
+          recent CPUs</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM: Fixed issue when X86_64-v3 features were not
+          passed to the guest (github:gh-36)</para>
+      </listitem>
+
+      <listitem>
+        <para>VMM/HM: Fixed Nested Virtualization feature on Intel CPUs</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Fixed a bug in clone VM wizard which made impossible to include
+          snapshots in clone result (github:gh-59)</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Polished Preferences and Settings pages, NLS fixing</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Improved handling of keyboard LEDs in the Soft Keyboard</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Added checkbox for making a Shared Folder global to all VMs</para>
+      </listitem>
+
+      <listitem>
+        <para>GUI: Removed IO-APIC from Arm VM settings</para>
+      </listitem>
+
+      <listitem>
+        <para>Graphics: Avoid assertion when guest tries to use VMSVGA 3D
+          functions when the feature is disabled</para>
+      </listitem>
+
+      <listitem>
+        <para>Audio: Fixed crash in rare circumstances (github:gh-72)</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT: Multiple fixes and improvements, for example better DNS
+          server handling, saving of the VM settings and generating a
+          boot file name which stays within the length limit</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT Network: Use the (almost) same code as for NAT, unifying
+          behavior and features</para>
+      </listitem>
+
+      <listitem>
+        <para>NAT: Fixed possible crash in rare circumstances when no nameservers
+          could be detected in the host system</para>
+      </listitem>
+
+      <listitem>
+        <para>Storage: Fixed corruption of VMDK images when resizing</para>
+      </listitem>
+
+      <listitem>
+        <para>Video Recording: Fixed frame synchronization, a small memory leak
+          and other bugs</para>
+      </listitem>
+
+      <listitem>
+        <para>TPM: Fixed save state load failures</para>
+      </listitem>
+
+      <listitem>
+        <para>Arm VMs: ACPI now available</para>
+      </listitem>
+
+      <listitem>
+        <para>API/Unattended: Added explicit unattended installation support for Oracle Linux 10</para>
+      </listitem>
+
+      <listitem>
+        <para>API and VBoxManage: Added functionality to define global Shared Folders for all VMs</para>
+      </listitem>
+
+      <listitem>
+        <para>API: Fixed issue when OVF/OVA import resulted in a broken VM on Arm (bug #22370)</para>
+      </listitem>
+
+      <listitem>
+        <para>API: Fixed issue when exporting a VM which had an inaccessible
+          disk resulted in crash</para>
+      </listitem>
+
+      <listitem>
+        <para>VBoxManage: Document currently unavailable NAT options</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux host and guest: Initial support for kernel version 6.16</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux/Solaris host: Fixed swapped scan code for Pause and Num Lock
+          keys in the table used when relying on Xkb for translation</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows host: Removed release assertion causing crash of VBoxUsbMon
+          driver if unloading fails</para>
+      </listitem>
+
+      <listitem>
+        <para>Arm host: vboxwebsrv is now included in the packages</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux host and guest: Introduced initial support for kernel 6.17</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux guest: Fixed handling of (long optional) vboxvideo kernel
+          module in init script</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux guest: Fixed start failure of VBoxClient with kernel from
+          the 2.6 series or older</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows/Arm guest: Added WDDM Graphics driver, with 2D and 3D mode</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows/Arm guest: Added Shared Folder feature</para>
+      </listitem>
+
+      <listitem>
+        <para>Windows Host: Added improvements in Windows drivers installation</para>
+      </listitem>
+
+      <listitem>
+        <para>Linux Guest Additions: Fixed issue when autorun installer was not automatically
+          starting on Additions ISO image insert for Oracle Linux 10 and RHEL 10 guests</para>
+      </listitem>
+
+      <listitem>
+        <para>BIOS: Fixed keyboard translation, added and updated several entries
+          and do not report keypresses when scan code and ASCII code are both zero</para>
+      </listitem>
+
+      <listitem>
+        <para>BIOS: Fixed error reporting fo single sided floppy disks</para>
+      </listitem>
+
+      <listitem>
+        <para>UEFI: Added workaround for Grub bug causing guest OS crashes</para>
+      </listitem>
+
+      <listitem>
+        <para>UEFI: Fixed macOS kernel logging over serial port (github:gh-82)</para>
+      </listitem>
+
+      <listitem>
+        <para>3rd Party Tools: Eliminated build time dependency on libIDL and IASL</para>
+      </listitem>
+
+    </itemizedlist>
+
+  </sect1>
+
+</chapter>
