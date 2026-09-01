@@ -1,4 +1,4 @@
-/* $Id: genalias.cpp $ */
+/* $Id: genalias.cpp 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * genalias - generate a number of alias objects.
  *

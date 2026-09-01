@@ -1,0 +1,43 @@
+﻿<!--
+    VirtualBox Windows Installation Script (WiX)
+-->
+<!--
+    Copyright (C) 2014-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <CustomAction Id="ca_VBoxUSBDevDrvInstParms" Property="ca_VBoxUSBDevDrvInst" Value="VBoxDrvInstInfFile=[#file_VBoxUSB.inf]##VBoxDrvInstModel=VBoxUSB*##VBoxDrvInstFlagForce=1##VBoxDrvInstFlagSilent=1" Execute="immediate" />
+    <CustomAction Id="ca_VBoxUSBDevDrvInst" DllEntry="DriverInstall" Execute="deferred" Return="check" Impersonate="no" BinaryRef="VBoxInstallHelper" />
+
+    <CustomAction Id="ca_VBoxUSBDevDrvUninstParms" Property="ca_VBoxUSBDevDrvUninst" Value="VBoxDrvUninstModel=VBoxUSB.*##VBoxDrvUninstPnpId=USB\VID_80EE&amp;PID_CAFE" Execute="immediate" />
+    <CustomAction Id="ca_VBoxUSBDevDrvUninst" DllEntry="DriverUninstall" Execute="deferred" Return="check" Impersonate="no" BinaryRef="VBoxInstallHelper" />
+
+    <CustomAction Id="ca_VBoxUSBMonDrvInstParms" Property="ca_VBoxUSBMonDrvInst" Value="VBoxDrvInstInfFile=[#file_VBoxUSBMon.inf]##VBoxDrvInstModel=VBoxUSBMon*##VBoxDrvInstFlagForce=1##VBoxDrvInstFlagSilent=1" Execute="immediate" />
+    <CustomAction Id="ca_VBoxUSBMonDrvInst" DllEntry="DriverInstall" Execute="deferred" Return="check" Impersonate="no" BinaryRef="VBoxInstallHelper" />
+
+    <CustomAction Id="ca_VBoxUSBMonDrvStartParms" Property="ca_VBoxUSBMonDrvStart" Value="VBoxSvcCtlName=VBoxUSBMon##VBoxSvcCtlFn=start" Execute="immediate" />
+    <CustomAction Id="ca_VBoxUSBMonDrvStart" DllEntry="ServiceControl" Execute="deferred" Return="check" Impersonate="no" BinaryRef="VBoxInstallHelper" />
+
+    <CustomAction Id="ca_VBoxUSBMonDrvUninstParms" Property="ca_VBoxUSBMonDrvUninst" Value="VBoxDrvUninstModel=VBoxUSBMon*" Execute="immediate" />
+    <CustomAction Id="ca_VBoxUSBMonDrvUninst" DllEntry="DriverUninstall" Execute="deferred" Return="check" Impersonate="no" BinaryRef="VBoxInstallHelper" />
+
+</Include>

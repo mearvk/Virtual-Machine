@@ -1,0 +1,2126 @@
+; $Id: bs3-cpu-instr-4-template.mac 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+;; @file
+; BS3Kit - bs3-cpu-instr-4 & bs3-cpu-instr-5 - SSE, AVX FPU instructions, assembly template.
+;
+
+;
+; Copyright (C) 2024-2025 Oracle and/or its affiliates.
+;
+; This file is part of VirtualBox base platform packages, as
+; available from https://www.virtualbox.org.
+;
+; This program is free software; you can redistribute it and/or
+; modify it under the terms of the GNU General Public License
+; as published by the Free Software Foundation, in version 3 of the
+; License.
+;
+; This program is distributed in the hope that it will be useful, but
+; WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+; General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, see <https://www.gnu.org/licenses>.
+;
+; The contents of this file may alternatively be used under the terms
+; of the Common Development and Distribution License Version 1.0
+; (CDDL), a copy of it is provided in the "COPYING.CDDL" file included
+; in the VirtualBox distribution, in which case the provisions of the
+; CDDL are applicable instead of those of the GPL.
+;
+; You may elect to license modified versions of this file under the
+; terms and conditions of either the GPL or the CDDL or both.
+;
+; SPDX-License-Identifier: GPL-3.0-only OR CDDL-1.0
+;
+
+
+;*********************************************************************************************************************************
+;*  Header Files                                                                                                                 *
+;*********************************************************************************************************************************
+%include "bs3kit-template-header.mac"   ; setup environment
+
+
+;*********************************************************************************************************************************
+;*  External Symbols                                                                                                             *
+;*********************************************************************************************************************************
+TMPL_BEGIN_TEXT
+
+
+;
+; Test code snippets containing code which differs between 16-bit, 32-bit
+; and 64-bit CPUs modes.
+;
+%ifdef BS3_INSTANTIATING_CMN
+
+
+;;
+; Variant on BS3_PROC_BEGIN_CMN w/ BS3_PBC_NEAR that prefixes the function
+; with an instruction length byte.
+;
+; ASSUMES the length is between the start of the function and the .again label.
+;
+ %ifndef BS3CPUINSTR4_PROC_BEGIN_CMN_DEFINED
+  %define BS3CPUINSTR4_PROC_BEGIN_CMN_DEFINED
+  %macro BS3CPUINSTR4_PROC_BEGIN_CMN 1
+        align   8, db 0cch
+        db      BS3_CMN_NM(%1).again - BS3_CMN_NM(%1)
+BS3_PROC_BEGIN_CMN %1, BS3_PBC_NEAR
+  %endmacro
+ %endif ; !BS3CPUINSTR4_PROC_BEGIN_CMN_DEFINED
+
+;;
+; FSxBX and its variants allow a memory reference to be embedded into a test
+; instruction. `xBX' adjusts automatically to the addressing model: BX, EBX,
+; or RBX depending on the number of address bits. FSxBX_D and so on allow to
+; force a particular memory reference size; this is necessary for some AVX
+; instructions where the mentioned XMM/YMM/ZMM register size doesn't fully
+; control the memory size to be used. Macros are repeatedly redefined in
+; order to pick up the current address-model-specific `xBX' value. (Other
+; sizes could be defined: B=byte=1, W=word=2, T=tword=10(x87), z=zword=32)
+;
+ %ifndef BS3CPUINSTR4_DEFINE_FSxBX_DEFINED
+  %define BS3CPUINSTR4_DEFINE_FSxBX_DEFINED
+  %macro BS3CPUINSTR4_DEFINE_FSxBX 0
+   %define FSxBX [fs:xBX]           ; natural size of the instruction
+   %define FSxBX_D dword [fs:xBX]   ; dword =  32 bits =  4 bytes =  2 words
+   %define FSxBX_Q qword [fs:xBX]   ; qword =  64 bits =  8 bytes =  4 words
+   %define FSxBX_O oword [fs:xBX]   ; oword = 128 bits = 16 bytes =  8 words
+   %define FSxBX_Y yword [fs:xBX]   ; yword = 256 bits = 32 bytes = 16 words
+  %endmacro
+  %macro BS3CPUINSTR4_UNDEF_FSxBX 0
+   %undef  FSxBX
+   %undef  FSxBX_D
+   %undef  FSxBX_Q
+   %undef  FSxBX_O
+   %undef  FSxBX_Y
+  %endmacro
+ %endif ; !BS3CPUINSTR4_DEFINE_FSxBX_DEFINED
+
+;;
+; The EMIT_INSTR_PLUS_ICEBP macros is for creating a common function for and
+; named after a single instruction & args, followed by a looping ICEBP.
+;
+ %ifndef EMIT_INSTR_PLUS_ICEBP_DEFINED
+  %define EMIT_INSTR_PLUS_ICEBP_DEFINED
+
+  %macro EMIT_INSTR_PLUS_ICEBP 2
+BS3CPUINSTR4_PROC_BEGIN_CMN bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _icebp
+   BS3CPUINSTR4_DEFINE_FSxBX
+        %1      %2
+   BS3CPUINSTR4_UNDEF_FSxBX
+.again:
+        icebp
+        jmp     .again
+BS3_PROC_END_CMN            bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _icebp
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP 3
+BS3CPUINSTR4_PROC_BEGIN_CMN bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _icebp
+   BS3CPUINSTR4_DEFINE_FSxBX
+        %1      %2, %3
+   BS3CPUINSTR4_UNDEF_FSxBX
+.again:
+        icebp
+        jmp     .again
+BS3_PROC_END_CMN            bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _icebp
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP 4
+BS3CPUINSTR4_PROC_BEGIN_CMN bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _ %+ %4 %+ _icebp
+   BS3CPUINSTR4_DEFINE_FSxBX
+        %1      %2, %3, %4
+   BS3CPUINSTR4_UNDEF_FSxBX
+.again:
+        icebp
+        jmp     .again
+BS3_PROC_END_CMN            bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _ %+ %4 %+ _icebp
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP 5
+BS3CPUINSTR4_PROC_BEGIN_CMN bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _ %+ %4 %+ _ %+ %5 %+ _icebp
+   BS3CPUINSTR4_DEFINE_FSxBX
+        %1      %2, %3, %4, %5
+   BS3CPUINSTR4_UNDEF_FSxBX
+.again:
+        icebp
+        jmp     .again
+BS3_PROC_END_CMN            bs3CpuInstr4_ %+ %1 %+ _ %+ %2 %+ _ %+ %3 %+ _ %+ %4 %+ _ %+ %5 %+ _icebp
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP_C64 2
+   %if TMPL_BITS == 64
+    EMIT_INSTR_PLUS_ICEBP %1, %2
+   %endif
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP_C64 3
+   %if TMPL_BITS == 64
+    EMIT_INSTR_PLUS_ICEBP %1, %2, %3
+   %endif
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP_C64 4
+   %if TMPL_BITS == 64
+    EMIT_INSTR_PLUS_ICEBP %1, %2, %3, %4
+   %endif
+  %endmacro
+
+  %macro EMIT_INSTR_PLUS_ICEBP_C64 5
+   %if TMPL_BITS == 64
+    EMIT_INSTR_PLUS_ICEBP %1, %2, %3, %4, %5
+   %endif
+  %endmacro
+
+ %endif ; !EMIT_INSTR_PLUS_ICEBP_DEFINED
+
+ %ifdef BS3_CPU_INSTR_4
+
+;
+;; [v]addps
+;
+EMIT_INSTR_PLUS_ICEBP       addps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vaddps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddps, YMM8, YMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       addps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   addps,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddps, YMM1, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP       vaddps, YMM1, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vaddps, YMM8, YMM8, YMM8
+EMIT_INSTR_PLUS_ICEBP       vaddps, YMM1, YMM1, FSxBX
+
+;
+;; [v]addpd
+;
+EMIT_INSTR_PLUS_ICEBP       addpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vaddpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddpd, YMM8, YMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       addpd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   addpd,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddpd, YMM1, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP       vaddpd, YMM1, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vaddpd, YMM8, YMM8, YMM8
+EMIT_INSTR_PLUS_ICEBP       vaddpd, YMM1, YMM1, FSxBX
+
+;
+;; [v]addss
+;
+EMIT_INSTR_PLUS_ICEBP       addss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddss, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       addss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   addss,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddss, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vaddss, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vaddss, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddss, XMM1, XMM1, FSxBX
+
+;
+;; [v]addsd
+;
+EMIT_INSTR_PLUS_ICEBP       addsd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addsd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddsd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddsd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       addsd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   addsd,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddsd, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vaddsd, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsd, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vaddsd, XMM1, XMM1, FSxBX
+
+;
+;; [v]haddps
+;
+EMIT_INSTR_PLUS_ICEBP       haddps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       haddps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   haddps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   haddps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhaddps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vhaddps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhaddps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vhaddps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddps, YMM8, YMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       haddps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   haddps,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vhaddps, YMM1, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP       vhaddps, YMM1, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddps, YMM8, YMM8, YMM8
+EMIT_INSTR_PLUS_ICEBP       vhaddps, YMM1, YMM1, FSxBX
+
+;
+;; [v]haddpd
+;
+EMIT_INSTR_PLUS_ICEBP       haddpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       haddpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   haddpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   haddpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddpd, YMM8, YMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       haddpd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   haddpd,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, YMM1, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, YMM1, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vhaddpd, YMM8, YMM8, YMM8
+EMIT_INSTR_PLUS_ICEBP       vhaddpd, YMM1, YMM1, FSxBX
+
+;
+;; [v]subps
+;
+EMIT_INSTR_PLUS_ICEBP       subps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       subps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   subps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   subps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsubps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vsubps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubps, YMM8, YMM9, FSxBX
+
+;
+;; [v]subpd
+;
+EMIT_INSTR_PLUS_ICEBP       subpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       subpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   subpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   subpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsubpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vsubpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]subss
+;
+EMIT_INSTR_PLUS_ICEBP       subss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       subss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   subss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   subss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsubss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubss, XMM8, XMM9, FSxBX
+
+;
+;; [v]subsd
+;
+EMIT_INSTR_PLUS_ICEBP       subsd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       subsd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   subsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   subsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsubsd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsubsd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsubsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsubsd, XMM8, XMM9, FSxBX
+
+;
+;; [v]hsubps
+;
+EMIT_INSTR_PLUS_ICEBP       hsubps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       hsubps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   hsubps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   hsubps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhsubps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vhsubps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhsubps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vhsubps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubps, YMM8, YMM9, FSxBX
+
+;
+;; [v]hsubpd
+;
+EMIT_INSTR_PLUS_ICEBP       hsubpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       hsubpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   hsubpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   hsubpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhsubpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vhsubpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vhsubpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vhsubpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vhsubpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]mulps
+;
+EMIT_INSTR_PLUS_ICEBP       mulps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       mulps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   mulps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   mulps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmulps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vmulps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulps, YMM8, YMM9, FSxBX
+
+;
+;; [v]mulpd
+;
+EMIT_INSTR_PLUS_ICEBP       mulpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       mulpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   mulpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   mulpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmulpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vmulpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]mulss
+;
+EMIT_INSTR_PLUS_ICEBP       mulss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       mulss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   mulss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   mulss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmulss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulss, XMM8, XMM9, FSxBX
+
+;
+;; [v]mulsd
+;
+EMIT_INSTR_PLUS_ICEBP       mulsd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       mulsd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   mulsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   mulsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmulsd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmulsd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmulsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmulsd, XMM8, XMM9, FSxBX
+
+;
+;; [v]divps
+;
+EMIT_INSTR_PLUS_ICEBP       divps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       divps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   divps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   divps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vdivps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vdivps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivps, YMM8, YMM9, FSxBX
+
+;
+;; [v]divpd
+;
+EMIT_INSTR_PLUS_ICEBP       divpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       divpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   divpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   divpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vdivpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vdivpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]divss
+;
+EMIT_INSTR_PLUS_ICEBP       divss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       divss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   divss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   divss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vdivss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivss, XMM8, XMM9, FSxBX
+
+;
+;; [v]divsd
+;
+EMIT_INSTR_PLUS_ICEBP       divsd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       divsd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   divsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   divsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vdivsd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vdivsd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vdivsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vdivsd, XMM8, XMM9, FSxBX
+
+;
+;; [v]addsubps
+;
+EMIT_INSTR_PLUS_ICEBP       addsubps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addsubps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addsubps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addsubps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddsubps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddsubps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddsubps, YMM1,  YMM2,  YMM3
+EMIT_INSTR_PLUS_ICEBP       vaddsubps, YMM1,  YMM2,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubps, YMM13, YMM14, YMM15
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubps, YMM13, YMM14, FSxBX
+
+;
+;; [v]addsubpd
+;
+EMIT_INSTR_PLUS_ICEBP       addsubpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       addsubpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   addsubpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   addsubpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddsubpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vaddsubpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vaddsubpd, YMM1,  YMM2,  YMM3
+EMIT_INSTR_PLUS_ICEBP       vaddsubpd, YMM1,  YMM2,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubpd, YMM13, YMM14, YMM15
+EMIT_INSTR_PLUS_ICEBP_C64   vaddsubpd, YMM13, YMM14, FSxBX
+
+;
+;; [v]maxps
+;
+EMIT_INSTR_PLUS_ICEBP       maxps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       maxps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   maxps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   maxps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmaxps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vmaxps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxps, YMM8, YMM9, FSxBX
+
+;
+;; [v]maxpd
+;
+EMIT_INSTR_PLUS_ICEBP       maxpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       maxpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   maxpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   maxpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vmaxpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vmaxpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]maxss
+;
+EMIT_INSTR_PLUS_ICEBP       maxss, XMM3, XMM4
+EMIT_INSTR_PLUS_ICEBP       maxss, XMM3, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   maxss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   maxss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxss, XMM1, XMM6, XMM7
+EMIT_INSTR_PLUS_ICEBP       vmaxss, XMM1, XMM6, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxss, XMM8, XMM9, FSxBX
+
+;
+;; [v]maxsd
+;
+EMIT_INSTR_PLUS_ICEBP       maxsd, XMM3, XMM4
+EMIT_INSTR_PLUS_ICEBP       maxsd, XMM3, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   maxsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   maxsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vmaxsd, XMM1, XMM6, XMM7
+EMIT_INSTR_PLUS_ICEBP       vmaxsd, XMM1, XMM6, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vmaxsd, XMM8, XMM9, FSxBX
+
+;
+;; [v]minps
+;
+EMIT_INSTR_PLUS_ICEBP       minps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       minps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   minps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   minps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminps, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vminps, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminps, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminps, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminps, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vminps, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminps, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminps, YMM8, YMM9, FSxBX
+
+;
+;; [v]minpd
+;
+EMIT_INSTR_PLUS_ICEBP       minpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       minpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   minpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   minpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminpd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vminpd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminpd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminpd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminpd, YMM1, YMM2, YMM3
+EMIT_INSTR_PLUS_ICEBP       vminpd, YMM1, YMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminpd, YMM8, YMM9, YMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminpd, YMM8, YMM9, FSxBX
+
+;
+;; [v]minss
+;
+EMIT_INSTR_PLUS_ICEBP       minss, XMM3, XMM4
+EMIT_INSTR_PLUS_ICEBP       minss, XMM3, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   minss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   minss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminss, XMM1, XMM6, XMM7
+EMIT_INSTR_PLUS_ICEBP       vminss, XMM1, XMM6, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminss, XMM8, XMM9, FSxBX
+
+;
+;; [v]minsd
+;
+EMIT_INSTR_PLUS_ICEBP       minsd, XMM3, XMM4
+EMIT_INSTR_PLUS_ICEBP       minsd, XMM3, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   minsd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   minsd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vminsd, XMM1, XMM6, XMM7
+EMIT_INSTR_PLUS_ICEBP       vminsd, XMM1, XMM6, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vminsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vminsd, XMM8, XMM9, FSxBX
+
+ %endif ; BS3_CPU_INSTR_4
+
+ %ifdef BS3_CPU_INSTR_5
+
+;
+;; [v]rcpps
+;
+EMIT_INSTR_PLUS_ICEBP       rcpps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       rcpps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   rcpps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   rcpps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrcpps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrcpps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrcpps, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vrcpps, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpps, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpps, YMM8, FSxBX
+
+;
+;; [v]rcpss
+;
+EMIT_INSTR_PLUS_ICEBP       rcpss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       rcpss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   rcpss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   rcpss, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1,  XMM2,  XMM3
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1,  XMM2,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpss, XMM13, XMM14, XMM15
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpss, XMM13, XMM14, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       rcpss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrcpss, XMM1, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpss, XMM15, XMM15, XMM15
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpss, XMM15, XMM15, XMM13
+EMIT_INSTR_PLUS_ICEBP_C64   vrcpss, XMM13, XMM14, XMM14
+
+;
+;; [v]sqrtps
+;
+EMIT_INSTR_PLUS_ICEBP       sqrtps,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       sqrtps,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtps,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtps,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtps, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtps, YMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       sqrtps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtps,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vsqrtps, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtps, YMM8, YMM8
+
+;
+;; [v]sqrtpd
+;
+EMIT_INSTR_PLUS_ICEBP       sqrtpd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       sqrtpd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtpd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtpd,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtpd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtpd, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtpd, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtpd, YMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       sqrtpd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtpd,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vsqrtpd, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtpd, YMM8, YMM8
+
+;
+;; [v]sqrtss
+;
+EMIT_INSTR_PLUS_ICEBP       sqrtss,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       sqrtss,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtss,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtss,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtss, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       sqrtss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtss,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtss, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtss, XMM1, XMM1, FSxBX
+
+;
+;; [v]sqrtsd
+;
+EMIT_INSTR_PLUS_ICEBP       sqrtsd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       sqrtsd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtsd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtsd,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtsd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtsd, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       sqrtsd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   sqrtsd,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP_C64   vsqrtsd, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vsqrtsd, XMM1, XMM1, FSxBX
+
+;
+;; [v]rsqrtps
+;
+EMIT_INSTR_PLUS_ICEBP       rsqrtps,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       rsqrtps,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   rsqrtps,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   rsqrtps,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtps, XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtps, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtps, YMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       rsqrtps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   rsqrtps,  XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vrsqrtps, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtps, YMM8, YMM8
+
+;
+;; [v]rsqrtss
+;
+EMIT_INSTR_PLUS_ICEBP       rsqrtss,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       rsqrtss,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   rsqrtss,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   rsqrtss,  XMM8, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtss, XMM8, XMM9, FSxBX
+
+EMIT_INSTR_PLUS_ICEBP       rsqrtss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP       vrsqrtss, XMM1, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vrsqrtss, XMM8, XMM8, XMM8
+
+;
+;; [v]dpps
+;
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, XMM2,  0FFh
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, XMM2,  0E1h
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, FSxBX, 000h
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, FSxBX, 0FFh
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, FSxBX, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   dpps,  XMM8, XMM9,  0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   dpps,  XMM8, FSxBX, 0E1h
+
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  XMM3,  0FFh
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  XMM3,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  FSxBX, 000h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  FSxBX, 0FFh
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  FSxBX, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, XMM8, XMM9,  XMM10, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, XMM8, XMM9,  FSxBX, 0E1h
+
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  YMM3,  000h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  YMM3,  0FFh
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  YMM3,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  FSxBX, 000h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  FSxBX, 0FFh
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  FSxBX, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, YMM8, YMM9,  YMM10, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, YMM8, YMM9,  FSxBX, 0E1h
+
+EMIT_INSTR_PLUS_ICEBP       dpps,  XMM1, XMM1,  0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   dpps,  XMM8, XMM8,  0E1h
+
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM1,  XMM1,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  XMM1,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM1,  XMM2,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM2,  XMM2,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, XMM1, XMM1,  FSxBX, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, XMM8, XMM8,  XMM8,  0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, XMM8, XMM8,  FSxBX, 0E1h
+
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM1,  YMM1,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  YMM1,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM1,  YMM2,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM2,  YMM2,  0E1h
+EMIT_INSTR_PLUS_ICEBP       vdpps, YMM1, YMM1,  FSxBX, 0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, YMM8, YMM8,  YMM8,  0E1h
+EMIT_INSTR_PLUS_ICEBP_C64   vdpps, YMM8, YMM8,  FSxBX, 0E1h
+
+;
+;; [v]dppd
+;
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, XMM2,  0FFh
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, XMM2,  022h
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, FSxBX, 000h
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, FSxBX, 0FFh
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, FSxBX, 022h
+EMIT_INSTR_PLUS_ICEBP_C64   dppd,  XMM8, XMM9,  022h
+EMIT_INSTR_PLUS_ICEBP_C64   dppd,  XMM8, FSxBX, 022h
+
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  XMM3,  0FFh
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  XMM3,  022h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  FSxBX, 000h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  FSxBX, 0FFh
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  FSxBX, 022h
+EMIT_INSTR_PLUS_ICEBP_C64   vdppd, XMM8, XMM9,  XMM10, 022h
+EMIT_INSTR_PLUS_ICEBP_C64   vdppd, XMM8, XMM9,  FSxBX, 022h
+
+EMIT_INSTR_PLUS_ICEBP       dppd,  XMM1, XMM1,  022h
+EMIT_INSTR_PLUS_ICEBP_C64   dppd,  XMM8, XMM8,  022h
+
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM1,  XMM1,  022h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  XMM1,  022h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM1,  XMM2,  022h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM2,  XMM2,  022h
+EMIT_INSTR_PLUS_ICEBP       vdppd, XMM1, XMM1,  FSxBX, 022h
+EMIT_INSTR_PLUS_ICEBP_C64   vdppd, XMM8, XMM8,  XMM8,  022h
+EMIT_INSTR_PLUS_ICEBP_C64   vdppd, XMM8, XMM8,  FSxBX, 022h
+
+;
+;; [v]roundps
+;
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     roundps,  XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundps,  XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundps,  XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundps,  XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundps, XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, YMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundps, YMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, YMM8, YMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, YMM8, YMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundps, YMM8, FSxBX, 008h
+
+;
+;; [v]roundpd
+;
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     roundpd,  XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundpd,  XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundpd,  XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundpd,  XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, YMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundpd, YMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, YMM8, YMM8,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, YMM8, YMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundpd, YMM8, FSxBX, 008h
+
+;
+;; [v]roundss
+;
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundss,  XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundss,  XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM1,  XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM1,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM3,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundss, XMM8, XMM8,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundss, XMM8, XMM9,  XMM10, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundss, XMM8, XMM9,  FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     roundss,  XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundss,  XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM1,  XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundss, XMM1, XMM2,  XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundss, XMM8, XMM8,  XMM8,  008h
+
+;
+;; [v]roundsd
+;
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  009h
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00ah
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00bh
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00ch
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00dh
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00eh
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  00fh
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM2,  0ffh
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundsd,  XMM8, XMM9,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundsd,  XMM8, FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM1,  XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM1,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM3,  0ffh
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundsd, XMM8, XMM8,  FSxBX, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundsd, XMM8, XMM9,  XMM10, 008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundsd, XMM8, XMM9,  FSxBX, 008h
+
+EMIT_INSTR_PLUS_ICEBP     roundsd,  XMM1, XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 roundsd,  XMM8, XMM8,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM1,  XMM1,  008h
+EMIT_INSTR_PLUS_ICEBP     vroundsd, XMM1, XMM2,  XMM2,  008h
+EMIT_INSTR_PLUS_ICEBP_C64 vroundsd, XMM8, XMM8,  XMM8,  008h
+
+;
+;; [v]comiss
+;
+EMIT_INSTR_PLUS_ICEBP     comiss,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     comiss,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     comiss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 comiss,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 comiss,  XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 comiss,  XMM8, XMM8
+
+EMIT_INSTR_PLUS_ICEBP     vcomiss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     vcomiss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     vcomiss, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 vcomiss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 vcomiss, XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 vcomiss, XMM8, XMM8
+
+;
+;; [v]ucomiss
+;
+EMIT_INSTR_PLUS_ICEBP     ucomiss,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     ucomiss,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     ucomiss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 ucomiss,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 ucomiss,  XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 ucomiss,  XMM8, XMM8
+
+EMIT_INSTR_PLUS_ICEBP     vucomiss, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     vucomiss, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     vucomiss, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 vucomiss, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 vucomiss, XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 vucomiss, XMM8, XMM8
+
+;
+;; [v]comisd
+;
+EMIT_INSTR_PLUS_ICEBP     comisd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     comisd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     comisd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 comisd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 comisd,  XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 comisd,  XMM8, XMM8
+
+EMIT_INSTR_PLUS_ICEBP     vcomisd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     vcomisd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     vcomisd, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 vcomisd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 vcomisd, XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 vcomisd, XMM8, XMM8
+
+;
+;; [v]ucomisd
+;
+EMIT_INSTR_PLUS_ICEBP     ucomisd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     ucomisd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     ucomisd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 ucomisd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 ucomisd,  XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 ucomisd,  XMM8, XMM8
+
+EMIT_INSTR_PLUS_ICEBP     vucomisd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP     vucomisd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP     vucomisd, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64 vucomisd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64 vucomisd, XMM8, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64 vucomisd, XMM8, XMM8
+
+;
+;; [v]cmpps
+;
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  001h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  002h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  003h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  004h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  005h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  006h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  007h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  008h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  011h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  043h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM2,  084h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM1,  000h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, XMM1,  006h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, FSxBX, 001h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, FSxBX, 004h
+EMIT_INSTR_PLUS_ICEBP     cmpps,  XMM1, FSxBX, 007h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpps,  XMM8, XMM9,  002h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpps,  XMM8, XMM8,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 cmpps,  XMM8, FSxBX, 003h
+
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM1, XMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM1, XMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, XMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, XMM1, XMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, XMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, XMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, XMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, XMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, XMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, XMM8, XMM8, FSxBX, 01fh ;; same-register
+
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM1, YMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM1, YMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, YMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmpps, YMM1, YMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, YMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, YMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, YMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, YMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, YMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpps, YMM8, YMM8, FSxBX, 01fh ;; same-register
+
+;
+;; [v]cmppd
+;
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  001h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  002h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  003h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  004h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  005h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  006h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  007h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  008h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  011h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  043h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM2,  084h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM1,  000h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, XMM1,  006h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, FSxBX, 001h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, FSxBX, 004h
+EMIT_INSTR_PLUS_ICEBP     cmppd,  XMM1, FSxBX, 007h
+EMIT_INSTR_PLUS_ICEBP_C64 cmppd,  XMM8, XMM9,  002h
+EMIT_INSTR_PLUS_ICEBP_C64 cmppd,  XMM8, XMM8,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 cmppd,  XMM8, FSxBX, 003h
+
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM1, XMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM1, XMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, XMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, XMM1, XMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, XMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, XMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, XMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, XMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, XMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, XMM8, XMM8, FSxBX, 01fh ;; same-register
+
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM1, YMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM1, YMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, YMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmppd, YMM1, YMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, YMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, YMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, YMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, YMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, YMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmppd, YMM8, YMM8, FSxBX, 01fh ;; same-register
+
+;; [v]cmpss
+;
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  001h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  002h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  003h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  004h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  005h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  006h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  007h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  008h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  011h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  043h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM2,  084h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM1,  000h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, XMM1,  006h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, FSxBX, 001h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, FSxBX, 004h
+EMIT_INSTR_PLUS_ICEBP     cmpss,  XMM1, FSxBX, 007h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpss,  XMM8, XMM9,  002h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpss,  XMM8, XMM8,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 cmpss,  XMM8, FSxBX, 003h
+
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM1, XMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM1, XMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, XMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmpss, XMM1, XMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, XMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, XMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, XMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, XMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, XMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpss, XMM8, XMM8, FSxBX, 01fh ;; same-register
+
+;
+;; [v]cmpsd
+;
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  000h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  001h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  002h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  003h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  004h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  005h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  006h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  007h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  008h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  011h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  043h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM2,  084h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM1,  000h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, XMM1,  006h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, FSxBX, 001h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, FSxBX, 004h
+EMIT_INSTR_PLUS_ICEBP     cmpsd,  XMM1, FSxBX, 007h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpsd,  XMM8, XMM9,  002h
+EMIT_INSTR_PLUS_ICEBP_C64 cmpsd,  XMM8, XMM8,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 cmpsd,  XMM8, FSxBX, 003h
+
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  000h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  001h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  002h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  003h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  004h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  005h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  006h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  007h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  008h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  009h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00ah
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00bh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00ch
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00dh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00eh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  00fh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  010h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  011h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  012h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  013h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  014h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  015h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  016h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  017h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  018h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  019h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01ah
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01bh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01ch
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01dh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01eh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  01fh
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  022h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM3,  044h ;; reserved
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM1, XMM1,  005h ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM1, XMM2,  00ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM1, FSxBX, 00bh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM1,  00ch ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, XMM2,  00eh ;; same-register
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, FSxBX, 010h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, FSxBX, 011h
+EMIT_INSTR_PLUS_ICEBP     vcmpsd, XMM1, XMM2, FSxBX, 013h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, XMM10, 016h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, XMM10, 017h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, XMM10, 019h
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, XMM9,  01ah ;; same-register
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, XMM10, 0ddh ;; reserved
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM9, FSxBX, 01dh
+EMIT_INSTR_PLUS_ICEBP_C64 vcmpsd, XMM8, XMM8, FSxBX, 01fh ;; same-register
+
+;
+;; cvtpi2ps
+;
+; SSE-128, fp32 <- int32 (packed:2; from MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvtpi2ps, XMM1, MM1
+EMIT_INSTR_PLUS_ICEBP       cvtpi2ps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpi2ps, XMM8, MM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpi2ps, XMM8, FSxBX
+
+;
+;; cvtps2pi
+;
+; SSE-128, int32 <- fp32 (packed:2; to MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvtps2pi, MM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvtps2pi, MM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2pi, MM1, XMM8
+
+;
+;; cvttps2pi
+;
+; SSE-128, int32 <- fp32 (packed:2; truncated; to MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvttps2pi, MM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvttps2pi, MM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttps2pi, MM1, XMM8
+
+;
+;; [v]cvtsi2ss
+;
+; SSE-128, fp32 <- int32 (single)
+EMIT_INSTR_PLUS_ICEBP       cvtsi2ss,  XMM1, EAX
+EMIT_INSTR_PLUS_ICEBP       cvtsi2ss,  XMM1, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM8, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM8, FSxBX_D
+; SSE-128, fp32 <- int64 (single)
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM1, RAX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM1, FSxBX_Q
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM8, R8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2ss,  XMM8, FSxBX_Q
+; AVX-128, fp32 <- int32 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM2, EAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM2, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM9, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM9, FSxBX_D
+; AVX-128, fp32 <- int64 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM2, RAX       ;; @todo this assembles in 16/32 mode; SDM says VEX.W1 ignored in non-64 bit
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM2, FSxBX_Q   ;; @todo this assembles in 16/32 mode; SDM says VEX.W1 ignored in non-64 bit
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM9, R8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM9, FSxBX_Q
+; AVX-128, fp32 <- int32, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM1, EAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM1, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM8, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM8, FSxBX_D
+; AVX-128, fp32 <- int64, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM1, RAX       ;; @todo this assembles in 16/32 mode, but should it...?
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2ss, XMM1, XMM1, FSxBX_Q   ;; @todo this assembles in 16/32 mode, but should it...?
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM8, R8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2ss, XMM8, XMM8, FSxBX_Q
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+; @todo same-reg fp32 <- int32 (SDM says W1 ignored in 32-bit modes) (see above)
+
+;
+;; [v]cvtss2si
+;
+; SSE-128, int32 <- fp32
+EMIT_INSTR_PLUS_ICEBP       cvtss2si,  EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvtss2si,  EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  R8D, FSxBX
+; SSE-128, int64 <- fp32
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  RAX, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  RAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2si,  R8,  FSxBX
+; AVX-128, int32 <- fp32
+EMIT_INSTR_PLUS_ICEBP       vcvtss2si, EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtss2si, EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2si, R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2si, R8D, FSxBX
+; AVX-128, int64 <- fp32
+EMIT_INSTR_PLUS_ICEBP       vcvtss2si, RAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtss2si, RAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2si, R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2si, R8,  FSxBX
+; @todo test with VEX.W=1 in 16/32-bit modes; SDM says behaves as if W=0
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+;
+;; [v]cvttss2si
+;
+; SSE-128, int32 <- fp32 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttss2si,  EAX,  XMM1
+EMIT_INSTR_PLUS_ICEBP       cvttss2si,  EAX,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  R8D,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  R8D,  FSxBX
+; SSE-128, int64 <- fp32 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  RAX,  XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  RAX,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  R8,   XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvttss2si,  R8,   FSxBX
+; AVX-128, int32 <- fp32 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttss2si, EAX,  XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvttss2si, EAX,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttss2si, R8D,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttss2si, R8D,  FSxBX
+; AVX-128, int64 <- fp32 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttss2si, RAX,  XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvttss2si, RAX,  FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttss2si, R8,   XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttss2si, R8,   FSxBX
+; @todo test with VEX.W=1 in 16/32-bit modes; SDM says behaves as if W=0
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+;
+;; cvtpi2pd
+;
+; SSE-128, fp64 <- int32 (packed:2; from MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvtpi2pd, XMM1, MM1
+EMIT_INSTR_PLUS_ICEBP       cvtpi2pd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpi2pd, XMM8, MM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpi2pd, XMM8, FSxBX
+; note: transition from x87 FPU to MMX; takes FPU exceptions (MM forms only)
+
+;
+;; cvtpd2pi
+;
+; SSE-128, int32 <- fp64 (packed:2; to MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvtpd2pi, MM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvtpd2pi, MM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2pi, MM1, XMM8
+; note: transition from x87 FPU to MMX; takes FPU exceptions
+
+;
+;; cvttpd2pi
+;
+; SSE-128, int32 <- fp64 (packed:2; truncated; to MMX register)
+EMIT_INSTR_PLUS_ICEBP       cvttpd2pi, MM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvttpd2pi, MM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttpd2pi, MM1, XMM8
+; note: transition from x87 FPU to MMX; takes FPU exceptions
+
+;
+;; [v]cvtsi2sd
+;
+; SSE-128, fp64 <- int32 (single)
+EMIT_INSTR_PLUS_ICEBP       cvtsi2sd,  XMM1, EAX
+EMIT_INSTR_PLUS_ICEBP       cvtsi2sd,  XMM1, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM8, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM8, FSxBX_D
+; SSE-128, fp64 <- int64 (single)
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM1, RAX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM1, FSxBX_Q
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM8, R8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsi2sd,  XMM8, FSxBX_Q
+; AVX-128, fp64 <- int32 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM2, EAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM2, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM9, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM9, FSxBX_D
+; AVX-128, fp64 <- int64 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM2, RAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM2, FSxBX_Q
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM9, R8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM9, FSxBX_Q
+; AVX-128, fp64 <- int32, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM1, EAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM1, FSxBX_D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM8, R8D
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM8, FSxBX_D
+; AVX-128, fp64 <- int64, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM1, RAX
+EMIT_INSTR_PLUS_ICEBP       vcvtsi2sd, XMM1, XMM1, FSxBX_Q
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM8, R8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsi2sd, XMM8, XMM8, FSxBX_Q
+; @todo test with VEX.W=1 in 16/32-bit modes; SDM says behaves as if W=0
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+;
+;; [v]cvtsd2si
+;
+; SSE-128, int32 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP       cvtsd2si,  EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvtsd2si,  EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  R8D, FSxBX
+; SSE-128, int64 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  RAX, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  RAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2si,  R8,  FSxBX
+; AVX-128, int32 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2si, EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2si, EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2si, R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2si, R8D, FSxBX
+; AVX-128, int64 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2si, RAX, XMM1   ;; @todo this assembles in 16/32 mode; SDM says VEX.W1 ignored in non-64 bit
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2si, RAX, FSxBX  ;; @todo this assembles in 16/32 mode; SDM says VEX.W1 ignored in non-64 bit
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2si, R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2si, R8,  FSxBX
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+; @todo same-reg fp32 <- int32 (SDM says W1 ignored in 32-bit modes) (see above)
+
+;
+;; [v]cvttsd2si
+;
+; SSE-128, int32 <- fp64 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttsd2si,  EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       cvttsd2si,  EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  R8D, FSxBX
+; SSE-128, int64 <- fp64 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  RAX, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  RAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   cvttsd2si,  R8,  FSxBX
+; AVX-128, int32 <- fp64 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttsd2si, EAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvttsd2si, EAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttsd2si, R8D, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttsd2si, R8D, FSxBX
+; AVX-128, int64 <- fp64 (single; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttsd2si, RAX, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvttsd2si, RAX, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttsd2si, R8,  XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttsd2si, R8,  FSxBX
+; @todo test with VEX.W=1 in 16/32-bit modes; SDM says behaves as if W=0
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+;
+;; [v]cvtdq2ps
+;
+; SSE-128, fp32 <- int32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       cvtdq2ps,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtdq2ps,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2ps,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2ps,  XMM8, FSxBX
+; AVX-128, fp32 <- int32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, XMM8, FSxBX
+; AVX-256, fp32 <- int32 (packed:8)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, YMM8, FSxBX
+; SSE-128, fp32 <- int32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       cvtdq2ps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2ps,  XMM8, XMM8
+; AVX-128, fp32 <- int32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, XMM8, XMM8
+; AVX-256, fp32 <- int32, same-reg (packed:8)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2ps, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2ps, YMM8, YMM8
+
+;
+;; [v]cvtps2dq
+;
+; SSE-128, int32 <- fp32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       cvtps2dq,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtps2dq,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2dq,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2dq,  XMM8, FSxBX
+; AVX-128, int32 <- fp32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, XMM8, FSxBX
+; AVX-256, int32 <- fp32 (packed:8)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, YMM8, FSxBX
+; SSE-128, int32 <- fp32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       cvtps2dq,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2dq,  XMM8, XMM8
+; AVX-128, int32 <- fp32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, XMM8, XMM8
+; AVX-256, int32 <- fp32, same-reg (packed:8)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2dq, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2dq, YMM8, YMM8
+
+;
+;; [v]cvttps2dq
+;
+; SSE-128, int32 <- fp32 (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttps2dq,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvttps2dq,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttps2dq,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvttps2dq,  XMM8, FSxBX
+; AVX-128, int32 <- fp32 (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, XMM8, FSxBX
+; AVX-256, int32 <- fp32 (packed:8; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, YMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, YMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, YMM8, FSxBX
+; AVX-128, int32 <- fp32, same-reg (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttps2dq,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvttps2dq,  XMM8, XMM8
+; AVX-128, int32 <- fp32, same-reg (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, XMM8, XMM8
+; AVX-256, int32 <- fp32, same-reg (packed:8; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttps2dq, YMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttps2dq, YMM8, YMM8
+
+;
+;; [v]cvtdq2pd
+;
+; SSE-128, fp64 <- int32 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtdq2pd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtdq2pd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2pd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2pd,  XMM8, FSxBX
+; AVX-128, fp64 <- int32 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, XMM8, FSxBX
+; AVX-256, fp64 <- int32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, YMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, YMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, YMM8, FSxBX
+; SSE-128, fp64 <- int32, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtdq2pd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtdq2pd,  XMM8, XMM8
+; AVX-128, fp64 <- int32, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, XMM8, XMM8
+; AVX-256, fp64 <- int32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtdq2pd, YMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtdq2pd, YMM8, XMM8
+
+;
+;; [v]cvtpd2dq
+;
+; SSE-128, int32 <- fp64 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtpd2dq,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtpd2dq,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2dq,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2dq,  XMM8, FSxBX
+; AVX-128, int32 <- fp64 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, FSxBX
+; AVX-256, int32 <- fp64 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, FSxBX_Y
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, FSxBX_Y
+; SSE-128, int32 <- fp64, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtpd2dq,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2dq,  XMM8, XMM8
+; AVX-128, int32 <- fp64, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, XMM8
+; AVX-256, int32 <- fp64, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2dq, XMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2dq, XMM8, YMM8
+
+;
+;; [v]cvttpd2dq
+;
+; SSE-128, int32 <- fp64 (packed:2; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttpd2dq,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvttpd2dq,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvttpd2dq,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvttpd2dq,  XMM8, FSxBX
+; AVX-128, int32 <- fp64 (packed:2; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, FSxBX
+; AVX-256, int32 <- fp64 (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, FSxBX_Y
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, FSxBX_Y
+; AVX-128, int32 <- fp64, same-reg (packed:2; truncated)
+EMIT_INSTR_PLUS_ICEBP       cvttpd2dq,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvttpd2dq,  XMM8, XMM8
+; AVX-128, int32 <- fp64, same-reg (packed:2; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, XMM8
+; AVX-256, int32 <- fp64, same-reg (packed:4; truncated)
+EMIT_INSTR_PLUS_ICEBP       vcvttpd2dq, XMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvttpd2dq, XMM8, YMM8
+
+;
+;; [v]cvtpd2ps
+;
+; SSE-128, fp32 <- fp64 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtpd2ps,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtpd2ps,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2ps,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2ps,  XMM8, FSxBX
+; AVX-128, fp32 <- fp64 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, FSxBX_O
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, FSxBX_O
+; AVX-256, fp32 <- fp64 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, YMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, FSxBX_Y
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, YMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, FSxBX_Y
+; SSE-128, fp32 <- fp64, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtpd2ps,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtpd2ps,  XMM8, XMM8
+; AVX-128, fp32 <- fp64, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, XMM8
+; AVX-256, fp32 <- fp64, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtpd2ps, XMM1, YMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtpd2ps, XMM8, YMM8
+
+;
+;; [v]cvtps2pd
+;
+; SSE-128, fp64 <- fp32 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtps2pd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtps2pd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2pd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2pd,  XMM8, FSxBX
+; AVX-128, fp64 <- fp32 (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, XMM8, FSxBX
+; AVX-256, fp64 <- fp32 (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, YMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, YMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, YMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, YMM8, FSxBX
+; SSE-128, fp64 <- fp32, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       cvtps2pd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtps2pd,  XMM8, XMM8
+; AVX-128, fp64 <- fp32, same-reg (packed:2)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, XMM8, XMM8
+; AVX-256, fp64 <- fp32, same-reg (packed:4)
+EMIT_INSTR_PLUS_ICEBP       vcvtps2pd, YMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtps2pd, YMM8, XMM8
+
+;
+;; [v]cvtsd2ss
+;
+; SSE-128, fp32 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP       cvtsd2ss,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtsd2ss,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2ss,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2ss,  XMM8, FSxBX
+; AVX-128, fp32 <- fp64 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM9, FSxBX
+; SSE-128, fp32 <- fp64, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       cvtsd2ss,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtsd2ss,  XMM8, XMM8
+; AVX-128, fp32 <- fp64, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM2, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtsd2ss, XMM1, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM9, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM9, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtsd2ss, XMM8, XMM8, FSxBX
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+;
+;; [v]cvtss2sd
+;
+; SSE-128, fp64 <- fp32 (single)
+EMIT_INSTR_PLUS_ICEBP       cvtss2sd,  XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       cvtss2sd,  XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2sd,  XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2sd,  XMM8, FSxBX
+; AVX-128, fp64 <- fp32 (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM2, XMM3
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM2, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM9, XMM10
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM9, FSxBX
+; SSE-128, fp64 <- fp32, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       cvtss2sd,  XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP_C64   cvtss2sd,  XMM8, XMM8
+; AVX-128, fp64 <- fp32, same-reg (single)
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM1, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM1, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM2, XMM1
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM2, XMM2
+EMIT_INSTR_PLUS_ICEBP       vcvtss2sd, XMM1, XMM1, FSxBX
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM8, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM8, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM9, XMM8
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM9, XMM9
+EMIT_INSTR_PLUS_ICEBP_C64   vcvtss2sd, XMM8, XMM8, FSxBX
+; @todo test with VEX.L=1 (as if asking for YMM)?  SDM says 'unpredictable behavior'...
+
+ %endif ; BS3_CPU_INSTR_4
+
+%endif ; BS3_INSTANTIATING_CMN
+
+%include "bs3kit-template-footer.mac"   ; reset environment

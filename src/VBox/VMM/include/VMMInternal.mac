@@ -1,0 +1,114 @@
+; $Id: VMMInternal.mac 113661 2026-03-30 11:15:03Z knut.osmundsen@oracle.com $
+;; @file
+; VMM - Internal header file.
+;
+
+;
+; Copyright (C) 2006-2025 Oracle and/or its affiliates.
+;
+; This file is part of VirtualBox base platform packages, as
+; available from https://www.virtualbox.org.
+;
+; This program is free software; you can redistribute it and/or
+; modify it under the terms of the GNU General Public License
+; as published by the Free Software Foundation, in version 3 of the
+; License.
+;
+; This program is distributed in the hope that it will be useful, but
+; WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+; General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, see <https://www.gnu.org/licenses>.
+;
+; SPDX-License-Identifier: GPL-3.0-only
+;
+
+%include "VBox/asmdefs.mac"
+%include "VBox/sup.mac"
+
+
+struc VMMR0JMPBUF
+        ;
+        ; Traditional jmp_buf - must match Runtime/common/misc/setjmp.asm and UCRT layout.
+        ;
+%ifdef RT_OS_WINDOWS
+        .Core.s.uFrame          resq 1
+%endif
+        .Core.s.rbx             resq 1
+        .Core.s.rsp             resq 1
+        .Core.s.rbp             resq 1
+%ifdef RT_OS_WINDOWS
+        .Core.s.rsi             resq 1
+        .Core.s.rdi             resq 1
+%endif
+        .Core.s.r12             resq 1
+        .Core.s.r13             resq 1
+        .Core.s.r14             resq 1
+        .Core.s.r15             resq 1
+        .Core.s.rip             resq 1
+%ifdef RT_OS_WINDOWS
+        .Core.s.uMxCsr          resd 1
+        .Core.s.uFcw            resw 1
+        .Core.s.uReserved       resw 1
+        .Core.s.xmm6            resq 2
+        .Core.s.xmm7            resq 2
+        .Core.s.xmm8            resq 2
+        .Core.s.xmm9            resq 2
+        .Core.s.xmm10           resq 2
+        .Core.s.xmm11           resq 2
+        .Core.s.xmm12           resq 2
+        .Core.s.xmm13           resq 2
+        .Core.s.xmm14           resq 2
+        .Core.s.xmm15           resq 2
+%endif
+
+        ; Extra stuff.
+        .rflags                 resq 1
+
+        ;
+        ; Additional state and stack info for unwinding.
+        ;
+        .UnwindSp               RTR0PTR_RES 1
+        .UnwindRetSp            RTR0PTR_RES 1
+        .UnwindBp               RTR0PTR_RES 1
+        .UnwindPc               RTR0PTR_RES 1
+        .UnwindRetPcValue       RTR0PTR_RES 1
+        .UnwindRetPcLocation    RTR0PTR_RES 1
+
+        ;
+        ; Info about what we were doing in case it's helpful.
+        ;
+        .uOperation             RTR0PTR_RES 1
+
+        ;
+        ; For mirroring the jump buffer and stack to ring-3 for unwinding and analysis.
+        ;
+        .cbStackValid           resd        1
+        .cbStackBuf             resd        1
+        .pvStackBuf             RTR0PTR_RES 1
+        .pMirrorBuf             RTR0PTR_RES 1
+endstruc
+
+
+struc VMMCPU
+
+        .iLastGZRc              resd 1
+        alignb 8
+
+        .fInRendezvous          resb 1
+        .afPadding1             resb 2
+        .fMayHaltInRing0        resb 1
+        .cNsSpinBlockThreshold  resd 1
+        .cR0Halts               resd 1
+        .cR0HaltsSucceeded      resd 1
+        .cR0HaltsToRing3        resd 1
+
+        alignb 8
+        .TracerCtx              resb SUPDRVTRACERUSRCTX64_size
+
+        alignb 8
+        .AssertJmpBuf           resb 1
+endstruc
+

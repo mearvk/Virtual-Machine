@@ -1,4 +1,4 @@
-/* $Id: VBoxEditCoffLib.cpp $ */
+/* $Id: VBoxEditCoffLib.cpp 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * VBoxEditCoffLib - Simple COFF editor for library files.
  */

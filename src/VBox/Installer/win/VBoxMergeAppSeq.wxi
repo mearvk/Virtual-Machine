@@ -1,0 +1,59 @@
+﻿<!--
+    VirtualBox Windows Installation Script (WiX)
+-->
+<!--
+    Copyright (C) 2006-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+    <!-- VBoxSUP.sys installation. -->
+    <Custom Action="ca_VBoxSupDrvInstParms" Before="ca_VBoxSupDrvInst"
+            Condition="NOT REMOVE" />
+    <Custom Action="ca_VBoxSupDrvInst" After="InstallFiles"
+            Condition="NOT REMOVE" />
+
+    <!-- Start VBoxSUP.sys after installation. -->
+    <Custom Action="ca_VBoxSupDrvStartParms" Before="ca_VBoxSupDrvStart"
+            Condition="NOT REMOVE" />
+    <Custom Action="ca_VBoxSupDrvStart" After="ca_VBoxSupDrvInst"
+            Condition="NOT REMOVE" />
+
+    <!-- VBoxSUP.sys uninstallation.
+         Done when initially installing or upgrading.
+         Must happen *after* all other drivers relying on it are unloaded.
+         See custom action sequences of the other drivers. -->
+    <Custom Action="ca_VBoxSupDrvUninstParms" Before="ca_VBoxSupDrvUninst" />
+    <Custom Action="ca_VBoxSupDrvUninst" After="ca_VBoxUSBMonDrvUninst" />
+
+    <Custom Action="ca_GetPlatformArchitecture" Before="LaunchConditions"/>
+<?if $(env.VBOX_WITH_CRT_PACKING) = "no" ?>
+    <Custom Action="ca_IsMSCRTInstalled" Before="LaunchConditions"/>
+<?endif?>
+    <!-- Required for lauch conditions. See @bugref{10616} -->
+    <Custom Action="ca_CheckTargetDirPre" Before="LaunchConditions" />
+    <!-- Check if the installation directory still fits our security requirements after we finalized installation.
+         See @bugref{10616} -->
+    <Custom Action="ca_CheckTargetDirPost" After="InstallFinalize" Condition="NOT REMOVE"/>
+
+    <Custom Action="ca_IsWindowsSupported" After="FileCost"/>
+
+</Include>

@@ -1,0 +1,112 @@
+# $Id: Makefile.kmk 113669 2026-03-30 11:55:55Z knut.osmundsen@oracle.com $
+## @file
+# Sub-Makefile for the Windows Guest Additions Installer Helper DLL.
+#
+
+#
+# Copyright (C) 2010-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+# Include Sub-Makefiles.
+include $(PATH_SUB_CURRENT)/testcase/Makefile.kmk
+
+
+#
+# VBoxGuestInstallHelper - Helps with various installation tasks.
+#
+PROGRAMS += VBoxGuestInstallHelper
+VBoxGuestInstallHelper_TEMPLATE = VBoxGuestR3Exe
+VBoxGuestInstallHelper_DEFS     = _UNICODE UNICODE
+VBoxGuestInstallHelper_DEFS    += VBOX_SVN_REV=$(VBOX_SVN_REV)
+ifdef VBOX_WITH_WDDM
+ VBoxGuestInstallHelper_DEFS   += VBOX_WITH_WDDM
+endif
+if1of ($(KBUILD_TARGET_ARCH), x86)
+ VBoxGuestInstallHelper_DEFS   += _WIN32_WINNT=0x0400
+else
+ # As we target NT4 for x86 as the lowest OS version we support, skip using stuff which uses the NT APIs.
+ VBoxGuestInstallHelper_DEFS   += VBOX_WINDRVINST_USE_NT_APIS
+endif
+VBoxGuestInstallHelper_DEPS     = $(VBOX_SVN_REV_KMK)
+VBoxGuestInstallHelper_SDKS     = ReorderCompilerIncs $(VBOX_WINPSDK_GST) $(VBOX_WINDDK_GST)
+VBoxGuestInstallHelper_INCS     = ../../include
+VBoxGuestInstallHelper_LDFLAGS  = -SubSystem:console ## @todo arm64 -Entry:CustomMainEntrypoint (NOCRT for arm64)
+ifneq ($(KBUILD_TYPE),asan)
+ VBoxGuestInstallHelper_LDFLAGS.x86   = -Entry:CustomMainEntrypoint
+ VBoxGuestInstallHelper_LDFLAGS.amd64 = -Entry:CustomMainEntrypoint
+endif
+VBoxGuestInstallHelper_SOURCES = \
+	VBoxGuestInstallHelper.cpp \
+	VBoxGuestInstallHelper.rc \
+	$(PATH_ROOT)/src/VBox/GuestHost/Installation/VBoxWinDrvCommon.cpp \
+	$(PATH_ROOT)/src/VBox/GuestHost/Installation/VBoxWinDrvInst.cpp \
+	$(PATH_ROOT)/src/VBox/GuestHost/Installation/VBoxWinDrvStore.cpp
+VBoxGuestInstallHelper_VBOX_IMPORT_CHECKER.win.x86 := nt4 # setupapi was introduced in NT4
+
+
+#
+# Stripped down DLL template for arm64.
+#
+TEMPLATE_VBoxGuestInstallHelperDllTemplateWithFewerLibs                = hack
+TEMPLATE_VBoxGuestInstallHelperDllTemplateWithFewerLibs_EXTENDS       := VBoxGuestR3Dll
+TEMPLATE_VBoxGuestInstallHelperDllTemplateWithFewerLibs_LATE_LIBS.x86  = \
+	$(filter-out %/VBoxGuestR3LibShared-x86.lib,$(TEMPLATE_VBoxGuestR3Dll_LATE_LIBS.x86))
+
+#
+# NSIS plugins have to match the NSIS architecture, so 32-bit x86 in our case.
+#
+# Note! Installation is required for repacking Guest Additions
+#
+DLLS += VBoxGuestInstallHelperDll
+VBoxGuestInstallHelperDll_TEMPLATE        := VBoxGuestInstallHelperDllTemplateWithFewerLibs
+VBoxGuestInstallHelperDll_NAME            := VBoxGuestInstallHelper
+ifndef VBOX_WITH_NATIVE_NSIS_INSTALLER
+ VBoxGuestInstallHelperDll_BLD_TRG_ARCH   := x86
+endif
+VBoxGuestInstallHelperDll_INST            := repackadd/resources/VBoxGuestInstallHelperDll/
+ifdef VBOX_SIGN_ADDITIONS # (See the parent makefile.)
+ VBoxGuestInstallHelperDll_INSTTYPE       := stage
+ VBoxGuestInstallHelperDll_DEBUG_INSTTYPE := both
+endif
+VBoxGuestInstallHelperDll_DEFS            := WIN32_LEAN_AND_MEAN=1 UNICODE _UNICODE
+if1of ($(KBUILD_TARGET_ARCH), x86)
+ VBoxGuestInstallHelperDll_DEFS           += _WIN32_WINNT=0x0400
+ VBoxGuestInstallHelperDll_VBOX_IMPORT_CHECKER.win.x86   := nt4
+else if1of ($(KBUILD_TARGET_ARCH), amd64)
+ VBoxGuestInstallHelperDll_DEFS           += _WIN32_WINNT=0x0501
+ VBoxGuestInstallHelperDll_VBOX_IMPORT_CHECKER.win.x86   := xp
+ VBoxGuestInstallHelperDll_VBOX_IMPORT_CHECKER.win.amd64 := xp64
+else
+ VBoxGuestInstallHelperDll_DEFS           += _WIN32_WINNT=0x0a00
+ VBoxGuestInstallHelperDll_VBOX_IMPORT_CHECKER.win.x86   := w8
+ VBoxGuestInstallHelperDll_VBOX_IMPORT_CHECKER.win.arm64 := w10-1709
+endif
+VBoxGuestInstallHelperDll_SOURCES         := \
+	VBoxGuestInstallHelperDll.cpp \
+	VBoxGuestInstallHelperDll.rc \
+	$(PATH_ROOT)/src/VBox/Runtime/generic/RTLogWriteUser-generic.cpp
+VBoxGuestInstallHelperDll_INCS            := \
+	$(PATH_ROOT)/src/VBox/Runtime/include
+
+include $(FILE_KBUILD_SUB_FOOTER)

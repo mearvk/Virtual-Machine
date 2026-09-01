@@ -1,4 +1,4 @@
-/* $Id: VBoxDef2LazyLoad.cpp $ */
+/* $Id: VBoxDef2LazyLoad.cpp 114774 2026-07-25 23:32:01Z knut.osmundsen@oracle.com $ */
 /** @file
  * VBoxDef2LazyLoad - Lazy Library Loader Generator.
  *
@@ -1921,7 +1921,7 @@ int main(int argc, char **argv)
             else if (   !strcmp(psz, "--version")
                      || !strcmp(psz, "-V"))
             {
-                printf("$Revision: 174611 $\n");
+                printf("$Revision: 114774 $\n");
                 return RTEXITCODE_SUCCESS;
             }
             else

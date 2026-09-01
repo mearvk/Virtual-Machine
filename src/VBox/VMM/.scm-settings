@@ -1,0 +1,64 @@
+# $Id: .scm-settings 112435 2026-01-13 08:49:25Z knut.osmundsen@oracle.com $
+## @file
+# Source code massager settings for the VMM.
+#
+
+#
+# Copyright (C) 2017-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+
+/VMMAll/IEMAllInstPython.py: --license-ose-dual
+
+--filter-out-files /testcase/dev.tar.gz
+
+/include/PGMGstDefs-x86.h: --no-fix-header-guards
+/include/PGMSlatDefs.h:    --no-fix-header-guards
+/include/IEMCpuCoreTmpl.h: --no-fix-header-guards
+/VMMR0/PGMR0Bth.h: --no-fix-header-guards
+/VMMR3/PGMR3PhysRWTmpl.h: --no-fix-header-guards
+/VMMAll/CPUMAllCpuIdArmV8.cpp.h: --dont-set-svn-keywords
+/VMMAll/PGMAsll*-*.cpp.h: --no-fix-header-guards
+/VMMAll/target-armv8/IEMAllInstrA64Impl.h: --no-fix-header-guards
+/VMMAll/target-x86/IEMAllInstCommonBodyMacros-x86.h: --no-fix-header-guards
+/VMMAll/target-x86/IEMAllN8veLiveness-x86.h: --no-fix-header-guards
+/VMMAll/target-x86/IEMAllN8veRecompFuncs-x86.h: --no-fix-header-guards
+/testcase/tstVMStruct.h: --no-fix-header-guards
+/testcase/tstIEMAImplData.h: --no-fix-header-guards
+
+/*.h: --guard-relative-to-dir . --guard-prefix VMM_INCLUDED_SRC_
+/VMMR3/cpus/*.h: --guard-relative-to-dir VMMR3/cpus --guard-prefix VBOX_CPUDB_
+
+# Forbid PAGE_SIZE, PAGE_SIZE and PAGE_OFFSET_MASK w/o GUEST_ or HOST_ prefix.
+/*.cpp: --only-guest-host-page
+/*.h:   --only-guest-host-page
+# Except in the pool where more care/work is needed.
+/VMMAll/target-x86/PGMAllPool-x86.cpp: --no-page-restrictions
+/VMMR3/target-x86/PGMR3Pool-x86.cpp:   --no-page-restrictions
+/testcase/tstVMStructSize.cpp:         --no-page-restrictions
+
+# Forbid ASMMemIsZeroPage and ASMMemZeroPage.
+/*.cpp: --no-ASMMemPage-use
+/*.h:   --no-ASMMemPage-use
+# Except in the pool where more care/work is needed.
+/VMMR3/target-x86/PGMPool-x86.cpp:     --unrestricted-ASMMemPage-use
+/VMMAll/target-x86/PGMAllPool-x86.cpp: --unrestricted-ASMMemPage-use
+

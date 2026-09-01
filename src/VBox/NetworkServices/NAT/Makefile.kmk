@@ -1,0 +1,85 @@
+# $Id: Makefile.kmk 114270 2026-06-09 05:37:44Z andreas.loeffler@oracle.com $
+## @file
+# Sub-makefile for NAT Networking
+#
+
+#
+# Copyright (C) 2006-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+#
+# Hardened stub exe for VBoxNetNAT.
+#
+ifdef VBOX_WITH_HARDENING
+ PROGRAMS += VBoxNetNATHardened
+ VBoxNetNATHardened_TEMPLATE = VBoxR3HardenedExe
+ VBoxNetNATHardened_NAME   = VBoxNetNAT
+ ifdef VBOX_WITH_AUTOMATIC_DEFS_QUOTING
+  VBoxNetNATHardened_DEFS  = SERVICE_NAME="VBoxNetNAT"
+ else
+  VBoxNetNATHardened_DEFS  = SERVICE_NAME=\"VBoxNetNAT\"
+ endif
+ VBoxNetNATHardened_SOURCES = VBoxNetNATHardened.cpp
+ VBoxNetNATHardened_LDFLAGS.win = /SUBSYSTEM:windows
+ $(call VBOX_SET_VER_INFO_EXE,VBoxNetNATHardened,VirtualBox NAT Engine,$(VBOX_WINDOWS_ICON_FILE)) # Version info / description.
+endif
+
+
+#
+# VBoxNetNAT.
+#
+ifdef VBOX_WITH_HARDENING
+ DLLS   += VBoxNetNAT
+else
+ PROGRAMS += VBoxNetNAT
+endif
+VBoxNetNAT_TEMPLATE := $(if-expr defined(VBOX_WITH_HARDENING),VBoxMainDll,VBoxMainClientSignedExe)
+VBoxNetNAT_NAME    := VBoxNetNAT
+VBoxNetNAT_DEFS     = \
+	IPv6 \
+	$(if $(VBOX_WITH_INTNET_SERVICE_IN_R3),VBOX_WITH_INTNET_SERVICE_IN_R3,)
+VBoxNetNAT_DEFS.win = VBOX_COM_OUTOFPROC_MODULE
+VBoxNetNAT_INCS += \
+	$(PATH_ROOT)/src/libs/libslirp-4.9.3/include
+VBoxNetNAT_SOURCES = \
+	VBoxNetSlirpNAT.cpp \
+	../NetLib/IntNetIf.cpp \
+	../NetLib/VBoxNetPortForwardString.cpp
+VBoxNetNAT_SOURCES.win += \
+	RTWinPoll.cpp \
+	RTWinSocketPair.cpp
+VBoxNetNAT_LIBS = \
+	$(PATH_STAGE_LIB)/VBox-libslirp$(VBOX_SUFF_LIB) \
+	$(LIB_RUNTIME)
+VBoxNetNAT_LIBS.solaris += socket nsl
+VBoxNetNAT_LIBS.darwin += resolv
+VBoxNetNAT_LDFLAGS.win = /SUBSYSTEM:windows
+
+ifdef VBOX_WITH_HARDENING
+ $(call VBOX_SET_VER_INFO_DLL,VBoxNetNAT,VirtualBox NAT Engine (dll),$(VBOX_WINDOWS_ICON_FILE)) # Version info / description.
+else
+ $(call VBOX_SET_VER_INFO_EXE,VBoxNetNAT,VirtualBox NAT Engine,$(VBOX_WINDOWS_ICON_FILE)) # Version info / description.
+endif
+
+include $(FILE_KBUILD_SUB_FOOTER)

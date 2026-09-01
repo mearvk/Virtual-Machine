@@ -1,0 +1,639 @@
+﻿<!--
+    Language Definition Include for VirtualBox WiX script.
+-->
+<!--
+    Copyright (C) 2011-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<WixLocalization xmlns="http://wixtoolset.org/schemas/v4/wxl" Culture="he_IL" Codepage="1255">
+    <String Id="LANG" Value="1037" />
+    <String Id="CODEPAGE" Value="1255" />
+    <String Id="LangName" Value="עברית" />
+
+    <String Id="ButtonText_No" Value="&amp;לא" />
+    <String Id="ButtonText_Yes" Value="&amp;כן" />
+    <String Id="ButtonText_Cancel" Value="&amp;ביטול" />
+    <String Id="ButtonText_Next" Value="ה&amp;בא" />
+    <String Id="ButtonText_Back" Value="ה&amp;קודם" />
+    <String Id="ButtonText_Browse" Value="&amp;שינוי" />
+    <String Id="ButtonText_OK" Value="&amp;אישור" />
+    <String Id="ButtonText_Check" Value="&amp;בדיקה" />
+    <String Id="ButtonText_Install" Value="ה&amp;תקנה" />
+    <String Id="ButtonText_Remove" Value="ה&amp;סרה" />
+    <String Id="ButtonText_Finish" Value="&amp;סיום" />
+    <String Id="ButtonText_Repair" Value="&amp;תיקון" />
+    <String Id="ButtonText_Return" Value="&amp;חזאה" />
+    <String Id="ButtonText_Retry" Value="לנסות &amp;שוב" />
+    <String Id="ButtonText_Ignore" Value="הת&amp;עלמות" />
+    <String Id="ButtonText_Exit" Value="י&amp;ציאה" />
+
+    <String Id="InstallModeCustom" Value="התאמה אישית" />
+    <String Id="Setup" Value="תוכנית התקנה" />
+
+    <!---->
+
+    <String Id="StartMenu_License" Value="רישיון" />
+    <String Id="StartMenu_UserManual" Value="מדריך למשתמשים" />
+
+    <!---->
+
+    <String Id="VB_App" Value="היישום [ProductName]." />
+    <String Id="VB_USBDriver" Value="מנהלי התקני USB של [ProductName] לתמיכה בהתקני USB." />
+    <String Id="VB_Network" Value="מנהלי התקני רשת של [ProductName] לתמיכה בתקשורת רשתות." />
+    <String Id="VB_NetLwfDriver" Value="מנהל התקן תקשורת רשת NDIS6 מגושרת של [ProductName]." />
+    <String Id="VB_NetAdp6Driver" Value="מנהל התקן מתאם רשת וירטואלית של [ProductName] לתקשורת מארח בלבד לפי NDIS6." />
+    <String Id="VB_Python" Value="תמיכה ב־Python ל־VirtualBox." />
+
+    <!---->
+
+    <String Id="UsedByOtherApp" Value="זוהה יישום שמשתמש בגרסה המותקנת של VirtualBox. יש להסיר את היישום הזה לפני המשך בהתקנה. נא לעיין בקובץ dependencies.dep בתיקיית ההתקנה של VirtualBox לפרטים נוספים." />
+    <String Id="NeedAdmin" Value="צריך הרשאות ניהול כדי להתקין/להסיר את [ProductName]! תוכנית ההתקנה הזאת תיסגר כעת." />
+    <String Id="NeedMSCRT" Value="[ProductName] דורש את התקנת חבילת Microsoft Visual C++ 2019 Redistributable תחילה. נא להתקין ולהפעיל מחדש את תוכנית ההתקנה של [ProductName]." />
+    <String Id="WrongOS" Value="[ProductName] רץ על Windows 10 ומעלה בלבד." />
+    <String Id="Only64Bit" Value="[ProductName] רץ על מערכות Windows 64 סיביות בלבד." />
+    <String Id="WrongPlatformArch" Value="הגרסה הזאת של [ProductName] עבור ארכיטקטורת פלטפורמה שונה ולכן אי אפשר להתקין. נא להתקין את הגרסה המתאימה של [ProductName]!" />
+    <String Id="NewerVersionDetected" Value="A newer version of VirtualBox is already installed. Please uninstall it first before installing older versions of VirtualBox." />
+    <String Id="InvalidTargetDir" Value="תיקיית ההתקנה שנבחרה שגויה! נא להשתמש בתיקיית התקנה אחרת כדי להתקין את [ProductName]. כדאי לפנות למדריך של [ProductName] למידע נוסף." />
+
+    <!---->
+
+    <String Id="CancelDlg_Question" Value="לבטל את התקנת [ProductName]?" />
+
+    <!---->
+
+    <String Id="WelcomeDlg_Header" Value="ברוך בואך לתוכנית ההתקנה של [ProductName]" />
+    <String Id="WelcomeDlg_Body" Value="תוכנית ההתקנה הזא תתתקין את [ProductName] במחשב שלך. לחיצה על „הבא תמשיך בתהליך ואילו לחיצה על „ביטול” תסגור את תוכנית ההתקנה”." />
+
+    <!---->
+
+    <String Id="LicenseAgreementDlg_Header" Value="הסכם רישוי משתמש קצה" />
+    <String Id="LicenseAgreementDlg_Body" Value="יש לקרוא את הסכם הרישוי הבא בעיון." />
+    <String Id="LicenseAgreementDlg_Accept" Value="תנאי הסכם הרישוי מ&amp;קובלים עליי" />
+    <String Id="LicenseAgreementDlg_Decline" Value="תנאי הסכם הרישוי &amp;לא מקובלים עליי" />
+
+    <!---->
+
+    <String Id="InvalidTargetDirDlg_Header" Value="תיקיית ההתקנה שגויה" />
+    <String Id="InvalidTargetDirDlg_Desc1" Value="תיקיית ההתקנה הנבחרת שגויה. נא לפנות למדריך של [ProductName] למידע נוסף." />
+    <String Id="InvalidTargetDirDlg_Desc2" Value="נא לבחור תיקייה אחרת להתקנת [ProductName]." />
+
+    <!---->
+
+    <String Id="CheckSerialDlg_Header" Value="מספר סידורי" />
+    <String Id="CheckSerialDlg_Body" Value="נא למלא את המספר הסידורי שלך בשדות שלהלן. הוא מופיע על מדבקה בתוך עטיפת התקליטור של VirtualBox." />
+    <String Id="CheckSerialDlg_Footer" Value="כשסיימת למלא את המספר הסידור יש ללחוץ על הכפתור „בדיקה” להלן." />
+
+    <!---->
+
+    <String Id="WrongSerialDlg_Header" Value="המספר הסידורי שמילאת שגוי!" />
+    <String Id="WrongSerialDlg_Desc1" Value="נא לחזור ולמלא את המספר הסידור שלך שוב." />
+    <String Id="WrongSerialDlg_Desc2" Value="חשוב לוודא שהמספר שמילאת זהה לזה שמודפס על המדבקה." />
+
+    <!---->
+
+    <String Id="WarnSaveStatesDlg_Header" Value="אזהרה:" />
+    <String Id="WarnSaveStatesDlg_Header2" Value="מצבים שמורים לא תואמים!" />
+    <String Id="WarnSaveStatesDlg_Desc" Value="בעת שדרוג [ProductName], כל המצבים השמורים מהמכונות הקיימות שלך לא יעבדו יותר! לאחר ההתקנה, יש לסלק אותם ידנית." />
+    <String Id="WarnSaveStatesDlg_Proceed" Value="להמשיך בהתקנה כעת?" />
+
+    <!---->
+
+    <String Id="WarnTAPDevicesDlg_Header" Value="ממשקי מארח" />
+    <String Id="WarnTAPDevicesDlg_Desc" Value="אם השתמשת בממשקי מארח כלשהם למכונות שלך בגרסה קודמת, יש ליצור אותם ידנית מחדש לאחר ההתקנה הזאת." />
+
+    <!---->
+
+    <String Id="NetCfgLocked" Value="יש לסגור את היישום הבא לפני שאפשר יהיה להמשיך בהתקנה: „[2]”" />
+
+    <!---->
+
+    <String Id="CustomizeDlg_Location" Value="מקום ההתקנה:" />
+    <String Id="CustomizeDlg_DiskUsage" Value="לבדוק את הנפח בכונן" />
+    <String Id="CustomizeDlg_SelFeatures" Value="לבחור את היכולות להתקין" />
+    <String Id="CustomizeDlg_IconTree" Value="יש ללחוץ על הסמלים בעץ להלן כדי לשנות את אופן התקנת היכולות." />
+    <String Id="CustomizeDlg_CustomSetup" Value="התקנה מותאמת אישית" />
+    <String Id="CustomizeDlg_SelItemDesc" Value="CustomizeDlgItemDescription-CustomizeDlgItemDescription" />
+    <String Id="CustomizeDlg_SelItemSize" Value="CustomizeDlgItemSize-CustomizeDlgItemSize" />
+    <String Id="CustomizeDlg_SelItemPath" Value="CustomizeDlgLocation-CustomizeDlgLocation" />
+
+    <!---->
+
+    <String Id="Customize2Dlg_Header" Value="התאמה אישית" />
+    <String Id="Customize2Dlg_Desc" Value="נא לבחור אפשרות עלייה אחת או יותר" />
+    <String Id="Customize2Dlg_CreateStartMenuEntries" Value="הוספה לתפריט התחל" />
+    <String Id="Customize2Dlg_CreateDesktopShortcut" Value="יצירת קיצור דרך על שולחן העבודה" />
+    <String Id="Customize2Dlg_RegisterFileExtensions" Value="להעלות כברירת מחדל בעת פתיחת קובצי ‎.ova או ‎.ovf" />
+
+    <!---->
+
+    <String Id="SelectionNetworkTypeDlg_CommonDescription" Value="נא לבחור את סוג מנהל התקני הרשת לשימוש:" />
+    <String Id="SelectionNetworkTypeDlg_DescriptionNDIS6" Value="מנהלי התקני רשת לפני NDIS6.&#xA;זאת ברירת המחדל לגרסאות עדכניות יותר של Windows ‏(Vista ומעלה)." />
+    <String Id="SelectionNetworkTypeDlg_RadioButtonNDIS6" Value="להשתמש במנהלי התקנים לפי NDIS6." />
+
+    <!---->
+
+    <String Id="WarnDisconNetIfacesDlg_Title" Value="אזהרה:" />
+    <String Id="WarnDisconNetIfacesDlg_Title2" Value="נתק תקשורת" />
+    <String Id="WarnDisconNetIfacesDlg_Desc" Value="במהלך התקנת מנגנון רשת התקשורת של [ProductName], הרשת שלך תתנתק. נא לוודא שפעולות שדורשות חיבור לרשת הושלמו לפני בחירה להמשיך בתהליך." />
+
+    <!---->
+
+    <String Id="WarnPythonDlg_Title" Value="תלויות חסרות" />
+    <String Id="WarnPythonDlg_Title2" Value="ליבת Python ו־win32api" />
+    <String Id="WarnPythonDlg_Desc" Value="התקנת איגודי ה־Python עבור [ProductName] דורשת את התקנת חבילת הליבה של Python ואת איגודי win32api." />
+    <String Id="WarnPythonDlg_Desc2" Value="אפשר להתקין ולהגדיר את אלו בהמשך. לקבלת הנחיות נא לפנות אל מדריך תכנות ה־SDK של [ProductName]. לחלופין, ניתן לתקין אותם לפני בחירה להמשיך בהתקנת VirtualBox." />
+
+    <!---->
+
+    <String Id="DiskCostDlg_SpaceRequired" Value="הנפח בכונן שנחוץ להתקנת היכולות הנבחרות." />
+    <String Id="DiskCostDlg_NotEnoughSpace" Value="בכרכים המודגשים (אם יש כאלה) אין מספיק נפח פנוי ליכולות הנבחרות. אפשר להסיר חלק מהקבצים מהכרכים המודגשים או לבחור להתקין פחות יכולות לכוננים מקומיים או לבחור כונני יעד אחרים." />
+    <String Id="DiskCostDlg_SpaceRequirements" Value="דרישות נפח בכונן" />
+    <String Id="DiskCostDlg_VolumeList" Value="{120}{70}{70}{70}{70}" />
+
+    <!---->
+
+    <String Id="BrowseDlg_BrowseDestFolder" Value="לעיין לתיקיית היעד" />
+    <String Id="BrowseDlg_ChangeCurFolder" Value="החלפת תיקיית היעד הנוכחית" />
+    <String Id="BrowseDlg_UpOneLevelTooltip" Value="לעלות רמה למעלה" />
+    <String Id="BrowseDlg_CreateNewFolderTooltip" Value="יצירת תיקייה חדשה" />
+    <String Id="BrowseDlg_LookIn" Value="&amp;חיפוש תחת:" />
+    <String Id="BrowseDlg_FolderName" Value="&amp;שם תיקייה:" />
+
+    <!---->
+
+    <String Id="VerifyReadyDlg_ReadyToBegin" Value="ההכנות להתקנה מסוג „[InstallMode]” הושלמו." />
+    <String Id="VerifyReadyDlg_ReadyToInstall" Value="ההכנות להתקנה הושלמו" />
+
+    <!---->
+
+    <String Id="ExitDlg_ClickFinish" Value="יכול להיות שגם חבילת ההרחבה של VirtualBox נחוצה לך. יש לפנות למדריך למשתמשים ב־VirtualBox לקבלת מידע נוסף." />
+    <String Id="ExitDlg_InstComplete" Value="[ProductName] הותקן." />
+    <String Id="ExitDlg_StartVBox" Value="להפעיל את [ProductName]?" />
+
+    <!---->
+
+    <String Id="FatalErrorDlg_Title" Value="תוכנית ההתקנה של [ProductName] הסתיימה בטרם עת" />
+    <String Id="FatalErrorDlg_Description1" Value="נא להפעיל את המערכת מחדש ולנסות להריץ את ההתקנה או ההסרה שוב." />
+    <String Id="FatalErrorDlg_Description2" Value="לחלופין ניתן להיוועץ בפורומים של [ProductName]." />
+    <String Id="FatalErrorDlg_DescLogOpen" Value="פתיחת קובץ יומן" />
+    <String Id="FatalErrorDlg_DescLogPath" Value="קובץ היומן נכתב אל:" />
+
+    <!---->
+
+    <String Id="FilesInUse_Text" Value="היישומים הבאים משתמשים בקבצים שתוכנית ההתקנה הזאת צריכה לעדכן. נא לסגור את היישומים האלה וללחוץ על ל&amp;נסות שוב כדי להמשיך בהתקנה או יציאה כדי לצאת ממנה." />
+    <String Id="FilesInUse_Description" Value="חלק מהקבצים שמיועדים לעדכון נמצאים בשימוש כרגע." />
+    <String Id="FilesInUse_Title" Value="קבצים בשימוש" />
+
+    <!---->
+
+    <String Id="UserExitDlg_Header" Value="תוכנית ההתקנה של [ProductName] נקטעה" />
+    <String Id="UserExitDlg_Desc" Value="ההתקנה של [ProductName] נקטעה. לא נערכו שינויים במערכת שלך. כדי להתקין את התוכנית הזאת במועד מאוחר יותר, נא להריץ את ההתקנה מחדש." />
+    <String Id="UserExitDlg_Footer" Value="לחיצה על כפתור הסיום תסגור את תוכנית ההתקנה." />
+
+    <!---->
+
+    <String Id="ProgressDlg_PleaseWait" Value="תהליך ההתקנה יארוך מספר דקות" />
+
+    <!---->
+
+    <String Id="ResumeDlg_Header" Value="המשך תהליך התקנת [ProductName]" />
+    <String Id="ResumeDlg_Desc" Value="תוכנית ההתקנה תשלים את התקנת [ProductName] במחשב שלך. לחיצה על התקנה תמשיך בעוד לחיצה על ביטול תסגור את תוכנית ההתקנה." />
+
+    <!---->
+
+    <String Id="MaintenanceTypeDlg_Header" Value="שינוי, תיקון או הסרת התקנה" />
+    <String Id="MaintenanceTypeDlg_SelOption" Value="נא לבחור את הפעולה לביצוע." />
+    <String Id="MaintenanceTypeDlg_Repair" Value="&amp;תיקון" />
+    <String Id="MaintenanceTypeDlg_RepairText" Value="לתקן שגיאות במצב ההתקנה העדכני ביותר - מתקן קבצים חסרים או פגומים, קיצורי דרך ורשומות מערכת." />
+    <String Id="MaintenanceTypeDlg_RepairTooltip" Value="תיקון ההתקנה" />
+    <String Id="MaintenanceTypeDlg_RepairProgress1" Value="מתבצע תיקון" />
+    <String Id="MaintenanceTypeDlg_RepairProgress2" Value="מתקן" />
+    <String Id="MaintenanceTypeDlg_Remove" Value="ה&amp;סרה" />
+    <String Id="MaintenanceTypeDlg_RemoveText" Value="הסרת [ProductName] מהמחשב שלך." />
+    <String Id="MaintenanceTypeDlg_RemoveTooltip" Value="הסרת ההתקנה" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress1" Value="מתבצעת הסרה" />
+    <String Id="MaintenanceTypeDlg_RemoveProgress2" Value="מסיר" />
+
+    <!---->
+
+    <String Id="MaintenanceWelcomeDlg_Header" Value="ברוך בואך לתוכנית ההתקנה של [ProductName]" />
+    <String Id="MaintenanceWelcomeDlg_Desc" Value="תוכנית ההתקנה תאפשר לך לתקן את ההתקנה הנוכחית שלך או להסיר את [ProductName] מהמחשב שלך. לחיצה על הבא תמשיך בהתקנה ואילו ביטול תסגור אותה." />
+
+    <!---->
+
+    <String Id="OutOfDiskDlg_InstallationExceeds" Value="הנפח הדרוש בכונן להתקנה חורג מהנפח הפנוי בכונן." />
+    <String Id="OutOfDiskDlg_NotEnoughDiskSpace" Value="בכרכים המודגשים (אם יש כאלה) אין מספיק נפח פנוי ליכולות הנבחרות. אפשר להסיר חלק מהקבצים מהכרכים המודגשים או לבחור להתקין פחות יכולות לכוננים מקומיים או לבחור כונני יעד." />
+    <String Id="OutOfDiskDlg_OutOfDiskSpace" Value="נגמר המקום בכונן" />
+
+    <!---->
+
+    <String Id="OutOfRbDiskDlg_InstallationExceeds" Value="הנפח הדרוש בכונן להתקנה חורג מהנפח הפנוי בכונן.." />
+    <String Id="OutOfRbDiskDlg_NotEnoughDiskSpace" Value="בכרכים המודגשים (אם יש כאלה) אין מספיק נפח פנוי ליכולות הנבחרות. אפשר להסיר חלק מהקבצים מהכרכים המודגשים או לבחור להתקין פחות יכולות לכוננים מקומיים או לבחור כונני יעד." />
+    <String Id="OutOfRbDiskDlg_OutOfDiskSpace" Value="נגמר המקום בכונן" />
+    <String Id="OutOfRbDiskDlg_Desc" Value="לחלופין, אפשר לבחור להשבית את יכולת ההחזרה לאחור של תוכנית ההתקנה. המצב הזה יאפשר לתוכנית ההתקנה לשחזר את המערכת שלך למצבה המקורי במקרה שההתקנה תיקטע בכל דרך שהיא. יש ללחוץ על „כן” כדי להסתכן ולהשבית את החזרה לאחור." />
+
+    <!---->
+
+    <String Id="VerifyRemoveDlg_Header" Value="הסרת [ProductName]" />
+    <String Id="VerifyRemoveDlg_Desc" Value="בחרת להסיר את התוכנית מהמחשב שלך." />
+    <String Id="VerifyRemoveDlg_ClickRemove" Value="לחיצה על „הסרה” תסיר את [ProductName] מהמחשב שלך. כדי לבחון או לשנות אי אילו מהגדרות ההתקנה שלך יש ללחוץ על „חזרה” או על „ביטול” כדי לצאת מאשף ההתקנה." />
+
+    <!---->
+
+    <String Id="VerifyRepairDlg_Header" Value="תיקון [ProductName]" />
+    <String Id="VerifyRepairDlg_ReadyToBegin" Value="תוכנית ההתקנה מוכנה להתחיל בתיקון של [ProductName]." />
+    <String Id="VerifyRepairDlg_ClickRepair" Value="לחיצה על „תיקון” תתקן את התקנת [ProductName] במחשב שלך. כדי לבחון או לשנות אי אילו מהגדרות ההתקנה שלך יש ללחוץ על „חזרה” או על „ביטול” כדי לצאת מאשף ההתקנה." />
+
+    <!---->
+
+    <String Id="WaitForCostingDlg_PleaseWait" Value="נא להמתין בזמן שתוכנית ההתקנה מסיימת לקבוע מה הן דרישות הנפח מהכונן שלך." />
+
+    <!---->
+
+    <String Id="MsiRMFilesInUse_Text" Value="היישומים הבאים משתמשים בקבצים שתוכנית ההתקנה הזאת צריכה לעדכן. אפשר לתת לתוכנית ההתקנה לסגור אותם ולנסות להפעיל אותם מחדש או להפעיל את המכונה מחדש בהמשך." />
+    <String Id="MsiRMFilesInUse_Description" Value="חלק מהקבצים שצריך לעדכן נמצאים בשימוש." />
+    <String Id="MsiRMFilesInUse_Title" Value="קבצים בשימוש" />
+    <String Id="MsiRMFilesInUse_UseRM" Value="ל&amp;סגור את היישומים ולנסות להפעיל אותם מחדש." />
+    <String Id="MsiRMFilesInUse_DontUseRM" Value="&amp;לא לנסות לסגור את היישום. יש להפעיל את המחשב מחדש." />
+
+    <!-- The following strings are internally used by WiX and MSI -->
+    <String Id="Error0" Value="{{שגיאה מהותית: }}" />
+    <String Id="Error1" Value="{{שגיאה [1]. }}" />
+    <String Id="Error2" Value="אזהרה [1]." />
+    <String Id="Error3" Value="שגיאה [1]." />
+    <String Id="Error4" Value="הסבר [1]." />
+    <String Id="Error5" Value="תוכנית ההתקנה נתקלה בשגיאה לא צפויה במהלך התקנת החבילה הזאת. המצב הזה עלול להעיד על בעיה עם החבילה הזאת. קוד השגיאה הוא [1]. {{הארגומנטים הם: [2], [3], [4]}}" />
+    <String Id="Error6" Value="" />
+    <String Id="Error7" Value="{{הכונן מלא: }}" />
+    <String Id="Error8" Value="פעולה [Time]: [1]. [2]" />
+    <String Id="Error9" Value="[ProductName]" />
+    <String Id="Error10" Value="{[2]}{, [3]}{, [4]}" />
+    <String Id="Error11" Value="סוג ההודעה: [1], ארגומנטים: [2]" />
+    <String Id="Error12" Value="=== התיעוד התחיל: [Date]  [Time] ===" />
+    <String Id="Error13" Value="=== התיעוד נפסק: [Date]  [Time] ===" />
+    <String Id="Error14" Value="פעולה החלה ב־[Time]: [1]." />
+    <String Id="Error15" Value="פעולה הסתיימה ב־ [Time]: [1]. ערך שהוחזר [2]." />
+    <String Id="Error16" Value="זמן שנותר: {[1] דקות }{[2] שניות}" />
+    <String Id="Error17" Value="נגמר הזיכרון. יש לכבות יישומים אחרים לפני ביצו ניסיון חוזר." />
+    <String Id="Error18" Value="תוכנית ההתקנה לא מגיבה יותר." />
+    <String Id="Error19" Value="תוכנית ההתקנה נקטעה בטרם עת." />
+    <String Id="Error20" Value="נא להמתין בזמן ש־Windows מגדיר את [ProductName]" />
+    <String Id="Error21" Value="הפרטים הנחוצים נאספים…" />
+    <String Id="Error22" Value="מתבצעת הסרה של גרסאות ישנות יותר של היישום הזה…" />
+    <String Id="Error23" Value="בהכנות להסרת גרסאות ישנות יותר של היישום הזה…" />
+    <String Id="Error32" Value="התקנת {[ProductName] }הושלמה בהצלחה." />
+    <String Id="Error33" Value="התקנת {[ProductName] }נכשלה." />
+    <String Id="Error1101" Value="שגיאת קריאה מקובץ: [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1301" Value="לא ניתן ליצור את הקובץ ‚[2]’. כבר קיימת תיקייה בשם הזה. יש לבטל את ההתקנה ולנסות להתקין ליעד אחר." />
+    <String Id="Error1302" Value="נא לחבר את אמצעי האחסון: [2]" />
+    <String Id="Error1303" Value="לתוכנית ההתקנה אין מספיק הרשאות לגשת לתיקייה הזאת: [2]. תוכנית ההתקנה לא יכולה להמשיך. יש להיכנס למערכת עם חשבון ניהול או ליצור קשר עם הנהלת המערכת שלך." />
+    <String Id="Error1304" Value="שגיאה כתיבה לקובץ: [2]. נא לוודא שיש לך גישה לתיקייה הזאת." />
+    <String Id="Error1305" Value="שגיאת קריאה מקובץ [2]. {{ שגיאת מערכת [3].}} נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1306" Value="ליישום אחר יש גישה בלעדית לקובץ הזה ‚[2]’. נא לנסות לסגור את כל היישומים האחרים וללחוץ על „לנסות שוב”." />
+    <String Id="Error1307" Value="אין מספיק מקום להתקין את הקובץ הזה: [2]. יש לפנות קצת מקום בכונן וללחוץ על „לנסות שוב” או על „ביטול” כדי לצאת." />
+    <String Id="Error1308" Value="קובץ המקור לא נמצא: [2]. נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1309" Value="שגיאת קריאה מקובץ: [3]. {{ שגיאת מערכת [2].}}  נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1310" Value="שגיאת כתיבה לקובץ: [3]. {{ שגיאת מערכת [2].}}  נא לוודא שיש לך גישה לתיקייה הזאת." />
+    <String Id="Error1311" Value="קובץ המקור לא נמצא{{(cabinet)}}: [2]. נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1312" Value="לא ניתן ליצור את התיקייה ‚[2]’. כבר קיים קובץ בשם הזה. נא לשנות את השם או להסיר את הקובץ ולנסות שוב, או ללחוץ על ביטול כדי לצאת." />
+    <String Id="Error1313" Value="הכרך [2] לא זמין. נא לבחור אחד אחר." />
+    <String Id="Error1314" Value="הנתיב שצוין ‚[2]’ לא זמין." />
+    <String Id="Error1315" Value="לא ניתן לכתוב לתיקייה שצוינה: [2]." />
+    <String Id="Error1316" Value="אירעה שגיאת רשת במהלך הניסיון לקרוא מהקובץ: [2]" />
+    <String Id="Error1317" Value="אירעה שגיאה תוך כדי ניסיון לכתוב לתיקייה: [2]" />
+    <String Id="Error1318" Value="אירעה שגיאת רשת במהלך הניסיון ליצור את התיקייה: [2]" />
+    <String Id="Error1319" Value="אירעה שגיאה במהלך הניסיון לפתוח את הכוננית (cabinet) של קובץ המקור: [2]" />
+    <String Id="Error1320" Value="הנתיב שצוין ארוך מדי: [2]" />
+    <String Id="Error1321" Value="לתוכנית ההתקנה אין מספיק הרשאות כדי לשנות את הקובץ הזה: [2]." />
+    <String Id="Error1322" Value="חלק מנתיב התיקייה ‚[2]’ שגוי. הוא ריק או שהוא חורג מהאורך שהמערכת מרשה." />
+    <String Id="Error1323" Value="נתיב התיקייה ‚[2]’ מכיל מילים שאינן תקינות כשם לתיקייה." />
+    <String Id="Error1324" Value="נתיב התיקייה ‚[2]’ מכיל תו שגוי." />
+    <String Id="Error1325" Value="’[2]‚ הוא לא שם קצר תקף." />
+    <String Id="Error1326" Value="קבלת אבטחת הקובץ: [3] קבלת מחרוזת אחרונה: [2]" />
+    <String Id="Error1327" Value="כונן שגוי: [2]" />
+    <String Id="Error1328" Value="שגיאה בהחלת התיקון לקובץ [2]. כנראה שעודכן בצורות אחרות ואי אפשר עוד לעדכן אותו בצורה הזאת. למידע נוסף יש ליצור קשר עם ספק התיקון. {{שגיאת מערכת: [3]}}" />
+    <String Id="Error1329" Value="אי אפשר להתקין קובץ נחוץ כיוון שקובץ הכוננית (cabinet) בשם [2] לא חתום דיגיטלית. המצב הזה יכול להעיד על כך שקובץ הכוננית פגום." />
+    <String Id="Error1330" Value="לא ניתן להתקין קובץ נחוץ כיוון שלקובץ הכוננית (cabinet) בשם [2] יש חתימה דיגיטלית שגויה. המצב הזה יכול להעיד על כך שקובץ הכוננית פגום.{{  השגיאה [3] הוחזרה על ידי WinVerifyTrust.}}" />
+    <String Id="Error1331" Value="העתקת הקובץ [2] כראוי נכשלה: שגיאת CRC." />
+    <String Id="Error1332" Value="העברת הקובץ [2] כראוי נכשלה: שגיאת CRC." />
+    <String Id="Error1333" Value="תיקון הקובץ [2] כראוי נכשל: שגיאת CRC." />
+    <String Id="Error1334" Value="לא ניתן להתקין את הקובץ ‚[2]’ כי אי אפשר למצוא את הקובץ בקובץ הכוננית (cabinet)בשם ‚[3]’. זה יכול להיות עקב תקלת רשת, קריאה מתקליטור או בעיה עם החבילה הזאת." />
+    <String Id="Error1335" Value="קובץ הכוננית (cabinet) ‚[2]’ הנחוץ להתקנה הזאת פגום ולא ניתן להשתמש בו. זה יכול להיות עקב תקלת רשת, קריאה מתקליטור או בעיה עם החבילה הזאת." />
+    <String Id="Error1336" Value="אירעה שגיאה ביצירת קובץ זמני שנחוץ להשלמת ההתקנה הזאת.{{  תיקייה: [3]. קוד שגיאה של המערכת: [2]}}" />
+    <String Id="Error1401" Value="לא ניתן ליצור מפתח: [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1402" Value="לא ניתן לפתוח את המפתח: [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1403" Value="לא ניתן למחוק את הערך [2] מהמפתח [3]. {{ שגיאת מערכת [4].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1404" Value="לא ניתן למחוק את המפתח [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1405" Value="לא ניתן לקרוא את הערך [2] מהמפתח [3]. {{ שגיאת מערכת [4].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1406" Value="לא ניתן לכתוב את הערך [2] למפתח [3]. {{ שגיאת מערכת [4].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1407" Value="לא ניתן לקבל את שמות הערכים למפתח [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1408" Value="לא ניתן לקבל שמות תת־מפתח למפתח [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1409" Value="לא ניתן לקרוא את פרטי האבטחה למפתח [2]. {{ שגיאת מערכת [3].}}  נא לוודא שהרשאות הגישה שלך מספיקות, או ליצור קשר עם התמיכה הטכנית שלך." />
+    <String Id="Error1410" Value="לא ניתן להגדיל את מרחב רישום המערכת הזמין. דרושים [2] ק״ב של מקום פנוי לצורך התקנת היישום הזה." />
+    <String Id="Error1500" Value="מתקיימת עוד התקנה במקביל. יש להשלים את ההתקנה בטרם בחירה להמשיך עם זאת." />
+    <String Id="Error1501" Value="שגיאה בגישה לנתונים מאובטחים. נא לוודא שמתקין Windows מוגדר כראוי ולנסות להתקין שוב." />
+    <String Id="Error1502" Value="המשתמש ‚[2]’ התחיל להתקין את המוצר ‚[3]’ בעבר. המשתמש הזה יצטרך להריץ את ההתקנה הזאת שוב לפני שיוכל להשתמש במוצר הזה. ההתקנה הנוכחית שלך תמשיך כעת." />
+    <String Id="Error1503" Value="המשתמש ‚[2]’ התחיל להתקין את המוצר ‚[3]’ בעבר. המשתמש הזה יצטרך להריץ את ההתקנה הזאת שוב לפני שיוכל להשתמש במוצר הזה." />
+    <String Id="Error1601" Value="נגמר המקום בכונן -- כרך: ‚[2]’; הנפח הדרוש: [3] ק״ב; הנפח הפנוי: [4] ק״ב. יש לפנות מקום בכונן ולנסות שוב." />
+    <String Id="Error1602" Value="לבטל?" />
+    <String Id="Error1603" Value="הקובץ [2][3] מוזחק בשימוש{ על ידי התהליך הבא: שם: [4], מזהה: [5], כותרת החלון: ‚[6]’}. יש לסגור את היישום הזה ולנסות שוב." />
+    <String Id="Error1604" Value="המוצר ‚[2]’ כבר מותקן, מה שמונע את התקנת המוצר הזה. שני המוצרים אינם תואמים זה לזה." />
+    <String Id="Error1605" Value="אין מספיק מקום פנוי בכרך ‚[2]’ כדי להמשיך בהתקנה עם שחזור פעיל. [3] ק״ב דרושים, אך רק [4] ק״ב זמינים. יש ללחוץ על ״התעלמות” כדי להמשיך את ההתקנה ללא שמירת פרטי השחזור, לחיצה על „לנסות שוב” תבדוק את המקום הפנוי שוב, „ביטול” תסגור את תוכנית ההתקנה." />
+    <String Id="Error1606" Value="לא ניתן לגשת למקום ברשת [2]." />
+    <String Id="Error1607" Value="יש לסגור את היישומים הבאים בטרם המשך בהתקנה:" />
+    <String Id="Error1608" Value="לא ניתן למצוא מוצרים תואמים מותקנים קודמים במכונה להתקנת המוצר הזה." />
+    <String Id="Error1609" Value="אירעה שגיאה במהלך החלת הגדרות האבטחה. [2] זה לא משתמש או קבוצה תקינים. זאת יכולה להיות בעיה עם החבילה, או בעיה בהתחברות לבקר תחום (domain controller) ברשת. נא לבדוק שהחיבור שלך לרשת תקין וללחוץ על „לנסות שוב” או על ביטול כדי לסיים את ההתקנה. {{לא ניתן לאתר את מזהה האבטחה (SID) של המשתמש, שגיאת מערכת [3]}}" />
+    <String Id="Error1701" Value="המפתח [2] אינו תקני. נא לוודא שמילאת את המפתח הנכון." />
+    <String Id="Error1702" Value="תוכנית ההתקנה חייבת להפעיל את המערכת שלך מחדש בטרם המשך הגדרת [2]. יש ללחוץ על „כן” כדי להפעיל מחדש או על „לא” אם תכננת להפעיל את המערכת מחדש ידנית בהמשך." />
+    <String Id="Error1703" Value="יש להפעיל את המחשב שלך מחדש כדי ששינויי ההגדרות שביצעת מול [2] יהיו בתוקף. יש ללחוץ על „כן” כדי להפעיל מחדש כעת או על „לא” אם תכננת להפעיל את המערכת מחדש ידנית בהמשך." />
+    <String Id="Error1704" Value="ההתקנה של [2] מושהית כרגע. יש להחזיר לאחור את השינויים שבוצעו על ידי ההתקנה כדי להמשיך. להחזיר את השינויים האלה לאחור?" />
+    <String Id="Error1705" Value="התקנה קודמת של המוצר הזה מתרחשת ברקע. יש להחזיר לאחור את השינויים שבוצעו על ידי ההתקנה כדי להמשיך. להחזיר את השינויים האלה לאחור?" />
+    <String Id="Error1706" Value="לא ניתן למצוא חבילת התקנה למוצר [2]. כדאי לנסות להתקין שוב באמצעות עותק תקף של חבילת ההתקנה ‚[3]’." />
+    <String Id="Error1707" Value="ההתקנה הולשמה בהצלחה." />
+    <String Id="Error1708" Value="ההתקנה נכשלה." />
+    <String Id="Error1709" Value="מוצר: [2] -- [3]" />
+    <String Id="Error1710" Value="אפשר לשחזיר את המחשב שלך למצבו הקודם או להמשיך את ההתקנה בפעם אחרת. לשחזר?" />
+    <String Id="Error1711" Value="אירעה שגיאה בכתיבת פרטי ההתקנה לכונן. כדאי לודא שיש מספיק נפח פנוי בכונן וללחוץ על „לנסות שוב” או על „ביטול” כדי לסיים את ההתקנה." />
+    <String Id="Error1712" Value="קובץ אחד או יותר שנחוצים לשחזור המחשב שלך למצבו הקודם לא נמצאו. לא תהיה אפשרות לשחזר." />
+    <String Id="Error1713" Value="[2] לא הצליח להתקין את אחד המוצרים שנחוצים לו. נא ליצור קשר עם קבוצת התמיכה הטכנית שלך. {{מחרוזת מערכת: [3].}}" />
+    <String Id="Error1714" Value="לא ניתן להסיר את הגרסה הישנה יותר של [2]. נא ליצור קשר עם קבוצת התמיכה הטכנית שלך. {{מחרוזת מערכת [3].}}" />
+    <String Id="Error1715" Value="[2] הותקן" />
+    <String Id="Error1716" Value="[2] הוגדר" />
+    <String Id="Error1717" Value="[2] הוסר" />
+    <String Id="Error1718" Value="הקובץ [2] נדחה על ידי מדיניות החתימה הדיגיטלית." />
+    <String Id="Error1719" Value="לא ניתן לגשת לשירות מתקין Windows. מצב כזה יכול לקרות אם Windows פועל במצב בטוח, או אם מתקין Windows לא מותקן כראוי. נא ליצור קשר עם גוף התמיכה שלך לקבלת סיוע." />
+    <String Id="Error1720" Value="יש בעיה עם חבילת מתקין ה־Windows הזאת. לא ניתן להריץ סקריפט שנחוץ להשלמת ההתקנה. נא ליצור קשר עם גוף התמיכה שלך או עם ספק החבילה שלך. {{פעולה מותאמת [2] שגיאת סקריפט [3], [4]: [5] שורה [6], עמודה [7], [8] }}" />
+    <String Id="Error1721" Value="יש בעיה עם חבילת מתקין ה־Windows הזאת. לא ניתן להריץ תוכנית שחיונית להשלמת ההתקנה הזאת. נא ליצור קשר עם גוף התמיכה שלך או עם ספק החבילה שלך. {{פעולה: [2], מקום: [3], פקודה: [4] }}" />
+    <String Id="Error1722" Value="יש בעיה עם חבילת מתקין ה־Windows הזאת. הרצה של תוכנית כחלק מההתקנה הזאת לא הסתיימה כצפוי. נא ליצור קשר עם גוף התמיכה שלך או עם ספק החבילה שלך. {{פעולה [2], מקום: [3], פקודה: [4] }}" />
+    <String Id="Error1723" Value="יש בעיה עם חבילת מתקין ה־Windows הזאת. לא ניתן להריץ DLL שנחוץ להשלמת ההתקנה הזאת. נא ליצור קשר עם גוף התמיכה שלך או עם ספק החבילה שלך. {{פעולה [2], רשומה: [3], ספרייה: [4] }}" />
+    <String Id="Error1724" Value="ההסרה הושלמה בהצלחה." />
+    <String Id="Error1725" Value="ההסרה נכשלה." />
+    <String Id="Error1726" Value="הפרסום הושלם בהצלחה." />
+    <String Id="Error1727" Value="הפרסום נכשל." />
+    <String Id="Error1728" Value="ההגדרה הושלמה בהצלחה." />
+    <String Id="Error1729" Value="ההגדרה נכשלה." />
+    <String Id="Error1730" Value="רק מנהלים יכולים להסיר את היישום הזה. כדי להסיר את היישום הזה, אפשר להיכנס עם חשבון ניהול או ליצור קשר עם קבוצת התמיכה הטכנית שלך לקבלת סיוע." />
+    <String Id="Error1801" Value="הנתיב [2] שגוי. נא לציין נתיב תקף." />
+    <String Id="Error1802" Value="הזיכרון נגמר. יש לכבות יישומים אחרים לפני ביצוע ניסיון חוזר." />
+    <String Id="Error1803" Value="אין אמצעי אחסון בכונן [2]. נא להכניס אחד כזה וללחוץ על „לנסות שוב”, או ללחוץ על „ביטול” כדי לחזור לכרך הקודם שנבחר." />
+    <String Id="Error1804" Value="אין אמצעי אחסון בכונן [2]. נא להכניס אחד וללחוץ על „לנסות שוב” או ללחוץ על „ביטול” כדי לחזור לחלונית העיון ולבחור בכרך אחר." />
+    <String Id="Error1805" Value="התיקייה [2] לא קיימת. נא למלא נתיב לתיקייה קיימת." />
+    <String Id="Error1806" Value="אין לך את ההרשאות המתאימות לקרוא את התיקייה הזאת." />
+    <String Id="Error1807" Value="לא ניתן לקבוע תיקיית יעד תקינה להתקנה." />
+    <String Id="Error1901" Value="שגיאה בניסיון לקרוא ממסד נתוני התקנת המקור: [2]." />
+    <String Id="Error1902" Value="תזמון פעולה להפעלה מחדש: שינוי השם של הקובץ [2] לשם [3]. יש להפעיל מחדש כדי להשלים את הפעולה." />
+    <String Id="Error1903" Value="תזמון פעולה להפעלה מחדש: מחיקת הקובץ [2]. יש להפעיל מחדש כדי להשלים את הפעולה." />
+    <String Id="Error1904" Value="רישום המודול [2] נכשל. HRESULT [3]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1905" Value="ביטול רישום המודול [2] נכשל. HRESULT [3]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1906" Value="אחסון התיקייה [2] במטמון נכשל. שגיאה: [3]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1907" Value="לא ניתן לרשום את הגופן [2]. נא לוודא שיש לך מספיק הרשאות כדי להתקין גופנים, ושהמערכת תומכת בגופן הזה." />
+    <String Id="Error1908" Value="לא ניתן לבטל את רישום הגופן [2]. נא לוודא שיש לך מספיק הרשאות כדי להסיר גופנים." />
+    <String Id="Error1909" Value="לא ניתן ליצור את קיצור הדרך [2]. נא לוודא שתיקיית היעד קיימת ושיש לך גישה אליה." />
+    <String Id="Error1910" Value="לא ניתן להסיר את קיצור הדרך [2]. נא לוודא שקובץ קיצור הדרך קיים ושיש לך גישה אליו." />
+    <String Id="Error1911" Value="לא ניתן לרשום ספריית סוג לקובץ [2]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1912" Value="לא ניתן לבטל רישום ספריית סוג לקובץ [2]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1913" Value="לא ניתן לעדכן את קובץ ה־ini [2][3]. נא לוודא שהקובץ קיים ושיש לך גישה אליו." />
+    <String Id="Error1914" Value="לא ניתן לתזמן החלפת הקובץ [2] בקובץ [3] עם ההפעלה מחדש. נא לוודא שיש לך הרשאה לכתוב לקובץ [3]." />
+    <String Id="Error1915" Value="שגיאה בהסרת מנהל למנהלי התקנים של ODBC, שגיאת ODBC [2]: [3]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1916" Value="שגיאה בהתקנת מנהל למנהלי התקנים של ODBC, שגיאת ODBC [2]: [3]. נא ליצור קשר עם גוף התמיכה שלך." />
+    <String Id="Error1917" Value="שגיאה בהסרת מנהל התקן ODBC: [4], שגיאת ODBC [2]: [3]. נא לוודא שיש לך הרשאות מספיקות להסרת מנהלי התקנים של ODBC." />
+    <String Id="Error1918" Value="שגיאה בהתקנת מנהל התקן ODBC: [4], שגיאת ODBC [2]: [3]. נא לוודא שהקובץ [4] קיים ושיש לך גישה אליו." />
+    <String Id="Error1919" Value="שגיאה בגדרת מקור נתוני ODBC: [4], שגיאת ODBC [2]: [3]. נא לוודא שהקובץ [4] קיים ושיש לך גישה אליו." />
+    <String Id="Error1920" Value="הפעלת השירות ‚[2]’ ([3]) נכשלה. נא לוודא שיש לך מספיק הרשאות להפעיל שירותי מערכת." />
+    <String Id="Error1921" Value="לא ניתן לעצור את השירות ‚[2]’ ([3]). נא לוודא שיש לך מספיק הרשאות לעצור שירותי מערכת." />
+    <String Id="Error1922" Value="לא ניתן למחוק את השירות ‚[2]’ ([3]). נא לוודא שיש לך מספיק הרשאות להסיר שירותי מערכת." />
+    <String Id="Error1923" Value="לא ניתן להתקין את השירות ‚[2]’ ([3]). נא לוודא שיש לך מספיק הרשאות להתקין שירותי מערכת." />
+    <String Id="Error1924" Value="לא ניתן לעדכן את משתנה הסביבה ‚[2]’. נא לוודא שיש לך מספיק הרשאות לשנות משתנים סביבתיים." />
+    <String Id="Error1925" Value="אין לך מספיק הרשאות להשלים את ההתקנה הזאת לכל המשתמשים במכונה. יש להיכנס למערכת עם חשבון ניהול ואז לנסות להתקין מחדש." />
+    <String Id="Error1926" Value="לא ניתן להגדיר אבטחת קובץ לקובץ ‚[3]’. שגיאה: [2]. נא לוודא שיש לך מספיק הרשאות לשנות את הרשאות האבטחה של הקובץ הזה.." />
+    <String Id="Error1927" Value="Component Services/שירותי רכיבים (COM+ 1.0) לא מותקנים במחשב הזה. ההתקנה הזאת דורשת ש־Component Services/שירותי מערכת יהיו מותקנים כדי שתושלם בהצלחה. Component Services זמינים ב־Windows 2000." />
+    <String Id="Error1928" Value="שגיאה ברישום יישום COM+‎. נא ליצור קשר עם גוף התמיכה שלך למידע נוסף." />
+    <String Id="Error1929" Value="שגיאה בביטול רישום COM+‎. נא ליצור קשר עם גוף התמיכה שלך למידע נוסף." />
+    <String Id="Error1930" Value="לא ניתן לשנות את תיאור השירות ‚[2]’ ([3])." />
+    <String Id="Error1931" Value="שירות המתקין של Windows לא יכול לעדכן את קובץ המערכת [2] כיוון שהקובץ מוגן על ידי Windows. יכול להיות שצריך לעדכן את מערכת ההפעלה שלך כדי שהתוכנית הזאת תעבוד כראוי. {{גרסת חבילה: [3], גרסת מערכת הפעלה מוגנת: [4]}}" />
+    <String Id="Error1932" Value="שירות המתקין של Windows לא יכול לעדכן את קובץ ה־Windows המוגן [2]. {{גרסת חבילה: [3], גרסת מערכת הפעלה מוגנת: [4], שגיאת הגנת קובצי מערכת (SFP): [5]}}" />
+    <String Id="Error1933" Value="שירות מתקין Windows לא יכול לעדכן קובץ Windows מוגן אחד או יותר. {{מחרוזת הגנת קובצי מערכת (SFP): [2]. רשימת הקבצים המוגנים:\r\n[3]}}" />
+    <String Id="Error1934" Value="התקנות משתמש מושבתות לפי מדיניות במכונה." />
+    <String Id="Error1935" Value="אירעה שגיאה במהלך התקנת רכיב הרכבה [2]. HRESULT: [3]. {{ממשק הרכבה: [4], פונקציה: [5], שם הרכבה: [6]}}" />
+
+    <!-- Own / special errors -->
+    <String Id="Error25001" Value="יש לסגור את היישום „[2]” כדי להמשיך בהתקנה." />
+
+    <String Id="ProgressTextInstallValidate" Value="ההתקנה נבדקת" />
+    <String Id="ProgressTextInstallFiles" Value="קבצים חדשים מועתקים" />
+    <String Id="ProgressTextInstallFilesTemplate" Value="קובץ: [1],  תיקייה: [9],  גודל: [6]" />
+    <String Id="ProgressTextInstallAdminPackage" Value="קובצי התקנת הרשת מועתקים" />
+    <String Id="ProgressTextInstallAdminPackageTemplate" Value="קובץ: [1], תיקייה: [9], גודל: [6]" />
+    <String Id="ProgressTextFileCost" Value="דרישות הנפח מחושבות" />
+    <String Id="ProgressTextCostInitialize" Value="דרישות הנפח מחושבות" />
+    <String Id="ProgressTextCostFinalize" Value="דרישות הנפח מחושבות" />
+    <String Id="ProgressTextCreateShortcuts" Value="נוצרים קיצורי דרך" />
+    <String Id="ProgressTextCreateShortcutsTemplate" Value="קיצור דרך: [1]" />
+    <String Id="ProgressTextPublishComponents" Value="רכיבים מובחנים מפורסמים" />
+    <String Id="ProgressTextPublishComponentsTemplate" Value="מזהה רכיב: [1], מבחין: [2]" />
+    <String Id="ProgressTextPublishFeatures" Value="יכולות המוצר מפורסמות" />
+    <String Id="ProgressTextPublishFeaturesTemplate" Value="יכולת: [1]" />
+    <String Id="ProgressTextPublishProduct" Value="פרטי המוצר מפורסמים" />
+    <String Id="ProgressTextRegisterClassInfo" Value="שרתי המחלקות נרשמים" />
+    <String Id="ProgressTextRegisterClassInfoTemplate" Value="מזהה מחלקה: [1]" />
+    <String Id="ProgressTextRegisterExtensionInfo" Value="שרתי ההרחבה נרשמים" />
+    <String Id="ProgressTextRegisterExtensionInfoTemplate" Value="סיומת: [1]" />
+    <String Id="ProgressTextRegisterMIMEInfo" Value="פרטי ה־MIME נרשמים" />
+    <String Id="ProgressTextRegisterMIMEInfoTemplate" Value="סוג תוכן MIME: [1], סיומת: [2]" />
+    <String Id="ProgressTextRegisterProgIdInfo" Value="מזהי התוכנית נרשמים" />
+    <String Id="ProgressTextRegisterProgIdInfoTemplate" Value="מזהה תוכנית: [1]" />
+    <String Id="ProgressTextAllocateRegistrySpace" Value="מוקצה מקום ברישום המערכת" />
+    <String Id="ProgressTextAllocateRegistrySpaceTemplate" Value="מקום פנוי: [1]" />
+    <String Id="ProgressTextAppSearch" Value="מתבצע חיפוש אחר יישומים מותקנים" />
+    <String Id="ProgressTextAppSearchTemplate" Value="מאפיין: [1], חתימה: [2]" />
+    <String Id="ProgressTextBindImage" Value="קובצי הפעלה מאוגדים" />
+    <String Id="ProgressTextBindImageTemplate" Value="קובץ: [1]" />
+    <String Id="ProgressTextCCPSearch" Value="מתבצע חיפוש אחר מוצרים מובחנים" />
+    <String Id="ProgressTextCreateFolders" Value="תיקיות מוצרות" />
+    <String Id="ProgressTextCreateFoldersTemplate" Value="תיקייה: [1]" />
+    <String Id="ProgressTextDeleteServices" Value="שירותים נמחקים" />
+    <String Id="ProgressTextDeleteServicesTemplate" Value="שירות: [1]" />
+    <String Id="ProgressTextDuplicateFiles" Value="נוצרים קבצים כפולים" />
+    <String Id="ProgressTextDuplicateFilesTemplate" Value="קובץ: [1],  קובץ: [9],  גודל: [6]" />
+    <String Id="ProgressTextFindRelatedProducts" Value="מתבצע חיפוש אחר יישומים קשורים" />
+    <String Id="ProgressTextFindRelatedProductsTemplate" Value="נמצא יישום: [1]" />
+    <String Id="ProgressTextInstallODBC" Value="רכיבי ODBC מותקנים" />
+    <String Id="ProgressTextInstallServices" Value="שרתים חדשים מותקנים" />
+    <String Id="ProgressTextInstallServicesTemplate" Value="שירות: [2]" />
+    <String Id="ProgressTextLaunchConditions" Value="תנאי הטעינה נבדקים" />
+    <String Id="ProgressTextMigrateFeatureStates" Value="מתבצעת הסבה של מצבי יכולות מיישומים קשורים" />
+    <String Id="ProgressTextMigrateFeatureStatesTemplate" Value="יישום: [1]" />
+    <String Id="ProgressTextMoveFiles" Value="קבצים מועברים" />
+    <String Id="ProgressTextMoveFilesTemplate" Value="קובץ: [1],  תיקייה: [9],  גודל: [6]" />
+    <String Id="ProgressTextPatchFiles" Value="הקבצים עוברים תיקון" />
+    <String Id="ProgressTextPatchFilesTemplate" Value="קובץ: [1],  קובץ: [2],  גודל: [3]" />
+    <String Id="ProgressTextProcessComponents" Value="רישום רכיב מתעדכן" />
+    <String Id="ProgressTextRegisterComPlus" Value="מתבצע רישום ליישומי ורכיבי COM+‎" />
+    <String Id="ProgressTextRegisterComPlusTemplate" Value="מזהה יישום: [1]{{, סוג יישום: [2], משתמשים: [3], שם שרת מרוחק: [4]}}" />
+    <String Id="ProgressTextRegisterFonts" Value="הגופנים נרשמים" />
+    <String Id="ProgressTextRegisterFontsTemplate" Value="גופן: [1]" />
+    <String Id="ProgressTextRegisterProduct" Value="המוצר נרשם" />
+    <String Id="ProgressTextRegisterProductTemplate" Value="[1]" />
+    <String Id="ProgressTextRegisterTypeLibraries" Value="ספריות סוג נרשמות" />
+    <String Id="ProgressTextRegisterTypeLibrariesTemplate" Value="מזהה ספרייה: [1]" />
+    <String Id="ProgressTextRegisterUser" Value="מתבצע רישום משתמש" />
+    <String Id="ProgressTextRegisterUserTemplate" Value="[1]" />
+    <String Id="ProgressTextRemoveDuplicateFiles" Value="מתבצעת הסרה של קבצים כפולים" />
+    <String Id="ProgressTextRemoveDuplicateFilesTemplate" Value="קובץ: [1], תיקייה: [9]" />
+    <String Id="ProgressTextRemoveEnvironmentStrings" Value="מחרוזות הסביבה מתעדכנות" />
+    <String Id="ProgressTextRemoveEnvironmentStringsTemplate" Value="שם: [1], ערך: [2], פעולה [3]" />
+    <String Id="ProgressTextRemoveExistingProducts" Value="מתבצעת הסרה של יישומים" />
+    <String Id="ProgressTextRemoveExistingProductsTemplate" Value="יישום: [1], שורת פקודות: [2]" />
+    <String Id="ProgressTextRemoveFiles" Value="מתבצעת הסרה של קבצים" />
+    <String Id="ProgressTextRemoveFilesTemplate" Value="קובץ: [1], תיקייה: [9]" />
+    <String Id="ProgressTextRemoveFolders" Value="מתבצעת הסרה של תיקיות" />
+    <String Id="ProgressTextRemoveFoldersTemplate" Value="תיקייה: [1]" />
+    <String Id="ProgressTextRemoveIniValues" Value="מתבצעת הסרת רשומות בקובצי INI" />
+    <String Id="ProgressTextRemoveIniValuesTemplate" Value="קובץ: [1],  סעיף: [2],  מפתח: [3], ערך: [4]" />
+    <String Id="ProgressTextRemoveODBC" Value="רכיבי ODBC עוברים הסרה" />
+    <String Id="ProgressTextRemoveRegistryValues" Value="מתבצעת הסרה של ערכי רשומות המערכת" />
+    <String Id="ProgressTextRemoveRegistryValuesTemplate" Value="מפתח: [1], שם: [2]" />
+    <String Id="ProgressTextRemoveShortcuts" Value="מתבצעת הסרה של קיצורי דרך" />
+    <String Id="ProgressTextRemoveShortcutsTemplate" Value="קיצור דרך: [1]" />
+    <String Id="ProgressTextRMCCPSearch" Value="מתבצע חיפוש אחר מוצרים מבחינים" />
+    <String Id="ProgressTextSelfRegModules" Value="המודולים נרשמים" />
+    <String Id="ProgressTextSelfRegModulesTemplate" Value="קובץ: [1], תיקייה: [2]" />
+    <String Id="ProgressTextSelfUnregModules" Value="רישום המודולים נמחק" />
+    <String Id="ProgressTextSelfUnregModulesTemplate" Value="קובץ: [1], תיקייה: [2]" />
+    <String Id="ProgressTextSetODBCFolders" Value="תיקיות ה־ODBC מאותחלות" />
+    <String Id="ProgressTextStartServices" Value="השירותים מופעלים" />
+    <String Id="ProgressTextStartServicesTemplate" Value="שירות: [1]" />
+    <String Id="ProgressTextStopServices" Value="השירותים נעצרים" />
+    <String Id="ProgressTextStopServicesTemplate" Value="שירות: [1]" />
+    <String Id="ProgressTextUnpublishComponents" Value="פרסום הרכיבים המובחנים מבוטל" />
+    <String Id="ProgressTextUnpublishComponentsTemplate" Value="מזהה רכיב: [1], מבחינים: [2]" />
+    <String Id="ProgressTextUnpublishFeatures" Value="פרסום יכולות המוצר מבוטל" />
+    <String Id="ProgressTextUnpublishFeaturesTemplate" Value="יכולת: [1]" />
+    <String Id="ProgressTextUnregisterClassInfo" Value="רישום רשתי מחלקה מבוטל" />
+    <String Id="ProgressTextUnregisterClassInfoTemplate" Value="מזהה מחלקה: [1]" />
+    <String Id="ProgressTextUnregisterComPlus" Value="רישום יישומי ורכיבי COM+‎ מבוטל" />
+    <String Id="ProgressTextUnregisterComPlusTemplate" Value="מזהה יישום: [1]{{, סוג יישום: [2]}}" />
+    <String Id="ProgressTextUnregisterExtensionInfo" Value="רישום שרתי הרחבה מבוטל" />
+    <String Id="ProgressTextUnregisterExtensionInfoTemplate" Value="הרחבה: [1]" />
+    <String Id="ProgressTextUnregisterFonts" Value="רישום הגופנים מבוטל" />
+    <String Id="ProgressTextUnregisterFontsTemplate" Value="גופן: [1]" />
+    <String Id="ProgressTextUnregisterMIMEInfo" Value="רישום פרטי ה־MIME מבוטל" />
+    <String Id="ProgressTextUnregisterMIMEInfoTemplate" Value="סוג תוכן MIME: [1], סיומת: [2]" />
+    <String Id="ProgressTextUnregisterProgIdInfo" Value="רישום מזהי התוכנית מבוטל" />
+    <String Id="ProgressTextUnregisterProgIdInfoTemplate" Value="מזהה תוכנית: [1]" />
+    <String Id="ProgressTextUnregisterTypeLibraries" Value="רישום ספריות הסוג מבוטל" />
+    <String Id="ProgressTextUnregisterTypeLibrariesTemplate" Value="מזהה ספרייה: [1]" />
+    <String Id="ProgressTextWriteEnvironmentStrings" Value="המחרוזות הסביבתיות מתעדכנות" />
+    <String Id="ProgressTextWriteEnvironmentStringsTemplate" Value="שם: [1], ערך: [2], פעולה [3]" />
+    <String Id="ProgressTextWriteIniValues" Value="ערכי קובצי ה־INI נכתבים" />
+    <String Id="ProgressTextWriteIniValuesTemplate" Value="קובץ: [1],  סעיף: [2],  מפתח: [3], ערך: [4]" />
+    <String Id="ProgressTextWriteRegistryValues" Value="ערכי רשומות המערכת נכתבים" />
+    <String Id="ProgressTextWriteRegistryValuesTemplate" Value="מפתח: [1], שם: [2], ערך: [3]" />
+    <String Id="ProgressTextAdvertise" Value="היישום מפורסם" />
+    <String Id="ProgressTextGenerateScript" Value="נוצרות פעולות סקריפט למשימה:" />
+    <String Id="ProgressTextGenerateScriptTemplate" Value="[1]" />
+    <String Id="ProgressTextInstallSFPCatalogFile" Value="קטלוג המערכת מותקן" />
+    <String Id="ProgressTextInstallSFPCatalogFileTemplate" Value="קובץ: [1],  תלויות: [2]" />
+    <String Id="ProgressTextMsiPublishAssemblies" Value="פרטי הרכבה מפורסמים" />
+    <String Id="ProgressTextMsiPublishAssembliesTemplate" Value="הקשר יישום:[1], שם הרכבה:[2]" />
+    <String Id="ProgressTextMsiUnpublishAssemblies" Value="פרסום פרטי הרכבה מבוטל" />
+    <String Id="ProgressTextMsiUnpublishAssembliesTemplate" Value="הקשר יישום:[1], שם הרכבה:[2]" />
+    <String Id="ProgressTextRollback" Value="פעולת הסגה לאחור:" />
+    <String Id="ProgressTextRollbackTemplate" Value="[1]" />
+    <String Id="ProgressTextRollbackCleanup" Value="מתבצעת הסרה של קובצי הגיבוי" />
+    <String Id="ProgressTextRollbackCleanupTemplate" Value="קובץ: [1]" />
+    <String Id="ProgressTextUnmoveFiles" Value="מתבצעת הסרה של קבצים שהועברו" />
+    <String Id="ProgressTextUnmoveFilesTemplate" Value="קובץ: [1], תיקייה: [9]" />
+    <String Id="ProgressTextUnpublishProduct" Value="פרסום פרטי המוצר מבוטל" />
+
+    <String Id="ProgressTextCheckTargetDir" Value="תיקיית היעד נבדקת…" />
+
+    <String Id="ProgressTextSupDrvInt" Value="מנהל התקן לתמיכה מותקן…" />
+    <String Id="ProgressTextSupDrvStart" Value="מנהל התקן לתמיכה מופעל…" />
+    <String Id="ProgressTextSupDrvUninst" Value="מתבצעת הסרה של מנהל התקן לתמיכה…" />
+
+    <String Id="ProgressTextUSBDevDrvInst" Value="מנהל התקן USB מותקן…" />
+    <String Id="ProgressTextUSBDevDrvUninst" Value="מתבצעת הסרת מנהל התקן USB…" />
+    <String Id="ProgressTextUSBMonDrvInst" Value="מנהל התקן מעקב USB מותקן…" />
+    <String Id="ProgressTextUSBMonDrvStart" Value="מנהל התקן מעקב USB מופעל…" />
+    <String Id="ProgressTextUSBMonDrvUninst" Value="מתבצעת הסרת מנהל התקן מעקב USB…" />
+
+    <String Id="ProgressTextNetAdp6Create" Value="נוצר מתאם רשת" />
+    <String Id="ProgressTextNetAdp6Remove" Value="מתבצעת הסרת מתאם רשת…" />
+    <String Id="ProgressTextNetAdp6Update" Value="מתאם רשת מתעדכן…" />
+    <String Id="ProgressTextNetAdp6Uninst" Value="מתבצעת הסרת ההתקנה של מתאם רשת…" />
+
+    <String Id="ProgressTextNetLwfInst" Value="מסנן רשת מותקן…" />
+    <String Id="ProgressTextNetLwfRollbackInst" Value="התקנה של מסנן הרשת מוחזרת למצב הקודם…" />
+    <String Id="ProgressTextNetLwfUninst" Value="מתבצעת הסרת מסנן הרשת…" />
+    <String Id="ProgressTextNetLwfRollbackUninst" Value="ההסרה של מסנן הרשת מוחזרת למצב הקודם…" />
+
+    <String Id="UITextbytes" Value="בתים" />
+    <String Id="UITextGB" Value="ג״ב" />
+    <String Id="UITextKB" Value="ק״ב" />
+    <String Id="UITextMB" Value="מ״ב" />
+    <String Id="UITextMenuAbsent" Value="לא להתקין" />
+    <String Id="UITextMenuAdvertise" Value="היכולת תותקן לפי הצורך" />
+    <String Id="UITextMenuAllCD" Value="כל היכולת תותקן כדי לרוץ מתקליטור" />
+    <String Id="UITextMenuAllLocal" Value="כל היכולת תותקן בכונן קשיח מקומי" />
+    <String Id="UITextMenuAllNetwork" Value="כל התכונה תותקן לרוץ מהרשת" />
+    <String Id="UITextMenuCD" Value="יותקן לרוץ מתקליטור" />
+    <String Id="UITextMenuLocal" Value="יותקן בכונן קשיח מקומי" />
+    <String Id="UITextMenuNetwork" Value="יותקן לרוץ מהרשת" />
+    <String Id="UITextScriptInProgress" Value="הפרטים הנחוצים נאספים…" />
+    <String Id="UITextSelAbsentAbsent" Value="היכולת הזאת תישאר לא מותקנת" />
+    <String Id="UITextSelAbsentAdvertise" Value="היכולת הזאת תוגדר כך שתותקן בעת הצורך" />
+    <String Id="UITextSelAbsentCD" Value="היכולת הזאת תותקן לרוץ מתקליטור" />
+    <String Id="UITextSelAbsentLocal" Value="היכולת הזאת תותקן בכונן הקשיח המקומי" />
+    <String Id="UITextSelAbsentNetwork" Value="היכולת הזאת תותקן כך שתרוץ מהרשת" />
+    <String Id="UITextSelAdvertiseAbsent" Value="היכולת הזאת לא תהיה זמינה" />
+    <String Id="UITextSelAdvertiseAdvertise" Value="תותקן לפי הצורך" />
+    <String Id="UITextSelAdvertiseCD" Value="היכולת הזאת תהיה זמינה לרוץ מתקליטור" />
+    <String Id="UITextSelAdvertiseLocal" Value="היכולת הזאת תותקן בכונן הקשיח המקומי שלך" />
+    <String Id="UITextSelAdvertiseNetwork" Value="היכולת הזאת תהיה זמינה לרוץ מהרשת" />
+    <String Id="UITextSelCDAbsent" Value="היכולת הזאת תוסר לחלוטין, לא ניתן יהיה להריץ אותה מתקליטור" />
+    <String Id="UITextSelCDAdvertise" Value="היכולת הזאת תשתנה ממצב הרצה מתקליטור להתקנה בכונן הקשיח המקומי" />
+    <String Id="UITextSelCDCD" Value="היכולת הזאת תישאר לרוץ מתקליטור" />
+    <String Id="UITextSelCDLocal" Value="היכולת הזאת תשתנה ממצב הרצה מתקליטור להגדרה להתקנה בעת הצורך" />
+    <String Id="UITextSelChildCostNeg" Value="היכולת הזאת מפנה עד [1] בכונן הקשיח שלך." />
+    <String Id="UITextSelChildCostPos" Value="היכולת הזאת דורשת [1] מהכונן הקשיח שלך." />
+    <String Id="UITextSelCostPending" Value="עלות היכולת הזאת מחושבת…" />
+    <String Id="UITextSelLocalAbsent" Value="היכולת הזאת תוסר לחלוטין" />
+    <String Id="UITextSelLocalAdvertise" Value="היכולת האת תוסר מהכונן הקשיח המקומי שלך, אך תוגדר למצב התקנה בעת הצורך" />
+    <String Id="UITextSelLocalCD" Value="היכולת הזאת תוסר מהכונן הקשיח המקומי שלך, אך עדיין תהיה זמינה לרוץ מתקליטור" />
+    <String Id="UITextSelLocalLocal" Value="היכולת הזאת תישאר בכונן הקשיח שלך" />
+    <String Id="UITextSelLocalNetwork" Value="היכולת הזאת תוסר מהכונן הקשיח המקומי שלך, אך עדיין תהיה זמינה לרוץ מהרשת" />
+    <String Id="UITextSelNetworkAbsent" Value="היכולת הזאת הוסרה לחלוטין, לא תהיה אפשרות להריץ אותה מהרשת" />
+    <String Id="UITextSelNetworkAdvertise" Value="היכולת תשתנה ממצב ריצה מהרשת להגדרה להתקנה בעת הצורך" />
+    <String Id="UITextSelNetworkLocal" Value="היכולת תשתנה ממצב הרצה מהרשת להתקנה בכונן הקשיח המקומי" />
+    <String Id="UITextSelNetworkNetwork" Value="היכולת הזאת תמשיך לרוץ מהרשת" />
+    <String Id="UITextSelParentCostNegNeg" Value="היכולת הזאת מפנה [1] מהכונן הקשיח שלך. נבחרו בה [2] מתוך [3] תת־יכולות. תת־היכולות האלה מפנות [4] מהכונן הקשיח שלך." />
+    <String Id="UITextSelParentCostNegPos" Value="היכולת הזאת מפנה [1] מהכונן הקשיח שלך. נבחרו בה [2] מתוך [3] תת־יכולות. תת־היכולות האלה דורשות [4] מהכונן הקשיח שלך." />
+    <String Id="UITextSelParentCostPosNeg" Value="היכולת הזאת דורשת [1] מהכונן הקשיח שלך. נבחרו בה [2] מתוך [3] תת־יכולות. תת־היכולות האלה מפנות [4] מהכונן הקשיח שלך." />
+    <String Id="UITextSelParentCostPosPos" Value="היכולת הזאת דורשת [1] מהכונן הקשיח שלך. נבחרו בה [2] מתוך [3] תת־יכולות. תת־היכולות האלה דורשות [4] מהכונן הקשיח שלך." />
+    <String Id="UITextTimeRemaining" Value="זמן שנותר: {[1] דקות }{[2] שניות}" />
+    <String Id="UITextVolumeCostAvailable" Value="זמין" />
+    <String Id="UITextVolumeCostDifference" Value="הבדל" />
+    <String Id="UITextVolumeCostRequired" Value="חובה" />
+    <String Id="UITextVolumeCostSize" Value="גודל כונן" />
+    <String Id="UITextVolumeCostVolume" Value="נפח" />
+
+</WixLocalization>

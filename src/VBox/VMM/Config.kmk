@@ -1,0 +1,219 @@
+# $Id: Config.kmk 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# kBuild Configuration file for the VMM.
+#
+
+#
+# Copyright (C) 2006-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+VBOX_VMM_CONFIG_KMK_INCLUDED = 1
+
+# Include the top-level configure file.
+ifndef VBOX_ROOT_CONFIG_KMK_INCLUDED
+ include $(PATH_ROOT)/Config.kmk
+endif
+
+#
+# Globals
+#
+
+VBOX_PATH_SRC_VMM := $(PATH_ROOT)/src/VBox/VMM
+
+## DEFS variable that is picked up by all three VMM targets (R0, R3, RC).
+# Can be prepended to by setting it in LocalConfig.kmk
+VMM_COMMON_DEFS := USING_VMM_COMMON_DEFS
+ifdef VBOX_WITH_R0_MODULES
+ VMM_COMMON_DEFS += VBOX_WITH_R0_MODULES
+ ifdef VBOX_WITH_MINIMAL_R0
+  VMM_COMMON_DEFS += VBOX_WITH_MINIMAL_R0 VBOX_WITH_ONLY_PGM_NEM_MODE
+ endif
+else
+ VMM_COMMON_DEFS += VBOX_WITH_ONLY_PGM_NEM_MODE
+endif
+ifdef VBOX_WITH_HWVIRT
+ VMM_COMMON_DEFS += VBOX_WITH_HWVIRT
+endif
+ifdef VBOX_WITH_NESTED_HWVIRT_SVM
+ VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_SVM
+endif
+ifdef VBOX_WITH_DEBUGGER
+ VMM_COMMON_DEFS += VBOX_WITH_DEBUGGER
+endif
+
+# IEM config:
+ifndef IEM_WITHOUT_3DNOW
+ VMM_COMMON_DEFS += IEM_WITH_3DNOW
+else
+ VMM_COMMON_DEFS += IEM_WITHOUT_3DNOW
+endif
+ifndef IEM_WITHOUT_THREE_0F_38
+ VMM_COMMON_DEFS += IEM_WITH_THREE_0F_38
+else
+ VMM_COMMON_DEFS += IEM_WITHOUT_THREE_0F_38
+endif
+ifndef IEM_WITHOUT_THREE_0F_3A
+ VMM_COMMON_DEFS += IEM_WITH_THREE_0F_3A
+else
+ VMM_COMMON_DEFS += IEM_WITHOUT_THREE_0F_3A
+endif
+ifndef IEM_WITHOUT_VEX
+ VMM_COMMON_DEFS += IEM_WITH_VEX
+else
+ VMM_COMMON_DEFS += IEM_WITHOUT_VEX
+endif
+ifdef VBOX_WITH_IEM_RECOMPILER # Selectely removing hwvirt doesn't work yet with the recompiler. Python code doesn't check #ifdefs.
+ VMM_COMMON_DEFS += VBOX_WITH_IEM_RECOMPILER IEM_WITH_CODE_TLB IEM_WITH_DATA_TLB
+ ifdef VBOX_WITH_IEM_NATIVE_RECOMPILER
+  VMM_COMMON_DEFS += VBOX_WITH_IEM_NATIVE_RECOMPILER
+ endif
+ VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_VMX
+ #ifdef VBOX_WITH_NESTED_HWVIRT_VMX_EPT # Busted with TLB enabled.
+ # VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_VMX_EPT
+ #endif
+ ifdef VBOX_WITH_NESTED_HWVIRT_ONLY_IN_IEM
+  VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_ONLY_IN_IEM
+ endif
+else ifdef VBOX_WITH_IEM_TLB ## @todo VMX code doesn't compile with TLBs enabled.
+ VMM_COMMON_DEFS  += IEM_WITH_CODE_TLB IEM_WITH_DATA_TLB
+else
+ ifdef VBOX_WITH_NESTED_HWVIRT_VMX
+  VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_VMX
+ endif
+ ifdef VBOX_WITH_NESTED_HWVIRT_VMX_EPT
+  VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_VMX_EPT
+ endif
+ ifdef VBOX_WITH_NESTED_HWVIRT_ONLY_IN_IEM
+  VMM_COMMON_DEFS += VBOX_WITH_NESTED_HWVIRT_ONLY_IN_IEM
+ endif
+endif
+ifdef IEM_WITHOUT_ASSEMBLY
+ VMM_COMMON_DEFS += IEM_WITHOUT_ASSEMBLY
+endif
+
+# part of global DEFS
+ifdef VBOX_WITH_MULTI_CORE
+ VMM_COMMON_DEFS += VBOX_WITH_MULTI_CORE
+endif
+ifdef VBOX_WITH_R0_LOGGING
+ VMM_COMMON_DEFS += VBOX_WITH_R0_LOGGING
+endif
+ifdef VBOX_WITH_PCI_PASSTHROUGH
+ VMM_COMMON_DEFS += VBOX_WITH_PCI_PASSTHROUGH
+endif
+ifdef VBOX_WITH_DTRACE_RC
+ VMM_COMMON_DEFS += VBOX_WITH_DTRACE_RC
+endif
+ifdef VBOX_WITH_64ON32_CMOS_DEBUG
+ VMM_COMMON_DEFS += VBOX_WITH_64ON32_CMOS_DEBUG
+endif
+ifdef VBOXSTRICTRC_STRICT_ENABLED
+ VMM_COMMON_DEFS += VBOXSTRICTRC_STRICT_ENABLED
+endif
+if defined(VBOX_WITH_NATIVE_NEM) || !defined(VBOX_WITHOUT_PGM_NEM_MODE)
+ VMM_COMMON_DEFS += VBOX_WITH_PGM_NEM_MODE
+endif
+ifdef VBOX_WITH_NATIVE_NEM
+ if1of ($(KBUILD_TARGET).$(KBUILD_TARGET_ARCH), darwin.amd64 linux.amd64 win.amd64)
+  VMM_COMMON_DEFS += VBOX_WITH_NATIVE_NEM VBOX_WITH_NEM_R0
+ endif
+endif
+if1of ($(KBUILD_TARGET), freebsd linux solaris) # Hosts that implements SUPR0HCPhysToVirt.
+ VMM_COMMON_DEFS += VBOX_WITH_LINEAR_HOST_PHYS_MEM
+endif
+
+
+# VMM_COMMON_DEFS += VBOX_WITH_NS_ACCOUNTING_STATS
+
+
+#
+# Generate macro template for IEM instruction statistics.
+#
+# @param 1     The target name.
+# @param 2     The dir to put the header in.
+#
+define def_VBoxGenIEMInstructionStatisticsTmpl_Header
+ $(1)_INTERMEDIATES += $(2)/IEMInstructionStatisticsTmpl.h
+ $(1)_CLEAN        += \
+ 	$(2)/IEMInstructionStatisticsTmpl.h.ts \
+ 	$(2)/IEMInstructionStatisticsTmpl.h
+ $$(call KB_FN_AUTO_CMD_DEPS,$(2)/IEMInstructionStatisticsTmpl.h.ts)
+ $(2)/IEMInstructionStatisticsTmpl.h.ts \
+ +| $(2)/IEMInstructionStatisticsTmpl.h: \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstCommon-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstOneByte-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstTwoByte0f-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstThree0f38-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstThree0f3a-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstVexMap1-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstVexMap2-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInstVexMap3-x86.cpp.h \
+ 		$$(VBOX_PATH_SRC_VMM)/VMMAll/target-x86/IEMAllInst3DNow-x86.cpp.h
+	$$(QUIET)$(call MSG_GENERATE,$(1),$$@,VMMAll/IEMAllInst*.cpp.h)
+	$$(QUIET)$$(RM) -f -- "$$@.tmp" "$$@.tmp" "$$@.sorted"
+	$$(QUIET)$$(MKDIR) -p -- "$$(dir $$@)"
+	$$(call KB_FN_AUTO_CMD_DEPS_COMMANDS)
+	$$(QUIET)$$(SED) \
+		-e '/IEMOP_MNEMONIC\(\|[01234]\|[01234]EX\)(/!d' \
+		-e '/^ *# *define  *IEMOP_MNEMONIC/d' \
+		-e ':look-for-end-of-invocation' \
+		-e '/)/bend-of-invocation' \
+		-e 'N' \
+		-e 'blook-for-end-of-invocation' \
+		-e ':end-of-invocation' \
+		-e 's/\n/ /g' \
+		-e 's/  */ /g' \
+		-e 's/^.*IEMOP_MNEMONIC\(\|[01234]\|[01234]EX\)(/IEM_DO_INSTR_STAT\1(/' \
+		-e 's/;.*$$(DOLLAR)//' \
+		--output "$$@.tmp" $$(filter %.cpp.h,$$^)
+ # Windows sort does some kind of seeking. So, we must use a temporary file and kmk_cat to define and undefine our macros.
+	$$(QUIET)$$(REDIRECT) -wto "$$@.sorted" -- sort "$$@.tmp"
+	$$(QUIET)$$(APPEND) -nt "$$@" \
+		'/* Warning autogenerated by VMM/Makefile.kmk. */ ' \
+		'#define IEM_DO_INSTR_STAT0(f,u,l,fd,fi)                   IEM_DO_INSTR_STAT(l,  #l)' \
+		'#define IEM_DO_INSTR_STAT1(f,u,l,o1,fd,fi)                IEM_DO_INSTR_STAT(l ## _ ## o1,                                   #l " " #o1)' \
+		'#define IEM_DO_INSTR_STAT2(f,u,l,o1,o2,fd,fi)             IEM_DO_INSTR_STAT(l ## _ ## o1 ## _ ## o2,                        #l " " #o1 "," #o2)' \
+		'#define IEM_DO_INSTR_STAT3(f,u,l,o1,o2,o3,fd,fi)          IEM_DO_INSTR_STAT(l ## _ ## o1 ## _ ## o2 ## _ ## o3,             #l " " #o1 "," #o2 "," #o3)' \
+		'#define IEM_DO_INSTR_STAT4(f,u,l,o1,o2,o3,o4,fd,fi)       IEM_DO_INSTR_STAT(l ## _ ## o1 ## _ ## o2 ## _ ## o3 ## _ ## o4,  #l " " #o1 "," #o2 "," #o3 "," #o4)' \
+		'#define IEM_DO_INSTR_STAT0EX(s,m,f,u,l,fd,fi)             IEM_DO_INSTR_STAT(s,m)' \
+		'#define IEM_DO_INSTR_STAT1EX(s,m,f,u,l,o1,fd,fi)          IEM_DO_INSTR_STAT(s,m)' \
+		'#define IEM_DO_INSTR_STAT2EX(s,m,f,u,l,o1,o2,fd,fi)       IEM_DO_INSTR_STAT(s,m)' \
+		'#define IEM_DO_INSTR_STAT3EX(s,m,f,u,l,o1,o2,o3,fd,fi)    IEM_DO_INSTR_STAT(s,m)' \
+		'#define IEM_DO_INSTR_STAT4EX(s,m,f,u,l,o1,o2,o3,o4,fd,fi) IEM_DO_INSTR_STAT(s,m)' \
+               ''
+	$$(QUIET)$$(REDIRECT) -ato "$$@" -- $$(CAT_EXT) "$$@.sorted"
+	$$(QUIET)$$(APPEND) -n "$$@" \
+		'' \
+		'#undef IEM_DO_INSTR_STAT0' \
+		'#undef IEM_DO_INSTR_STAT1' \
+		'#undef IEM_DO_INSTR_STAT2' \
+		'#undef IEM_DO_INSTR_STAT3' \
+		'#undef IEM_DO_INSTR_STAT4' \
+		'#undef IEM_DO_INSTR_STAT0EX' \
+		'#undef IEM_DO_INSTR_STAT1EX' \
+		'#undef IEM_DO_INSTR_STAT2EX' \
+		'#undef IEM_DO_INSTR_STAT3EX' \
+		'#undef IEM_DO_INSTR_STAT4EX' \
+		''
+	$$(QUIET)$$(RM) -f -- "$$@.tmp" "$$@.sorted"
+	$$(QUIET)$$(CP) -v -f --changed -- "$$@" "$$(patsubst %.ts,%,$$@)"
+
+endef

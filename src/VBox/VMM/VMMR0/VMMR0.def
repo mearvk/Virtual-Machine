@@ -1,0 +1,118 @@
+; $Id: VMMR0.def 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+;; @file
+; VMM Ring 0 DLL - Definition file.
+
+;
+; Copyright (C) 2006-2025 Oracle and/or its affiliates.
+;
+; This file is part of VirtualBox base platform packages, as
+; available from https://www.virtualbox.org.
+;
+; This program is free software; you can redistribute it and/or
+; modify it under the terms of the GNU General Public License
+; as published by the Free Software Foundation, in version 3 of the
+; License.
+;
+; This program is distributed in the hope that it will be useful, but
+; WITHOUT ANY WARRANTY; without even the implied warranty of
+; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+; General Public License for more details.
+;
+; You should have received a copy of the GNU General Public License
+; along with this program; if not, see <https://www.gnu.org/licenses>.
+;
+; SPDX-License-Identifier: GPL-3.0-only
+;
+
+LIBRARY VMMR0.r0
+EXPORTS
+    ; data
+
+    ; code
+    GIMGetMmio2Regions                      ; not-arm64
+    PDMQueueAlloc                           ; not-arm64
+    PDMQueueInsert                          ; not-arm64
+    PGMHandlerPhysicalPageTempOff           ; not-arm64
+    PGMShwMakePageWritable                  ; not-arm64
+    PGMPhysSimpleWriteGCPhys                ; not-arm64
+    PGMPhysSimpleReadGCPtr                  ; not-arm64
+    PGMPhysSimpleWriteGCPtr                 ; not-arm64
+    PGMPhysReadGCPtr                        ; not-arm64
+    PGMPhysWriteGCPtr                       ; not-arm64
+    PGMPhysSimpleDirtyWriteGCPtr            ; not-arm64
+    PDMR0DeviceRegisterModule               ; not-arm64
+    PDMR0DeviceDeregisterModule             ; not-arm64
+    IOMMmioResetRegion                      ; not-arm64
+    IOMMmioMapMmio2Page                     ; not-arm64
+    RTLogDefaultInstance
+    RTLogDefaultInstanceEx
+    RTLogGetDefaultInstanceEx
+    RTLogRelGetDefaultInstance
+    RTLogRelGetDefaultInstanceEx
+    RTLogLogger
+    RTLogLoggerEx
+    RTLogLoggerExV
+    RTStrPrintf
+    RTTimeMilliTS
+    RTTraceBufAddMsgF
+    RTTraceBufAddPos
+    RTTraceBufAddPosMsgF
+    TMTimerFromMilli                        ; not-arm64
+    TMTimerFromMicro                        ; not-arm64
+    TMTimerFromNano                         ; not-arm64
+    TMTimerGet                              ; not-arm64
+    TMTimerGetFreq                          ; not-arm64
+    TMTimerIsActive                         ; not-arm64
+    TMTimerIsLockOwner                      ; not-arm64
+    TMTimerLock                             ; not-arm64
+    TMTimerSet                              ; not-arm64
+    TMTimerSetRelative                      ; not-arm64
+    TMTimerSetMillies                       ; not-arm64
+    TMTimerSetMicro                         ; not-arm64
+    TMTimerSetNano                          ; not-arm64
+    TMTimerSetFrequencyHint                 ; not-arm64
+    TMTimerStop                             ; not-arm64
+    TMTimerUnlock                           ; not-arm64
+    VMMGetSvnRev                            ; not-arm64
+
+    ; Internal Networking
+    IntNetR0Open
+    IntNetR0IfClose
+    IntNetR0IfGetBufferPtrs
+    IntNetR0IfSetPromiscuousMode
+    IntNetR0IfSetMacAddress
+    IntNetR0IfSetActive
+    IntNetR0IfSend
+    IntNetR0IfWait
+
+    ; runtime
+    RTAssertMsg1Weak
+    RTAssertMsg2Weak
+    RTAssertShouldPanic
+    RTCrc32                                 ; not-arm64
+    RTOnceSlow
+    RTTimeNanoTSLegacySyncInvarNoDelta      ; not-arm64
+    RTTimeNanoTSLegacySyncInvarWithDelta    ; not-arm64
+    RTTimeNanoTSLegacyAsync                 ; not-arm64
+    RTTimeNanoTSLFenceSyncInvarNoDelta      ; not-arm64
+    RTTimeNanoTSLFenceSyncInvarWithDelta    ; not-arm64
+    RTTimeNanoTSLFenceAsync                 ; not-arm64
+    RTTimeSystemNanoTS
+    RTTimeNanoTS
+    ASMMultU64ByU32DivByU32                 ; not-arm64
+    ASMAtomicXchgU8                         ; not-arm64
+    ASMAtomicXchgU16                        ; not-arm64
+    ASMBitFirstSet                          ; not-arm64
+    ASMNopPause                             ; not-arm64
+    nocrt_memchr
+    nocrt_memcmp
+    nocrt_memcpy
+    memcpy=nocrt_memcpy
+    nocrt_memmove
+    nocrt_memset
+    memset=nocrt_memset
+    nocrt_strcpy
+    nocrt_strcmp
+    nocrt_strchr
+    nocrt_strlen
+

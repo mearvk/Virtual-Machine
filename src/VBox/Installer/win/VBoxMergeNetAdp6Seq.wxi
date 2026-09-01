@@ -1,0 +1,93 @@
+﻿<!--
+    VirtualBox Windows Installation Script (WiX)
+-->
+<!--
+    Copyright (C) 2006-2025 Oracle and/or its affiliates.
+
+    This file is part of VirtualBox base platform packages, as
+    available from https://www.virtualbox.org.
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation, in version 3 of the
+    License.
+
+    This program is distributed in the hope that it will be useful, but
+    WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <https://www.gnu.org/licenses>.
+
+    SPDX-License-Identifier: GPL-3.0-only
+-->
+
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+
+<?if $(env.VBOX_WITH_NETFLT) = "yes" ?>
+
+    <!--
+      Initial (first) installation.
+      -->
+
+    <!-- Create host-only interfaces on first-time install -->
+    <Custom Action="ca_CreateHostOnlyInterfaceNetAdpArgs" Before="ca_CreateHostOnlyInterfaceNetAdp"
+            Condition="(NOT Installed) AND ($cp_NetAdp6Driver=3)" />
+
+    <Custom Action="ca_CreateHostOnlyInterfaceNetAdp" Before="InstallFinalize"
+            Condition="(NOT Installed) AND ($cp_NetAdp6Driver=3)" />
+
+    <!--
+      Update (from a former Version of VirtualBox).
+      -->
+
+    <!-- Merge modules need to be independent from other modules, so this module can't use any action from other modules. -->
+    <?if $(env.VBOX_WITH_MSM_INSTALL) = "yes" ?>
+        <!-- Stop the host-only interfaces on update only. Driver still has to be
+             uninstalled, and the creation of interfaces in the new installer will
+             do the actual upgrading, preserving the interfaces. -->
+        <Custom Action="ca_StopHostOnlyInterfacesNetAdp" Before="InstallInitialize"
+                Condition="(UPGRADINGPRODUCTCODE) AND (REMOVE=&quot;ALL&quot;)" />
+
+        <!-- Uninstall the driver only on package upgrade, as for uninstall it is
+             included in ca_RemoveHostOnlyInterfaces.
+             @todo r=klaus Clean up this inconsistency by changing what the
+             install helper DLL does. It's very surprising behavior and needs
+             digging through a lot of code to understand the where and why. -->
+        <Custom Action="ca_UninstallNetAdpArgs" Before="ca_UninstallNetAdp" />
+
+        <!-- Needs to be uninstalled after it has been stopped. -->
+        <Custom Action="ca_UninstallNetAdp" After="ca_StopHostOnlyInterfacesNetAdp" />
+    <?else?>
+        <!-- Stop the host-only interfaces on update only. Driver still has to be
+             uninstalled, and the creation of interfaces in the new installer will
+             do the actual upgrading, preserving the interfaces. -->
+        <Custom Action="ca_StopHostOnlyInterfacesNetAdp" Before="ca_UninstallNetAdp" />
+
+        <!-- Uninstall the driver only on package upgrade, as for uninstall it is
+             included in ca_RemoveHostOnlyInterfaces.
+             @todo r=klaus Clean up this inconsistency by changing what the
+             install helper DLL does. It's very surprising behavior and needs
+             digging through a lot of code to understand the where and why. -->
+        <Custom Action="ca_UninstallNetAdpArgs" Before="ca_UninstallNetAdp" />
+
+        <!-- Needs to be uninstalled before VBoxSUP gets removed. -->
+        <Custom Action="ca_UninstallNetAdp" Before="InstallFiles" />
+    <?endif?>
+
+    <!--
+      Uninstallation
+      -->
+
+    <!-- Remove the host-only interfaces on uninstall only. Includes
+         VBoxNetAdp6 driver uninstall.
+         @todo r=klaus Clean up this inconsistency by changing what the
+         install helper DLL does. It's very surprising behavior and needs
+         digging through a lot of code to understand the where and why. -->
+    <!-- Needs to be uninstalled before VBoxSUP gets removed. -->
+    <Custom Action="ca_RemoveHostOnlyInterfacesNetAdp" Before="InstallFinalize"
+            Condition="REMOVE=&quot;ALL&quot;" />
+<?endif?>
+
+</Include>

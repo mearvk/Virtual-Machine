@@ -1,0 +1,14 @@
+_Debian_sid      = DEBIAN_14_0
+_Debian_trixie   = DEBIAN_13_0
+_Debian_bookworm = DEBIAN_12_0
+_Debian_bullseye = DEBIAN_11_0
+_Debian_buster   = DEBIAN_10_0
+_Ubuntu_resolute = UBUNTU_26_04
+_Ubuntu_questing = UBUNTU_25_10
+_Ubuntu_plucky   = UBUNTU_25_04
+_Ubuntu_oracular = UBUNTU_24_10
+_Ubuntu_noble    = UBUNTU_24_04
+_Ubuntu_jammy    = UBUNTU_22_04
+_Ubuntu_focal    = UBUNTU_20_04
+_Ubuntu_eoan     = UBUNTU_19_10
+_Ubuntu_bionic   = UBUNTU_18_04

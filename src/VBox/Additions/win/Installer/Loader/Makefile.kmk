@@ -1,0 +1,120 @@
+# $Id: Makefile.kmk 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# Sub-Makefile for the Guest Additions loader.
+#
+
+#
+# Copyright (C) 2008-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../../../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+#
+# On the final ISO this'll bit an x86 binary.
+#
+# However, to avoid building RuntimeGuestR3-x86 on arm64 when we won't use the
+# result anyway, we simplify by only building the x86 variant on amd64 and x86.
+# When packing we'll pick one of those, rather than the arm64 variant.
+#
+PROGRAMS += VBoxWindowsAdditions
+VBoxWindowsAdditions_TEMPLATE = VBoxGuestR3Exe
+if1of ($(KBUILD_TARGET_ARCH), x86 amd64)
+ VBoxWindowsAdditions_BLD_TRG_ARCH = x86
+else
+ VBoxWindowsAdditions_BLD_TRG_ARCH = $(KBUILD_TARGET_ARCH)
+endif
+VBoxWindowsAdditions_DEFS    = _WIN32_WINNT=0x0400
+VBoxWindowsAdditions_INCS    = ../../include
+VBoxWindowsAdditions_SOURCES = \
+	VBoxWindowsAdditions.cpp \
+	VBoxWindowsAdditions.rc
+ifdef VBOX_WITH_NOCRT_STATIC
+ VBoxWindowsAdditions_LDFLAGS = /SubSystem:Windows
+else
+ VBoxWindowsAdditions_LDFLAGS = \
+ 	/DISALLOWLIB:msvcrt.lib \
+ 	/DISALLOWLIB:msvcprt.lib \
+ 	/DISALLOWLIB:libcmt.lib
+ VBoxWindowsAdditions_LIBS    = \
+ 	$(PATH_TOOL_$(TEMPLATE_VBoxR3Exe_TOOL.win.$(VBoxWindowsAdditions_BLD_TRG_ARCH))_LIB)/oldnames.lib \
+ 	$(PATH_TOOL_$(TEMPLATE_VBoxR3Exe_TOOL.win.$(VBoxWindowsAdditions_BLD_TRG_ARCH))_LIB)/libcmt.lib \
+ 	$(PATH_TOOL_$(TEMPLATE_VBoxR3Exe_TOOL.win.$(VBoxWindowsAdditions_BLD_TRG_ARCH))_LIB)/libcpmt.lib
+endif
+VBoxWindowsAdditions_VBOX_IMPORT_CHECKER.win.x86 := nt4
+
+# Version stuff.
+VBoxWindowsAdditions.cpp_DEFS += VBOX_SVN_REV=$(VBOX_SVN_REV)
+VBoxWindowsAdditions.cpp_DEPS = $(VBOX_SVN_REV_KMK)
+
+# The icon location is configurable.
+VBoxWindowsAdditions.rc_INCS += $(VBoxWindowsAdditions_0_OUTDIR)
+VBoxWindowsAdditions.rc_DEPS += $(VBoxWindowsAdditions_0_OUTDIR)/VBoxWindowsAdditions-icon.rc
+VBoxWindowsAdditions.rc_CLEAN = $(VBoxWindowsAdditions_0_OUTDIR)/VBoxWindowsAdditions-icon.rc
+
+
+# Icon include file.
+$$(VBoxWindowsAdditions_0_OUTDIR)/VBoxWindowsAdditions-icon.rc: \
+		$(VBOX_WINDOWS_ADDITIONS_ICON_FILE) $(MAKEFILE_CURRENT) | $$(dir $$@)
+	$(RM) -f $@
+	$(APPEND) $@ 'IDI_VIRTUALBOX ICON DISCARDABLE "$(subst /,\\,$(VBOX_WINDOWS_ADDITIONS_ICON_FILE))"'
+
+
+# Signing certificate.
+ifdef VBOX_SIGNING_MODE
+ if1of ($(VBOX_SIGNING_MODE), test)
+  # If signing the installer, the loader stub must be signed as well.
+  # Hack alert! Using POST_CMDS.win to place the signing after VBoxPeSetVersion.
+  VBoxWindowsAdditions_POST_CMDS.win = $(call VBOX_SIGN_IMAGE_FN,$(out),,2)
+  VBoxWindowsAdditions_ORDERDEPS     = $(VBOX_SIGN_IMAGE_ORDERDEPS)
+ endif
+ VBoxWindowsAdditions_DEFS          += VBOX_SIGNING_MODE
+ VBoxWindowsAdditions_INCS          += $(VBoxWindowsAdditions_0_OUTDIR)
+ VBoxWindowsAdditions_INTERMEDIATES += \
+ 	$(VBoxWindowsAdditions_0_OUTDIR)/BuildCerts.h \
+ 	$(VBoxWindowsAdditions_0_OUTDIR)/TimestampRootCerts.h
+ VBoxWindowsAdditions_CLEAN         += \
+ 	$(VBoxWindowsAdditions_0_OUTDIR)/BuildCerts.h \
+ 	$(VBoxWindowsAdditions_0_OUTDIR)/TimestampRootCerts.h
+
+ # Dummy signed program that we can extract the signature from.
+ BLDPROGS += bldAddSignedDummy
+ bldAddSignedDummy_TEMPLATE := VBoxBldProg
+ bldAddSignedDummy_SOURCES  := bldAddSignedDummy.cpp
+ bldAddSignedDummy_ORDERDEPS = $(VBOX_SIGN_IMAGE_ORDERDEPS)
+ bldAddSignedDummy_POST_CMDS.win = $(call VBOX_SIGN_IMAGE_FN,$(out),,2)
+
+ # The certificate include files.
+ $$(VBoxWindowsAdditions_0_OUTDIR)/BuildCerts.h: $(VBOX_RTSIGNTOOL) $$(bldAddSignedDummy_1_TARGET) | $$(dir $$@)
+	$(QUIET)$(RM) -f -- "$@"
+	$(VBOX_RTSIGNTOOL) extract-exe-signer-cert --as-c-array "BuildCerts" "$(bldAddSignedDummy_1_TARGET)" --output "$@"
+
+ $$(VBoxWindowsAdditions_0_OUTDIR)/TimestampRootCerts.h: $(VBOX_RTSIGNTOOL) $$(bldAddSignedDummy_1_TARGET) | $$(dir $$@)
+	$(QUIET)$(RM) -f -- "$@"
+	$(VBOX_RTSIGNTOOL) extract-timestamp-root -R --as-c-array "TimestampRootCerts" "$(bldAddSignedDummy_1_TARGET)" --output "$@"
+
+ OTHER_CLEAN += $(VBOX_SUP_WIN_CERTS_FILE)
+
+endif # VBOX_SIGNING_MODE
+
+
+include $(FILE_KBUILD_SUB_FOOTER)
+

@@ -1,0 +1,12 @@
+// handle client disconnect
+* merge a few RDP packets to a single ISO packet, and a few ISO to single tcp
+* look at RDP5 packets which do not use MCS stuff (ISO 0x80 | 3)
+// fix and review bitmap compression
+// ASM color conversion and get-, setpixel
+// track dirty rectangles and optimize bitmap updates
+* avoid using heap in output while merging rectangles.
+// handle resize, cancel pending updates, lock framebuffer when accessed
+// embed VRDP to IDisplay
+// make work with the Microsoft RDP client
+* client authentication
+* channel support for disks, sound and clipboard

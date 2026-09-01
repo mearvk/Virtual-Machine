@@ -1,4 +1,4 @@
-/* $Id: VBoxPeSetVersion.cpp $ */
+/* $Id: VBoxPeSetVersion.cpp 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $ */
 /** @file
  * IPRT - Change the OS and SubSystem version to value suitable for NT v3.1.
  *

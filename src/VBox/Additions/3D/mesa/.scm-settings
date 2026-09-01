@@ -1,0 +1,37 @@
+# $Id: .scm-settings 111747 2025-11-14 16:43:28Z klaus.espenlaub@oracle.com $
+## @file
+# Source code massager settings for 3D additions stuff.
+#
+
+#
+# Copyright (C) 2010-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+
+--filter-out-dirs "/mesa-*/docs/header-stubs/."
+
+/mesa-*/.gitlab-ci/bare-metal/poe-off|/mesa-*/.gitlab-ci/bare-metal/poe-on: --treat-as shell --no-update-license --external-copyright --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords
+/mesa-*/*.sh|/mesa-*/*.py: --no-update-license --external-copyright --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords
+/mesa-*/*.txt|/mesa-*/README*|/mesa-*/*/README*|/mesa-*/*/TODO: --no-update-license --external-copyright --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords
+/mesa-*/src/amd/vulkan/radix_sort/LICENSE: --no-update-license --external-copyright --no-convert-tabs --no-strip-trailing-blanks --dont-set-svn-keywords
+/mesa-*/*.h|/mesa-*/*.hpp: --no-update-license --external-copyright --dont-set-svn-keywords --no-pragma-once --no-fix-header-guards --no-convert-tabs --no-force-final-eol --no-strip-trailing-blanks --strip-no-trailing-lines
+/mesa-*/*.c|/mesa-*/*.cc|/mesa-*/*.cpp|/mesa-*/*.S|/mesa-*/*.asm|/mesa-*/*/Makefile|/mesa-*/*.def|/mesa-*/*.xml|/mesa-*/*.xsl: --no-update-license --external-copyright --dont-set-svn-keywords --no-convert-tabs --no-force-final-eol --no-strip-trailing-blanks --strip-no-trailing-lines --no-fix-todos --no-fix-flower-box-markers
+

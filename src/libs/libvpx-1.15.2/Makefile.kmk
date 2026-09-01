@@ -1,0 +1,571 @@
+# $Id: Makefile.kmk 111798 2025-11-18 15:31:02Z alexander.rudnev@oracle.com $
+## @file
+# Sub-Makefile for the WebM libvpx SDK.
+#
+
+#
+# Copyright (C) 2018-2025 Oracle and/or its affiliates.
+#
+# This file is part of VirtualBox base platform packages, as
+# available from https://www.virtualbox.org.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation, in version 3 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <https://www.gnu.org/licenses>.
+#
+# SPDX-License-Identifier: GPL-3.0-only
+#
+
+SUB_DEPTH = ../../..
+include $(KBUILD_PATH)/subheader.kmk
+
+#
+# Upgrading / integrating libvpx:
+# 1. Run ./configure <params> to let the scripts do their job wrt RTCD stuff and stubs.
+#    This is necessary, otherwise the lib won't find certain functions and VBox won't run.
+#    Currently we build it with:
+#
+#        ./configure --disable-avx2 --disable-vp9 --disable-examples --disable-docs \
+#                    --disable-tools --disable-unit_tests --disable-libyuv --disable-webm_io
+#        (see current vpx_config.c when in doubt)
+# 2. Run ./make for getting the RTCD being built.
+# 3. Tweak VBox-libvpx_DEFS according to match the ./configure configuration.
+# 4. Test linkage against VBoxC and run VBox to make sure it actually doesn't blow up.
+# 5. If it does, check if some global offset table assembly files (*.asm) (GLOBAL_GOT) needs
+#    to be tweaked first.
+#
+
+#
+# The VBox-libvpx shared library.
+#
+LIBRARIES += VBox-libvpx
+VBox-libvpx_TEMPLATE := VBoxR3DllNonPedanticFast
+
+# Make all the stuff found in the vpx_config.* files available to the preprocessor.
+## @todo r=bird: Too many command line defines. Why not put this mess in a header and -include it via CFLAGS.
+VBox-libvpx_DEFS.amd64 := \
+	VPX_ARCH_ARM=0 \
+	VPX_ARCH_MIPS=0 \
+	VPX_ARCH_X86=0 \
+	VPX_ARCH_X86_64=1 \
+	VPX_ARCH_PPC=0 \
+	HAVE_NEON=0 \
+	HAVE_NEON_ASM=0 \
+	HAVE_MIPS32=0 \
+	HAVE_DSPR2=0 \
+	HAVE_MSA=0 \
+	HAVE_MIPS64=0 \
+	HAVE_MMX=1 \
+	HAVE_SSE=1 \
+	HAVE_SSE2=1 \
+	HAVE_SSE3=1 \
+	HAVE_SSSE3=1 \
+	HAVE_AVX512=0 \
+	HAVE_VSX=0 \
+	HAVE_MMI=0 \
+	CONFIG_POSTPROC=1
+VBox-libvpx_DEFS.arm64 := \
+	VPX_ARCH_ARM=1 \
+	VPX_ARCH_MIPS=0 \
+	VPX_ARCH_X86=0 \
+	VPX_ARCH_X86_64=0 \
+	VPX_ARCH_PPC=0 \
+	HAVE_MMX=0 \
+	HAVE_SSE=0 \
+	HAVE_SSE2=0 \
+	HAVE_NEON=1 \
+	HAVE_NEON_ASM=0 \
+	HAVE_NEON_DOTPROD=1 \
+	HAVE_NEON_I8MM=1 \
+	HAVE_SVE=1 \
+	HAVE_MIPS32=0 \
+	HAVE_DSPR2=0 \
+	HAVE_MSA=0 \
+	HAVE_MIPS64=0 \
+	CONFIG_POSTPROC=0
+VBox-libvpx_DEFS := \
+	HAVE_VPX_PORTS=1 \
+	CONFIG_RUNTIME_CPU_DETECT=1 \
+	CONFIG_DEPENDENCY_TRACKING=1 \
+	CONFIG_EXTERNAL_BUILD=0 \
+	CONFIG_INSTALL_DOCS=1 \
+	CONFIG_INSTALL_BINS=1 \
+	CONFIG_INSTALL_LIBS=1 \
+	CONFIG_INSTALL_SRCS=0 \
+	CONFIG_DEBUG=0 \
+	CONFIG_GPROF=0 \
+	CONFIG_GCOV=0 \
+	CONFIG_RVCT=0 \
+	CONFIG_GCC=1 \
+	CONFIG_MSVS=0 \
+	CONFIG_PIC=1 \
+	CONFIG_BIG_ENDIAN=0 \
+	CONFIG_CODEC_SRCS=0 \
+	CONFIG_DEBUG_LIBS=0 \
+	CONFIG_DEQUANT_TOKENS=0 \
+	CONFIG_DC_RECON=0 \
+	CONFIG_VP9_POSTPROC=0 \
+	CONFIG_MULTITHREAD=0 \
+	CONFIG_INTERNAL_STATS=0 \
+	CONFIG_VP8_ENCODER=1 \
+	CONFIG_VP8_DECODER=0 \
+	CONFIG_VP9_ENCODER=0 \
+	CONFIG_VP9_DECODER=0 \
+	CONFIG_VP8=1 \
+	CONFIG_VP9=0 \
+	CONFIG_ENCODERS=1 \
+	CONFIG_DECODERS=0 \
+	CONFIG_STATIC_MSVCRT=0 \
+	CONFIG_SPATIAL_RESAMPLING=1 \
+	CONFIG_REALTIME_ONLY=0 \
+	CONFIG_ONTHEFLY_BITPACKING=0 \
+	CONFIG_ERROR_CONCEALMENT=0 \
+	CONFIG_SHARED=0 \
+	CONFIG_STATIC=1 \
+	CONFIG_SMALL=0 \
+	CONFIG_POSTPROC_VISUALIZER=0 \
+	CONFIG_OS_SUPPORT=1 \
+	CONFIG_UNIT_TESTS=0 \
+	CONFIG_WEBM_IO=0 \
+	CONFIG_LIBYUV=0 \
+	CONFIG_DECODE_PERF_TESTS=0 \
+	CONFIG_ENCODE_PERF_TESTS=0 \
+	CONFIG_MULTI_RES_ENCODING=0 \
+	CONFIG_TEMPORAL_DENOISING=1 \
+	CONFIG_VP9_TEMPORAL_DENOISING=0 \
+	CONFIG_CONSISTENT_RECODE=0 \
+	CONFIG_COEFFICIENT_RANGE_CHECKING=0 \
+	CONFIG_VP9_HIGHBITDEPTH=0 \
+	CONFIG_BETTER_HW_COMPATIBILITY=0 \
+	CONFIG_EXPERIMENTAL=0 \
+	CONFIG_SIZE_LIMIT=0 \
+	CONFIG_ALWAYS_ADJUST_BPM=0 \
+	CONFIG_BITSTREAM_DEBUG=0 \
+	CONFIG_MISMATCH_DEBUG=0 \
+	CONFIG_FP_MB_STATS=0 \
+	CONFIG_EMULATE_HARDWARE=0 \
+	CONFIG_NON_GREEDY_MV=0 \
+	CONFIG_RATE_CTRL=0
+
+ifeq ($(KBUILD_TARGET),win)
+ # Note! Enabling AVX2 is not possible with Visual C++ 2010, requires minimum
+ #       Visual C++ 2013 (v18) according to the docs.
+ VBox-libvpx_DEFS += \
+ 	WIN32 \
+ 	CONFIG_EXTERAL_BUILD \
+ 	CONFIG_MSVS=1
+ VBox-libvpx_DEFS.amd64 += \
+ 	HAVE_SSE4_1=1 \
+ 	HAVE_AVX=1 \
+ 	HAVE_AVX2=$(if-expr "$(VBOX_VCC_TOOL_STEM)" >= "VCC120",1,0)
+else
+ # Note! GCC 4.3.x adds -msse4.1. GCC 4.4.x adds -mavx. GCC 4.7.x add -mavx2.
+ # TODO: Add dynamic config check for: -mavx2, -mavx, -msse4.1
+ VBox-libvpx_DEFS += \
+ 	CONFIG_GCC=1 \
+ 	HAVE_PTHREAD_H=1 \
+ 	HAVE_UNISTD_H=1
+ VBox-libvpx_DEFS.amd64 += \
+ 	HAVE_SSE4_1=$(if-expr defined(VBOX_GCC_msse4.1),1,0) \
+ 	HAVE_AVX=$(if-expr defined(VBOX_GCC_mavx),1,0) \
+ 	HAVE_AVX2=$(if-expr defined(VBOX_GCC_mavx2),1,0)
+endif
+
+VBox-libvpx_CFLAGS.win += -wd4701 # vp8/encoder\denoising.c(619) : warning C4701: potentially uninitialized local variable 'motion_magnitude2' used
+VBox-libvpx_CFLAGS.win += -wd4204 # vpx_dsp\prob.c(39) : warning C4204: nonstandard extension used : non-constant aggregate initializer
+VBox-libvpx_CFLAGS.win += -wd4310 # vpx_dsp/x86/fwd_txfm_sse2.h(39): warning C4310: cast truncates constant value
+VBox-libvpx_CFLAGS.win += -wd4456 # vpx_subpixel_8t_intrin_avx2.c(583): warning C4456: declaration of 'src_reg' hides previous local declaration
+if "$(VBOX_VCC_TOOL_STEM)" >= "VCC140"
+ ifeq ($(VBOX_VCC_TOOL_STEM),VCC140)
+  VBox-libvpx_CFLAGS.win += -wd4752 # sad_avx2.c(173) : warning C4752: found Intel(R) Advanced Vector Extensions; consider using /arch:AVX
+ endif
+ VBox-libvpx_CFLAGS.win += -wd4459 # vpxenc.c(1778): warning C4459: declaration of 'width' hides global declaration
+endif
+ifneq ($(KBUILD_TARGET),win)
+ VBox-libvpx_CFLAGS     = -Wno-implicit-function-declaration # vpx_dsp/ssim.c:105:3: error: implicit declaration of function 'vpx_ssim_parms_8x8'; did you mean 'vpx_ssim_parms_8x8_c'?
+endif
+
+VBox-libvpx_INCS.amd64 := vbox/x86
+VBox-libvpx_INCS.arm64 := vbox/arm
+VBox-libvpx_INCS       := \
+	vbox \
+	. \
+	dsp \
+	vp8 \
+	vpx
+
+ifdef VBOX_WITH_LIBVPX_VP9
+ VBox-libvpx_INCS      += \
+ 	vp9 \
+ 	vpx_scale
+endif
+
+VBox-libvpx_SOURCES = \
+	vpx/src/vpx_decoder.c \
+	vpx/src/vpx_encoder.c \
+	vpx/src/vpx_codec.c \
+	vpx/src/vpx_image.c \
+	vpx_mem/vpx_mem.c \
+	vpx_scale/generic/vpx_scale.c \
+	vpx_scale/generic/yv12config.c \
+	vpx_scale/generic/yv12extend.c \
+	vpx_scale/generic/gen_scalers.c \
+	vpx_scale/vpx_scale_rtcd.c \
+	vpx_dsp/prob.c \
+	vpx_dsp/bitwriter.c \
+	vpx_dsp/bitwriter_buffer.c \
+	vpx_dsp/psnr.c \
+	vpx_dsp/intrapred.c \
+	vpx_dsp/add_noise.c \
+	vpx_dsp/deblock.c \
+	vpx_dsp/skin_detection.c \
+	vpx_dsp/sad.c \
+	vpx_dsp/subtract.c \
+	vpx_dsp/sum_squares.c \
+	vpx_dsp/variance.c \
+	vpx_dsp/vpx_dsp_rtcd.c \
+	vpx_util/vpx_thread.c \
+	vpx_util/vpx_write_yuv_frame.c \
+	vp8/common/alloccommon.c \
+	vp8/common/blockd.c \
+	vp8/common/dequantize.c \
+	vp8/common/entropy.c \
+	vp8/common/entropymode.c \
+	vp8/common/entropymv.c \
+	vp8/common/extend.c \
+	vp8/common/filter.c \
+	vp8/common/findnearmv.c \
+	vp8/common/generic/systemdependent.c \
+	vp8/common/idct_blk.c \
+	vp8/common/idctllm.c \
+	vp8/common/rtcd.c \
+	vp8/common/vp8_loopfilter.c \
+	vp8/common/loopfilter_filters.c \
+	vp8/common/mbpitch.c \
+	vp8/common/modecont.c \
+	vp8/common/quant_common.c \
+	vp8/common/reconinter.c \
+	vp8/common/reconintra.c \
+	vp8/common/reconintra4x4.c \
+	vp8/common/setupintrarecon.c \
+	vp8/common/swapyv12buffer.c \
+	vp8/common/treecoder.c \
+	vp8/vp8_cx_iface.c \
+	vp8/encoder/bitstream.c \
+	vp8/encoder/boolhuff.c \
+	vp8/encoder/copy_c.c \
+	vp8/encoder/dct.c \
+	vp8/encoder/encodeframe.c \
+	vp8/encoder/encodeintra.c \
+	vp8/encoder/encodemb.c \
+	vp8/encoder/encodemv.c \
+	vp8/encoder/ethreading.c \
+	vp8/encoder/firstpass.c \
+	vp8/encoder/denoising.c \
+	vp8/encoder/lookahead.c \
+	vp8/encoder/mcomp.c \
+	vp8/encoder/modecosts.c \
+	vp8/encoder/onyx_if.c \
+	vp8/encoder/pickinter.c \
+	vp8/encoder/picklpf.c \
+	vp8/encoder/vp8_quantize.c \
+	vp8/encoder/ratectrl.c \
+	vp8/encoder/rdopt.c \
+	vp8/encoder/segmentation.c \
+	vp8/common/vp8_skin_detection.c \
+	vp8/encoder/tokenize.c \
+	vp8/encoder/treewriter.c \
+	vp8/encoder/temporal_filter.c \
+	vpx_dsp/sse.c
+
+VBox-libvpx_SOURCES.amd64 = \
+	vp8/common/x86/vp8_asm_stubs.c \
+	vp8/common/x86/loopfilter_x86.c \
+	vp8/common/mfqe.c \
+	vp8/common/postproc.c \
+	vpx_dsp/x86/ssim_opt_x86_64.asm
+VBox-libvpx_SOURCES.win.amd64 += \
+	vpx_ports/float_control_word.asm
+
+#if1of (CONFIG_MULTI_RES_ENCODING=1,$(VBox-libvpx_DEFS))
+# VBox-libvpx_SOURCES += vp8/encoder/mr_dissim.c
+#endif
+
+# MMX - always enabled.
+VBox-libvpx_SOURCES.amd64 += \
+	vp8/common/x86/idct_blk_mmx.c \
+	vpx_ports/emms_mmx.asm \
+	vp8/common/x86/dequantize_mmx.asm \
+	vp8/common/x86/idctllm_mmx.asm \
+	vp8/common/x86/recon_mmx.asm \
+	vp8/common/x86/subpixel_mmx.asm
+
+# SSE2 - always enabled.
+VBox-libvpx_SOURCES.amd64 += \
+	vpx_dsp/x86/avg_pred_sse2.c \
+	vpx_dsp/x86/post_proc_sse2.c \
+	vpx_dsp/x86/variance_sse2.c \
+	vpx_dsp/x86/sum_squares_sse2.c \
+	vp8/common/x86/idct_blk_sse2.c \
+	vp8/common/x86/bilinear_filter_sse2.c \
+	vp8/encoder/x86/vp8_quantize_sse2.c \
+	vp8/encoder/x86/denoising_sse2.c \
+	vp8/encoder/x86/vp8_enc_stubs_sse2.c \
+	vpx_dsp/x86/intrapred_sse2.asm \
+	vpx_dsp/x86/add_noise_sse2.asm \
+	vpx_dsp/x86/deblock_sse2.asm \
+	vpx_dsp/x86/sad4d_sse2.asm \
+	vpx_dsp/x86/sad_sse2.asm \
+	vpx_dsp/x86/subtract_sse2.asm \
+	vpx_dsp/x86/subpel_variance_sse2.asm \
+	vp8/common/x86/idctllm_sse2.asm \
+	vp8/common/x86/recon_sse2.asm \
+	vp8/common/x86/subpixel_sse2.asm \
+	vp8/common/x86/loopfilter_sse2.asm \
+	vp8/common/x86/iwalsh_sse2.asm \
+	vp8/common/x86/mfqe_sse2.asm \
+	vp8/common/x86/loopfilter_block_sse2_x86_64.asm \
+	vp8/encoder/x86/copy_sse2.asm \
+	vp8/encoder/x86/dct_sse2.asm \
+	vp8/encoder/x86/fwalsh_sse2.asm \
+	vp8/encoder/x86/block_error_sse2.asm \
+	vp8/encoder/x86/temporal_filter_apply_sse2.asm
+
+if1of (HAVE_SSE3=1, $(VBox-libvpx_DEFS.amd64))
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vp8/encoder/x86/copy_sse3.asm
+endif
+
+if1of (HAVE_SSSE3=1, $(VBox-libvpx_DEFS.amd64))
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vp8/encoder/x86/vp8_quantize_ssse3.c \
+ 	vpx_dsp/x86/intrapred_ssse3.asm \
+ 	vp8/common/x86/subpixel_ssse3.asm
+endif
+
+if1of (HAVE_SSE4_1=1, $(VBox-libvpx_DEFS.amd64))
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vp8/encoder/x86/quantize_sse4.c \
+ 	vpx_dsp/x86/sse_sse4.c
+endif
+
+if1of (HAVE_AVX2=1, $(VBox-libvpx_DEFS.amd64))
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vpx_dsp/x86/avg_pred_avx2.c \
+ 	vpx_dsp/x86/variance_avx2.c \
+ 	vpx_dsp/x86/sad4d_avx2.c \
+ 	vpx_dsp/x86/sad_avx2.c \
+ 	vpx_dsp/x86/sse_avx2.c \
+ 	vpx_dsp/x86/subtract_avx2.c
+
+endif
+
+VBox-libvpx_SOURCES.arm64 += \
+	vpx_ports/aarch64_cpudetect.c \
+	\
+	vp8/common/arm/loopfilter_arm.c \
+	vp8/common/arm/neon/bilinearpredict_neon.c \
+	vp8/common/arm/neon/copymem_neon.c \
+	vp8/common/arm/neon/dc_only_idct_add_neon.c \
+	vp8/common/arm/neon/dequant_idct_neon.c \
+	vp8/common/arm/neon/dequantizeb_neon.c \
+	vp8/common/arm/neon/idct_blk_neon.c \
+	vp8/common/arm/neon/iwalsh_neon.c \
+	vp8/common/arm/neon/vp8_loopfilter_neon.c \
+	vp8/common/arm/neon/loopfiltersimplehorizontaledge_neon.c \
+	vp8/common/arm/neon/loopfiltersimpleverticaledge_neon.c \
+	vp8/common/arm/neon/mbloopfilter_neon.c \
+	vp8/common/arm/neon/shortidct4x4llm_neon.c \
+	vp8/common/arm/neon/sixtappredict_neon.c \
+	\
+	vp8/encoder/arm/neon/denoising_neon.c \
+	vp8/encoder/arm/neon/fastquantizeb_neon.c \
+	vp8/encoder/arm/neon/shortfdct_neon.c \
+	vp8/encoder/arm/neon/vp8_shortwalsh4x4_neon.c \
+	\
+	vpx_dsp/arm/sum_squares_neon.c \
+	vpx_dsp/arm/sad4d_neon.c \
+	vpx_dsp/arm/sad4d_neon_dotprod.c \
+	vpx_dsp/arm/sad_neon.c \
+	vpx_dsp/arm/sad_neon_dotprod.c \
+	vpx_dsp/arm/subtract_neon.c \
+	vpx_dsp/arm/avg_pred_neon.c \
+	vpx_dsp/arm/subpel_variance_neon.c \
+	vpx_dsp/arm/variance_neon.c \
+	vpx_dsp/arm/variance_neon_dotprod.c \
+	vpx_dsp/arm/intrapred_neon.c \
+	vpx_dsp/arm/deblock_neon.c \
+	vpx_dsp/arm/sse_neon.c \
+	vpx_dsp/arm/sse_neon_dotprod.c
+
+ifdef VBOX_WITH_LIBVPX_DECODER
+ VBox-libvpx_SOURCES += \
+ 	vp8/decoder/dboolhuff.c \
+ 	vp8/decoder/decodeframe.c \
+ 	vp8/decoder/decodemv.c \
+ 	vp8/decoder/detokenize.c \
+ 	vp8/decoder/onyxd_if.c \
+ 	vp8/decoder/threading.c
+ #if1of (CONFIG_ERROR_CONCEALMENT=1,$(VBox-libvpx_DEFS))
+ # VBox-libvpx_SOURCES += vp8/decoder/error_concealment.c
+ #endif
+endif
+
+ifdef VBOX_WITH_LIBVPX_VP9
+ VBox-libvpx_SOURCES += \
+ 	vpx_dsp/quantize.c \
+ 	vpx_dsp/psnrhvs.c \
+ 	vpx_dsp/vpx_convolve.c \
+ 	vp9/common/vp9_filter.c \
+ 	vp9/common/vp9_alloccommon.c \
+ 	vp9/common/vp9_blockd.c \
+ 	vp9/common/vp9_common_data.c \
+ 	vp9/common/vp9_debugmodes.c \
+ 	vp9/common/vp9_entropy.c \
+ 	vp9/common/vp9_entropymode.c \
+ 	vp9/common/vp9_entropymv.c \
+ 	vp9/common/vp9_frame_buffers.c \
+ 	vp9/common/vp9_idct.c \
+ 	vp9/common/vp9_loopfilter.c \
+ 	vp9/common/vp9_mfqe.c \
+ 	vp9/common/vp9_mvref_common.c \
+ 	vp9/common/vp9_postproc.c \
+ 	vp9/common/vp9_pred_common.c \
+ 	vp9/common/vp9_quant_common.c \
+ 	vp9/common/vp9_reconinter.c \
+ 	vp9/common/vp9_reconintra.c \
+ 	vp9/common/vp9_rtcd.c \
+ 	vp9/common/vp9_scale.c \
+ 	vp9/common/vp9_scan.c \
+ 	vp9/common/vp9_seg_common.c \
+ 	vp9/common/vp9_thread_common.c \
+ 	vp9/common/vp9_tile_common.c \
+ 	vp9/encoder/vp9_cost.c \
+ 	vp9/encoder/vp9_lookahead.c \
+ 	vp9/encoder/vp9_alt_ref_aq.c \
+ 	vp9/encoder/vp9_aq_360.c \
+ 	vp9/encoder/vp9_aq_complexity.c \
+ 	vp9/encoder/vp9_aq_cyclicrefresh.c \
+ 	vp9/encoder/vp9_aq_variance.c \
+ 	vp9/encoder/vp9_bitstream.c \
+ 	vp9/encoder/vp9_blockiness.c \
+ 	vp9/encoder/vp9_context_tree.c \
+ 	vp9/encoder/vp9_dct.c \
+ 	vp9/encoder/vp9_encodeframe.c \
+ 	vp9/encoder/vp9_encodemb.c \
+ 	vp9/encoder/vp9_encodemv.c \
+ 	vp9/encoder/vp9_encoder.c \
+ 	vp9/encoder/vp9_ethread.c \
+ 	vp9/encoder/vp9_extend.c \
+ 	vp9/encoder/vp9_firstpass.c \
+ 	vp9/encoder/vp9_mbgraph.c \
+ 	vp9/encoder/vp9_mcomp.c \
+ 	vp9/encoder/vp9_noise_estimate.c \
+ 	vp9/encoder/vp9_picklpf.c \
+ 	vp9/encoder/vp9_pickmode.c \
+ 	vp9/encoder/vp9_quantize.c \
+ 	vp9/encoder/vp9_ratectrl.c \
+ 	vp9/encoder/vp9_rd.c \
+ 	vp9/encoder/vp9_rdopt.c \
+ 	vp9/encoder/vp9_resize.c \
+ 	vp9/encoder/vp9_segmentation.c \
+ 	vp9/encoder/vp9_skin_detection.c \
+ 	vp9/encoder/vp9_speed_features.c \
+ 	vp9/encoder/vp9_subexp.c \
+ 	vp9/encoder/vp9_svc_layercontext.c \
+ 	vp9/encoder/vp9_temporal_filter.c \
+ 	vp9/encoder/vp9_tokenize.c \
+ 	vp9/encoder/vp9_treewriter.c \
+ 	vp9/encoder/vp9_tpl_model.c \
+ 	vp9/vp9_cx_iface.c \
+ 	vp9/vp9_dx_iface.c
+ #if1of (CONFIG_VP9_TEMPORAL_DENOISING=1,$(VBox-libvpx_DEFS))
+ # VBox-libvpx_SOURCES += vp9/encoder/vp9_denoiser.c
+ #endif
+
+ # SSE2 is always included.
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vpx_dsp/x86/avg_intrin_sse2.c \
+ 	vpx_dsp/x86/fwd_txfm_sse2.c \
+ 	vpx_dsp/x86/inv_txfm_sse2.c \
+ 	vpx_dsp/x86/loopfilter_sse2.c \
+ 	vpx_dsp/x86/quantize_sse2.c \
+ 	vpx_dsp/x86/vpx_subpixel_4t_intrin_sse2.c \
+ 	vpx_dsp/x86/vpx_subpixel_8t_sse2.asm \
+ 	vpx_dsp/x86/vpx_subpixel_bilinear_sse2.asm \
+ 	vp9/common/x86/vp9_idct_intrin_sse2.c \
+ 	vp9/common/x86/vp9_mfqe_sse2.asm \
+ 	vp9/encoder/x86/vp9_dct_intrin_sse2.c \
+ 	vp9/encoder/x86/vp9_dct_sse2.asm \
+ 	vp9/encoder/x86/vp9_denoiser_sse2.c \
+ 	vp9/encoder/x86/vp9_error_sse2.asm \
+ 	vp9/encoder/x86/vp9_highbd_block_error_intrin_sse2.c \
+ 	vp9/encoder/x86/vp9_highbd_error_sse2.asm \
+ 	vp9/encoder/x86/vp9_quantize_sse2.c \
+ 	vp9/encoder/x86/vp9_temporal_filter_apply_sse2.asm
+
+ if1of (HAVE_SSSE3=1, $(VBox-libvpx_DEFS.amd64))
+  VBox-libvpx_SOURCES.amd64 += \
+  	vpx_dsp/x86/inv_txfm_ssse3.c \
+  	vpx_dsp/x86/quantize_ssse3.c \
+  	vpx_dsp/x86/vpx_subpixel_8t_ssse3.asm \
+  	vpx_dsp/x86/vpx_subpixel_bilinear_ssse3.asm \
+  	vpx_dsp/x86/vpx_subpixel_8t_intrin_ssse3.c \
+  	vp9/encoder/x86/vp9_dct_ssse3.c \
+  	vp9/encoder/x86/vp9_frame_scale_ssse3.c
+ endif
+
+ if1of (HAVE_AVX=1, $(VBox-libvpx_DEFS.amd64))
+  VBox-libvpx_SOURCES.amd64 += \
+  	vpx_dsp/x86/quantize_avx.c \
+  	vp9/encoder/x86/vp9_diamond_search_sad_avx.c \
+  	vp9/encoder/x86/vp9_highbd_error_avx.asm
+ endif
+
+ if1of (HAVE_AVX2=1, $(VBox-libvpx_DEFS.amd64))
+  VBox-libvpx_SOURCES.amd64 += \
+  	vpx_dsp/x86/avg_intrin_avx2.c \
+  	vpx_dsp/x86/fwd_txfm_avx2.c \
+  	vpx_dsp/x86/loopfilter_avx2.c \
+  	vpx_dsp/x86/quantize_avx2.c \
+  	vpx_dsp/x86/vpx_subpixel_8t_intrin_avx2.c \
+  	vp9/encoder/x86/vp9_error_intrin_avx2.c
+ endif
+
+ VBox-libvpx_SOURCES.amd64 += \
+ 	vp9/encoder/x86/vp9_quantize_ssse3_x86_64.asm
+
+ ifdef VBOX_WITH_LIBVPX_DECODER
+  VBox-libvpx_SOURCES += \
+  	vp9/decoder/vp9_decodeframe.c \
+  	vp9/decoder/vp9_decodemv.c \
+  	vp9/decoder/vp9_decoder.c \
+  	vp9/decoder/vp9_detokenize.c \
+  	vp9/decoder/vp9_dsubexp.c \
+  	vp9/decoder/vp9_dthread.c
+ endif
+endif # VBOX_WITH_LIBVPX_VP9
+
+# Compiler flag tweaks.
+ifeq ($(KBUILD_TARGET),win)
+else
+ $(foreach src, $(sort $(filter %ssse3.c, $(VBox-libvpx_SOURCES) $(VBox-libvpx_SOURCES.amd64))), $(eval VBox-libvpx_$(src)_CFLAGS = -mssse3))
+ $(foreach src, $(sort $(filter %sse4.c,  $(VBox-libvpx_SOURCES) $(VBox-libvpx_SOURCES.amd64))), $(eval VBox-libvpx_$(src)_CFLAGS = -msse4.1))
+ $(foreach src, $(sort $(filter %avx.c,   $(VBox-libvpx_SOURCES) $(VBox-libvpx_SOURCES.amd64))), $(eval VBox-libvpx_$(src)_CFLAGS = -mavx))
+ $(foreach src, $(sort $(filter %avx2.c,  $(VBox-libvpx_SOURCES) $(VBox-libvpx_SOURCES.amd64))), $(eval VBox-libvpx_$(src)_CFLAGS = -mavx2))
+endif
+
+ifeq ($(KBUILD_TARGET).$(KBUILD_TARGET_ARCH),linux.arm64)
+ $(foreach src, $(sort $(filter %_dotprod.c, $(VBox-libvpx_SOURCES) $(VBox-libvpx_SOURCES.arm64))), $(eval VBox-libvpx_$(src)_CFLAGS = -march=armv8.2-a+dotprod))
+endif
+
+include $(FILE_KBUILD_SUB_FOOTER)
