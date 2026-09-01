@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="intro-starting">
+  <title>Starting <ph conkeyref="vbox-conkeyref-phrases/product-name"/></title>
+  
+  <body>
+    <p>After installation, you can start <ph conkeyref="vbox-conkeyref-phrases/product-name"/> as follows: </p>
+    <ul>
+      <li>
+        <p><b outputclass="bold">Windows hosts.</b> In the <b outputclass="bold">Programs</b> menu,
+          click the item in the <b outputclass="bold">VirtualBox</b> group. On some Windows
+          platforms, you can also enter <userinput>VirtualBox</userinput> in the search box of the
+            <b outputclass="bold">Start</b> menu. </p>
+      </li>
+      <li>
+        <p><b outputclass="bold">macOS hosts.</b> In the Finder, double-click the <b
+            outputclass="bold">VirtualBox</b> item in the Applications folder. You may want to drag
+          this item onto your Dock. </p>
+      </li>
+      <li>
+        <p><b outputclass="bold">Linux or Oracle Solaris
+          hosts</b>. Depending on your desktop environment, an
+          <ph conkeyref="vbox-conkeyref-phrases/product-name"/> item may have been placed in either the System
+          or System Tools group of your
+          <b outputclass="bold">Applications</b> menu.
+          Alternatively, you can enter <userinput>VirtualBox</userinput> in
+          a terminal window.
+        </p>
+      </li>
+    </ul>
+    <p>When you start <ph conkeyref="vbox-conkeyref-phrases/product-name"/>, the <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/> interface is shown. See <xref href="configuring-virtualbox.dita"/>. </p>
+  </body>
+  
+</topic>

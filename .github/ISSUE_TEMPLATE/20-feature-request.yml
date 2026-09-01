@@ -1,0 +1,89 @@
+name: Oracle VirtualBox Feature Request
+description: Request a feature or enhancement for Oracle VirtualBox.
+title: "[Req]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Want to see something improved in, or added to, Oracle VirtualBox? Request that here!
+
+        ## Some advice to improve your chances of seeing your idea in a future Oracle VirtualBox release
+        - **Fill this issue out entirely!** Be as detailed as possible.
+
+        - **By that same token: be as concise and specific as possible with the subject of your request.** Requests such as "make my VM faster" will get closed as too broad. Good requests include:
+          - "Implement X storage medium standard"
+          - "Add Y as a user configurable setting"
+          - "Change the flow in menu Z to improve user experience"
+
+        - **Provide a patch!** The VirtualBox core team works first on customer's issues and feature requests. We are not large enough to field all user requests, even ones that seem very important to the people affected. Providing a patch–even a partial one–greatly improves your chances of seeing your request fulfilled. Technical questions from people working on patches are, of course, welcome.
+
+        - Look for possible duplicate issues and end-user forum topics first.
+
+        - Write your summary carefully. Issues are triaged and resolved by (busy) developers, and unless a summary catches their eye and looks related to the things they as an individual work on, the ticket may not even be read.
+
+        - Please stay polite, relevant and on-topic. Offensive or unrelated comments and issues hurt everyone and may be deleted.
+
+        - Utilize proper [Github Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) formatting.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - 3D Support
+        - Audio
+        - API
+        - API/REST
+        - Cloud Integration
+        - Documentation
+        - EFI
+        - Guest Additions/Drag and Drop
+        - Guest Additions/Guest Control
+        - Guest Additions/Installer
+        - Guest Additions/Shared Clipboard
+        - Guest Additions/Shared Folders
+        - Guest Additions/Other
+        - Guest SMP
+        - GUI
+        - Host Support
+        - Host Installer
+        - Network
+        - RDP
+        - Recording
+        - Snapshots
+        - Storage and Virtual Disks
+        - USB and Serial Ports
+        - VBoxManage CLI
+        - VM Import/Export
+        - VMM
+        - Other
+    validations:
+        required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you facing?
+      description: Describe the problem that this feature request would solve. Let us know how this impacts you (or if it doesn't, what type of user would be impacted by this problem).
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: How can we fix this?
+      description: Describe the feature you're requesting. Please be specific. If this is involves a user visible change, describe what the UX should look like.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What alternatives or workarounds exist?
+      description: Are there workarounds or alternatives that currently exist to solve .
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else we should know?
+    validations:
+      required: false

@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="efividmode">
+  <title>Video Modes in EFI</title>
+  
+  <body>
+    <p>EFI provides two distinct video interfaces: GOP (Graphics Output Protocol) and UGA (Universal Graphics Adapter). Modern OSes, such as Mac OS X, generally use GOP, while some older ones still use UGA. <ph conkeyref="vbox-conkeyref-phrases/product-name"/> provides a configuration option to control the graphics resolution for both interfaces, making the difference mostly irrelevant for users.</p>
+    <p>The default resolution is 1024x768. To select a graphics resolution for EFI, use the following
+        <userinput>VBoxManage</userinput> command: </p>
+    <pre xml:space="preserve">VBoxManage setextradata "VM name" VBoxInternal2/EfiGraphicsResolution HxV</pre>
+    <p>Find the horizontal resolution H and the vertical resolution V from the following list of default resolutions: <table frame="all" rowsep="1" colsep="1">
+        <title>Default Resolutions for Display Types</title>
+        <desc>Common display types and their default resolution values.</desc>
+        <tgroup cols="5">
+          <colspec colname="c1" colnum="1" colwidth="1*"/>
+          <colspec colname="c2" colnum="2" colwidth="1.52*"/>
+          <colspec colname="c3" colnum="3" colwidth="1.37*"/>
+          <colspec colname="newCol4" colnum="4" colwidth="1.14*"/>
+          <colspec colname="c4" colnum="5" colwidth="1.22*"/>
+          <thead>
+            <row>
+              <entry>Display Type</entry>
+              <entry>Default Horizontal Resolution (px)</entry>
+              <entry>Default Vertical Resolution (px)</entry>
+              <entry>Color Depth (BPP)</entry>
+              <entry>Display Aspect Ratio</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><b>VGA</b></entry>
+              <entry>640</entry>
+              <entry>480</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>SVGA</b></entry>
+              <entry>800</entry>
+              <entry>600</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>XGA</b></entry>
+              <entry>1024</entry>
+              <entry>768</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>XGA+</b></entry>
+              <entry>1152</entry>
+              <entry>864</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>HD</b></entry>
+              <entry>1280</entry>
+              <entry>720</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WXGA</b></entry>
+              <entry>1280</entry>
+              <entry>800</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>SXGA</b></entry>
+              <entry>1280</entry>
+              <entry>1024</entry>
+              <entry>32</entry>
+              <entry>5:4</entry>
+            </row>
+            <row>
+              <entry><b>SXGA+</b></entry>
+              <entry>1400</entry>
+              <entry>1050</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>WXGA+</b></entry>
+              <entry>1440</entry>
+              <entry>900</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>HD+</b></entry>
+              <entry>1600</entry>
+              <entry>900</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>UXGA</b></entry>
+              <entry>1600</entry>
+              <entry>1200</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>WSXGA+</b></entry>
+              <entry>1680</entry>
+              <entry>1050</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>Full HD</b></entry>
+              <entry>1920</entry>
+              <entry>1080</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WUXGA</b></entry>
+              <entry>1920</entry>
+              <entry>1200</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>DCI 2K</b></entry>
+              <entry>2048</entry>
+              <entry>1080</entry>
+              <entry>32</entry>
+              <entry>19:10</entry>
+            </row>
+            <row>
+              <entry><b>Full HD+</b></entry>
+              <entry>2160</entry>
+              <entry>1440</entry>
+              <entry>32</entry>
+              <entry>3:2</entry>
+            </row>
+            <row>
+              <entry><b>Unnamed</b></entry>
+              <entry>2304</entry>
+              <entry>1440</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>QHD</b></entry>
+              <entry>2560</entry>
+              <entry>1440</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WQXGA</b></entry>
+              <entry>2560</entry>
+              <entry>1600</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>QWXGA+</b></entry>
+              <entry>2880</entry>
+              <entry>1800</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>QHD+</b></entry>
+              <entry>3200</entry>
+              <entry>1800</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WQSXGA</b></entry>
+              <entry>3200</entry>
+              <entry>2048</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>4K UHD</b></entry>
+              <entry>3840</entry>
+              <entry>2160</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WQUXGA</b></entry>
+              <entry>3840</entry>
+              <entry>2400</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>DCI 4K</b></entry>
+              <entry>4096</entry>
+              <entry>2160</entry>
+              <entry>32</entry>
+              <entry>19:10</entry>
+            </row>
+            <row>
+              <entry><b>HXGA</b></entry>
+              <entry>4096</entry>
+              <entry>3072</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>UHD+</b></entry>
+              <entry>5120</entry>
+              <entry>2880</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+            <row>
+              <entry><b>WHXGA</b></entry>
+              <entry>5120</entry>
+              <entry>3200</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>WHSXGA</b></entry>
+              <entry>6400</entry>
+              <entry>4096</entry>
+              <entry>32</entry>
+              <entry>16:10</entry>
+            </row>
+            <row>
+              <entry><b>HUXGA</b></entry>
+              <entry>6400</entry>
+              <entry>4800</entry>
+              <entry>32</entry>
+              <entry>4:3</entry>
+            </row>
+            <row>
+              <entry><b>8K UHD2</b></entry>
+              <entry>7680</entry>
+              <entry>4320</entry>
+              <entry>32</entry>
+              <entry>16:9</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></p>
+    <p>If this list of default resolutions does not cover your needs, see <xref href="customvesa.dita">Custom VESA Resolutions</xref>. Note that the color depth value specified in a custom video mode must be specified. Color depths of 8, 16, 24, and 32 are accepted. EFI assumes a color depth of 32 by default. </p>
+    <p>The EFI default video resolution settings can only be changed when the VM is powered off. </p>
+  </body>
+  
+</topic>

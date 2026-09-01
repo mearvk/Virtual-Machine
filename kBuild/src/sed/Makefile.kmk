@@ -1,0 +1,195 @@
+# $Id: Makefile.kmk 3646 2024-11-03 02:33:14Z knut.osmundsen@oracle.com $
+## @file
+# Sub-Makefile for kmk_sed.
+#
+
+#
+# Copyright (c) 2006-2024 knut st. osmundsen <bird-kBuild-spamx@anduin.net>
+#
+# This file is part of kBuild.
+#
+# kBuild is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# kBuild is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with kBuild.  If not, see <http://www.gnu.org/licenses/>
+#
+#
+
+SUB_DEPTH = ../..
+include $(KBUILD_PATH)/subheader.kmk
+
+#
+# kmk_sed
+#
+PROGRAMS += kmk_sed
+
+kmk_sed_TEMPLATE = BIN
+kmk_sed_DEPS = \
+	$(kmk_sed_0_OUTDIR)/config.h \
+	$(kmk_sed_0_OUTDIR)/version.h \
+	$(kmk_sed_0_OUTDIR)/stdckdint.h
+kmk_sed_DEPS.win = \
+	$(kmk_sed_0_OUTDIR)/alloca.h \
+	$(kmk_sed_0_OUTDIR)/getopt.h \
+	$(kmk_sed_0_OUTDIR)/unistd.h \
+	$(kmk_sed_0_OUTDIR)/langinfo.h \
+	$(kmk_sed_0_OUTDIR)/sys/random.h
+kmk_sed_CLEAN = $(kmk_sed_DEPS)
+kmk_sed_CFLAGS.solaris = -std=gnu99
+kmk_sed_INCS = \
+	$(kmk_sed_0_OUTDIR) \
+	. \
+	lib
+kmk_sed_SOURCES = \
+	sed/sed.c \
+	sed/debug.c \
+	sed/compile.c \
+	sed/execute.c \
+	sed/mbcs.c \
+	sed/regexp.c \
+	sed/utils.c
+
+kmk_sed_SOURCES.win = \
+	../lib/startuphacks-win.c
+
+kmk_sed_LIBS = $(kmk_libsed_1_TARGET)
+kmk_sed_LIBS.win = $(LIB_KUTIL) # for stdout optimizations.
+kmk_sed_BLDDIRS = \
+	$(kmk_sed_0_OUTDIR)/sys/
+
+LIBRARIES += kmk_libsed
+kmk_libsed_TEMPLATE = LIB
+kmk_libsed_CFLAGS.solaris = -std=gnu99
+kmk_libsed_DEFS = HAVE_CONFIG_H
+kmk_libsed_INCS = \
+	$(kmk_sed_0_OUTDIR) \
+	. \
+	lib
+kmk_libsed_DEPS = $(kmk_sed_DEPS)
+kmk_libsed_DEPS.win = $(kmk_sed_DEPS.win)
+kmk_libsed_SOURCES = \
+	lib/basename-lgpl.c \
+	lib/binary-io.c \
+	lib/c-ctype.c \
+	lib/c-strcasecmp.c \
+	lib/c-strncasecmp.c \
+	lib/close-stream.c \
+	lib/closeout.c \
+	lib/dirname-lgpl.c \
+	lib/progname.c \
+	lib/getprogname.c \
+	lib/obstack.c \
+	lib/localcharset.c \
+	lib/localeinfo.c \
+	lib/xalloc-die.c \
+	lib/xmalloc.c \
+	lib/version-etc-fsf.c \
+	lib/version-etc.c \
+	lib/strverscmp.c \
+	lib/dfa.c \
+	lib/regex.c \
+	lib/fwriting.c \
+	lib/mkostemp.c \
+	lib/getdelim.c \
+	lib/reallocarray.c \
+	lib/exitfail.c \
+	lib/malloc/dynarray_resize.c \
+	lib/tempname.c \
+	lib/error.c \
+	\
+	../kmk/getopt.c \
+	../kmk/getopt1.c
+
+kmk_libsed_SOURCES.win = \
+	lib/memrchr.c \
+	lib/getrandom.c \
+	lib/mkdir.c \
+	lib/stripslash.c
+
+include $(FILE_KBUILD_SUB_FOOTER)
+
+#
+# Use checked in config.h instead of running ./configure for it.
+#
+kmk_sed_config-$(KBUILD_TARGET).h := $(kmk_sed_DEFPATH)/config-$(KBUILD_TARGET).h
+
+$(kmk_sed_0_OUTDIR)/config.h: $(kmk_sed_config-$(KBUILD_TARGET).h) | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(CP) -f $^ $@
+
+$(kmk_sed_0_OUTDIR)/version.h: | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(APPEND) -tn "$@" \
+		'#define Version "4.9"'
+
+$(kmk_sed_0_OUTDIR)/stdckdint.h: $(kmk_sed_DEFPATH)/lib/stdckdint.in.h | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(CP) -f $^ $@
+
+
+#
+# Use the regex lib shipped with sed and not anything installed on the system.
+#
+#$(kmk_sed_0_OUTDIR)/regex.h: $(kmk_sed_DEFPATH)/lib/regex_.h | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+#	$(CP) -f $^ $@
+
+
+$(kmk_sed_0_OUTDIR)/alloca.h: | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(APPEND) -tn "$@" \
+		"#ifdef _MSC_VER" \
+		"# include <malloc.h>" \
+		"#else" \
+		"# include <stdlib.h>" \
+		"#endif"
+
+$(kmk_sed_0_OUTDIR)/langinfo.h: | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(APPEND) -tn "$@" \
+		""
+
+$(kmk_sed_0_OUTDIR)/stdbool.h: | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(APPEND) -tn "$@" \
+		"#ifndef _STDBOOL_H" \
+		"#define _STDBOOL_H" \
+		"typedef unsigned char _Bool;" \
+		"#define bool _Bool" \
+		"#define false (0)" \
+		"#define true  (1)" \
+		"#endif"
+
+
+$(kmk_sed_0_OUTDIR)/unistd.h: | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(APPEND) -tn "$@" \
+		"#ifndef _UNISTD_H" \
+		"#define _UNISTD_H" \
+		"#ifdef _MSC_VER" \
+		"# include <io.h>" \
+		"#endif" \
+		"#endif"
+
+
+$(kmk_sed_0_OUTDIR)/getopt.h: $(PATH_ROOT)/src/kmk/getopt.h | $(call DIRDEP,$(kmk_sed_0_OUTDIR))
+	$(CP) -f "$^" "$@"
+
+$(kmk_sed_0_OUTDIR)/sys/random.h: $(kmk_sed_DEFPATH)/lib/sys_random.in.h | $(call DIRDEP,$(kmk_sed_0_OUTDIR)/sys/)
+	$(RM) -f "$@"
+	$(SED) \
+		-e "s/@GUARD_PREFIX@/GNULIB_/g" \
+		-e "s/@PRAGMA_SYSTEM_HEADER@//g" \
+		-e "s/@PRAGMA_COLUMNS@//g" \
+		-e "s/# *@INCLUDE_NEXT@.*//g" \
+		\
+		-e "s/@HAVE_SYS_RANDOM_H@/0/g" \
+		-e "s/@GNULIB_GETRANDOM@/1/g" \
+		-e "s/@REPLACE_GETRANDOM@/0/g" \
+		-e "s/@HAVE_GETRANDOM@/0/g" \
+		-e 's/.*The definitions of _GL_FUNCDECL_RPL.*/$(HASH)include "c++defs.h"/' \
+		-e 's/.*The definitions of _GL_ARG_NONNULL.*/$(HASH)include "arg-nonnull.h"/' \
+		-e 's/.*The definitions of _GL_WARN_ON_USE.*/$(HASH)include "warn-on-use.h"/' \
+		\
+		--output "$@" "$<"
+

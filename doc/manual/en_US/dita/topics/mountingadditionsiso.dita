@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="mountingadditionsiso">
+  <title>Installing the Windows Guest Additions</title>
+  
+  <body>
+    <p>Follow the steps in <xref href="guestadd-install.dita"/>.</p>
+    <note>
+      <p>For the basic Direct3D acceleration to work in a Windows guest, you have to install the WDDM video driver available for Windows Vista or later.</p>
+      <p>For Windows 8 and later, only the WDDM Direct3D video driver is available.</p>
+    </note>
+    <p>For completely unattended guest installations, you can specify a command line parameter to the install launcher: </p>
+    <pre xml:space="preserve">VBoxWindowsAdditions.exe /S</pre>
+    <p>This automatically installs the right files and drivers for the corresponding platform, either 32-bit or 64-bit.</p>
+    <note>
+      <p>For Windows Aero to run correctly on a guest, the guest's VRAM size needs to be configured to at least 128 MB.</p>
+    </note>
+    <p>For more options regarding unattended guest installations, consult the command line help by using the command:</p>
+    <pre xml:space="preserve">VBoxWindowsAdditions.exe /?</pre>
+  </body>
+  
+</topic>

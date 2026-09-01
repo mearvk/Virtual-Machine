@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic xml:lang="en-us" id="tk_preferences">
+  <title>Set <ph conkeyref="vbox-conkeyref-phrases/product-name"/> Preferences</title>
+  <body>
+    <p>Use the <uicontrol>Preferences</uicontrol> to change settings that apply to all virtual machines.</p>
+    <note>
+      <p>Settings will differ, depending on your host OS.</p>
+    </note>
+    <ol>
+      <li>
+        <p>From the <uicontrol>File</uicontrol> menu, choose <uicontrol>Preferences</uicontrol>.</p>
+      </li>
+      <li>
+        <p>Choose your preferred experience level. To display all preferences, set the experience level to <uicontrol>Expert</uicontrol>.</p>
+        <p>See also <xref href="ui-experience-level.dita#gui-experience-level"/>.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>General</uicontrol> tab, specify the default folder or directory for VM files, and the VRDP Authentication Library.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Input</uicontrol> tab, set keyboard shortcuts, both in <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/> and in individual VMs. For example you might want to specify a different <b outputclass="bold">Host key</b>. This is the key that toggles whether the cursor is in the focus of the VM or the Host OS windows, see <xref href="keyb_mouse_normal.dita#keyb_mouse_normal"/>. The Host key is also used to trigger certain VM actions, see <xref href="specialcharacters.dita#specialcharacters"/>.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Update</uicontrol> tab, select the type of software updates you want to install, and how frequently to check for updates.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Language</uicontrol> tab, choose the language used for menus, labels, and text in <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Display</uicontrol> tab, specify the display properties for all VM displays.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Proxy</uicontrol> tab, configure an HTTP proxy server if you need one.</p>
+      </li>
+      <li>
+        <p>On the <uicontrol>Interface</uicontrol> tab, select the color theme to be used by <ph conkeyref="vbox-conkeyref-phrases/vbox-mgr"/>. This can only be changed on Windows 10 or Windows 11. Other OSs use system settings.</p>
+      </li>
+    </ol>
+  </body>
+</topic>
