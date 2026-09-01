@@ -12,6 +12,20 @@ Anyone with the need to run multiple operating systems simultaneously with some
 basic knowledge about PCs and operating system installation can use it to
 reduce effort with a large number of tasks including software testing.
 
+## Repository documentation
+
+This repository is an imported and verified copy of the VirtualBox 7.2 source
+tree. The following documents describe how it was assembled and reviewed:
+
+- [OVERVIEW.md](./OVERVIEW.md) — architecture and source-code review (design,
+  functionality, structure, coherence, aesthetics).
+- [VERIFICATION.md](./VERIFICATION.md) — verification report: upstream parity,
+  no-LFS storage, import history, and build verification.
+- [BUILD-STATUS.md](./BUILD-STATUS.md) — build details, results, and a
+  reproduce recipe.
+- [IMPORT-REPORT.md](./IMPORT-REPORT.md) — breakdown of the text-only source
+  import.
+
 ## Getting started
 
 VirtualBox is a complex product with multiple dependencies, some of them
