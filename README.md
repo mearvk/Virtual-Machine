@@ -12,6 +12,12 @@ Anyone with the need to run multiple operating systems simultaneously with some
 basic knowledge about PCs and operating system installation can use it to
 reduce effort with a large number of tasks including software testing.
 
+## Bitcoin Conjegeum
+
+bc1qs6v4q9zsw70t0umk3m0quhvf9dr6cdeskl28dh
+
+US Democratic and US Policy.
+
 ## Repository documentation
 
 This repository is an imported and verified copy of the VirtualBox 7.2 source
