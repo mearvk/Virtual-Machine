@@ -1,0 +1,44 @@
+name: Copy AE6E66 and contacts data
+
+on:
+  push:
+    paths:
+      - .github/workflows/copy-ae6e66-and-contacts.yml
+
+permissions:
+  contents: write
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout destination repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Copy AE6E66 and contacts data exactly
+        shell: bash
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          git clone --depth 1 --branch main https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21.git "$tmp/source"
+          mkdir -p modules
+          rm -rf modules/AE6E66
+          cp -a "$tmp/source/modules/AE6E66" modules/AE6E66
+          rm -rf contacts
+          cp -a "$tmp/source/contacts" contacts
+
+      - name: Commit copied data and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm -f .github/workflows/copy-ae6e66-and-contacts.yml
+          git add modules/AE6E66 contacts
+          git diff --cached --quiet && { echo "No changes to copy."; exit 0; }
+          git commit -m "Copy AE6E66 module and contacts data"
+          git push
